@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Visão Geral | Radar Político</title>
+
+<style>
+:root{
+  --green:#1fe3a2;
+  --bg:#05090c;
+  --border:rgba(255,255,255,.12);
+  --text:#eaf5f2;
+  --muted:#b9d6cd;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  height:100%;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* ===== CAMADAS DE FUNDO (mesmo tema do seu site) ===== */
+.background{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+}
+
+.bg-map{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center top;
+  opacity:.16;
+  filter: blur(.2px) contrast(1.05);
+  transform: scale(1.02);
+  pointer-events:none;
+}
+
+.bg-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at top, rgba(14,43,38,.65), rgba(5,9,12,.92) 65%),
+    linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.65));
+  pointer-events:none;
+}
+
+.radar{
+  position:absolute;
+  inset:-40vmax;
+  margin:auto;
+  width:120vmax;
+  height:120vmax;
+  border-radius:50%;
+  background:
+    repeating-radial-gradient(
+      circle,
+      rgba(31,227,162,.06) 0 1px,
+      transparent 1px 80px
+    );
+  opacity:.45;
+  pointer-events:none;
+}
+
+.radar::after{
+  content:"";
+  position:absolute;
+  inset:-50%;
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(31,227,162,.22) 40deg,
+      transparent 80deg
+    );
+  animation:sweep 7s linear infinite;
+}
+
+@keyframes sweep{ to{transform:rotate(360deg)} }
+
+@media (prefers-reduced-motion: reduce){
+  .radar::after{ animation:none; }
+}
+
+/* ===== HEADER ===== */
+.header{
+  position:relative;
+  z-index:2;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:22px 48px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand .mark{
+  width:38px; height:38px;
+  border-radius:12px;
+  background:rgba(31,227,162,.12);
+  border:1px solid rgba(31,227,162,.35);
+  display:grid;
+  place-items:center;
+  box-shadow:0 0 24px rgba(31,227,162,.18);
+}
+
+.brand svg{ width:22px; height:22px; }
+
+.brand .name{
+  font-weight:700;
+  letter-spacing:.14em;
+  font-size:14px;
+  text-transform:uppercase;
+  line-height:1.1;
+}
+.brand .name span{
+  display:block;
+  color:var(--green);
+  letter-spacing:.22em;
+  font-weight:700;
+  font-size:12px;
+}
+
+.nav{
+  display:flex;
+  gap:32px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.nav a{
+  color:var(--text);
+  text-decoration:none;
+  font-size:14px;
+  padding:8px 10px;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.nav a:hover{
+  background:rgba(31,227,162,.06);
+  color:var(--green);
+  transform:translateY(-1px);
+}
+
+.nav a.active{
+  color:var(--green);
+  background:rgba(31,227,162,.08);
+  border:1px solid rgba(31,227,162,.18);
+}
+
+/* ===== CONTEÚDO: layout igual ao da imagem (foto esquerda, texto direita) ===== */
+.main{
+  position:relative;
+  z-index:2;
+  min-height:calc(100vh - 86px);
+  display:flex;
+  align-items:center;
+  padding:10px 48px 54px;
+}
+
+.container{
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+
+/* “moldura” com cantos arredondados estilo orgânico */
+.photo-wrap{
+  position:relative;
+  width:100%;
+  max-width:520px;
+}
+
+.photo{
+  width:100%;
+  aspect-ratio: 1 / 1;
+  overflow:hidden;
+  border-radius:48px;
+  box-shadow:0 40px 110px rgba(0,0,0,.70);
+  background:#0b1412;
+  /* forma levemente diferente da imagem */
+  clip-path: polygon(12% 2%, 76% 2%, 98% 26%, 98% 74%, 74% 98%, 14% 98%, 2% 74%, 2% 26%);
+}
+
+.photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  filter: contrast(1.02) saturate(1.02);
+}
+
+.photo::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,.55) 100%);
+}
+
+.content h1{
+  margin:0 0 22px;
+  font-size:44px;
+  line-height:1.12;
+  color:var(--green);
+  font-weight:800;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+  font-style:italic;
+}
+
+.content p{
+  margin:0 0 14px;
+  color:var(--muted);
+  font-size:15.5px;
+  line-height:1.75;
+  max-width:560px;
+}
+
+.content strong{ color:var(--text); }
+
+/* ===== MOBILE ===== */
+@media(max-width:980px){
+  .container{ grid-template-columns:1fr; gap:42px; }
+  .photo-wrap{ max-width:520px; margin:0 auto; }
+  .content h1{ font-size:34px; text-align:left; }
+}
+
+@media(max-width:700px){
+  .header{ padding:16px 18px; gap:16px; flex-direction:column; align-items:flex-start; }
+  .nav{ gap:10px; }
+  .main{ padding:8px 18px 42px; }
+  .bg-map{ opacity:.06; }
+  .content h1{ font-size:30px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background">
+  <!-- Se você não tiver mapa.png, pode apagar essa linha -->
+  <img class="bg-map" src="mapa.png" alt="" aria-hidden="true">
+  <div class="bg-overlay"></div>
+  <div class="radar"></div>
+</div>
+
+<header class="header">
+  <div class="brand">
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
+        <circle cx="32" cy="32" r="22"/>
+        <path d="M32 32L48 16"/>
+        <circle cx="32" cy="32" r="4" fill="var(--green)"/>
+      </svg>
+    </div>
+    <div class="name">
+      <span>RADAR</span>
+      POLÍTICO
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Menu principal">
+    <a class="active" href="visao-geral.html">Visão Geral</a>
+    <a href="servicos.html">Serviços</a>
+    <a href="modulos.html">Módulos do Radar</a>
+  </nav>
+</header>
+
+<main class="main">
+  <section class="container">
+
+    <div class="photo-wrap">
+      <div class="photo">
+        <!-- Coloque sua imagem aqui. Garanta que o arquivo exista. -->
+        <img src="equipe.jpg" alt="Equipe de campanha analisando dados">
+      </div>
+    </div>
+
+    <div class="content">
+      <h1>
+        PLATAFORMA COMPLETA<br>
+        PARA GESTÃO DE<br>
+        CAMPANHAS
+      </h1>
+
+      <p>
+        O <strong>Radar Político</strong> é uma solução digital criada para apoiar candidatos,
+        partidos e equipes de campanha na organização, monitoramento e comunicação estratégica
+        com colaboradores e eleitores.
+      </p>
+
+      <p>
+        A plataforma integra gestão de cadastros, automação de comunicação via WhatsApp,
+        controle financeiro e painéis de acompanhamento, oferecendo eficiência, transparência
+        e maior alcance nas ações de campanha.
+      </p>
+    </div>
+
+  </section>
+</main>
+
+</body>
+</html>

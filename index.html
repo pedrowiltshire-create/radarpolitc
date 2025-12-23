@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar Político</title>
+
+<style>
+:root{
+  --green:#1fe3a2;
+  --bg:#05090c;
+  --border:rgba(255,255,255,.12);
+  --text:#eaf5f2;
+  --muted:#b9d6cd;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  height:100%;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:var(--bg);
+  color:var(--text);
+  overflow:hidden;
+}
+
+/* ===== CAMADAS DE FUNDO ===== */
+.background{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+}
+
+/* MAPA FULLSCREEN (sem esticar) */
+.bg-map{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;          /* preenche a tela sem deformar */
+  object-position:center top;/* ajuste: pode trocar pra center */
+  opacity:.22;               /* bem sutil */
+  filter: blur(.2px) contrast(1.05);
+  transform: scale(1.02);    /* evita bordas brancas por blur/fit */
+  pointer-events:none;
+}
+
+/* overlay pra harmonizar o mapa com o fundo */
+.bg-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at top, rgba(14,43,38,.65), rgba(5,9,12,.92) 65%),
+    linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.65));
+  pointer-events:none;
+}
+
+/* ===== RADAR FUNDO ===== */
+.radar{
+  position:absolute;
+  inset:-40vmax;
+  margin:auto;
+  width:120vmax;
+  height:120vmax;
+  border-radius:50%;
+  background:
+    repeating-radial-gradient(
+      circle,
+      rgba(31,227,162,.06) 0 1px,
+      transparent 1px 80px
+    );
+  opacity:.55;
+  pointer-events:none;
+}
+
+.radar::after{
+  content:"";
+  position:absolute;
+  inset:-50%;
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(31,227,162,.22) 40deg,
+      transparent 80deg
+    );
+  animation:sweep 7s linear infinite;
+}
+
+@keyframes sweep{
+  to{transform:rotate(360deg)}
+}
+
+/* ===== CONTEÚDO ===== */
+.main{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:48px 20px;
+}
+
+.card{
+  width:100%;
+  max-width:880px;
+  padding:56px 64px;
+  border-radius:24px;
+  text-align:center;
+
+  background:linear-gradient(180deg, rgba(18,40,38,.88), rgba(8,20,18,.94));
+  border:1px solid var(--border);
+  box-shadow:0 40px 120px rgba(0,0,0,.65);
+  backdrop-filter: blur(14px);
+}
+
+/* ===== LOGO ===== */
+.logo{
+  width:72px;
+  height:72px;
+  margin:0 auto 22px;
+  border-radius:18px;
+  background:rgba(31,227,162,.12);
+  border:1px solid rgba(31,227,162,.35);
+  display:grid;
+  place-items:center;
+  box-shadow:0 0 30px rgba(31,227,162,.25);
+}
+
+.logo svg{
+  width:40px;
+  height:40px;
+}
+
+/* ===== TEXTO ===== */
+h1{
+  margin:0;
+  font-size:44px;
+  letter-spacing:.22em;
+}
+
+h1 span{
+  display:block;
+  font-size:18px;
+  letter-spacing:.35em;
+  color:var(--green);
+  margin-bottom:10px;
+}
+
+.description{
+  margin:28px auto 42px;
+  max-width:700px;
+  font-size:18px;
+  line-height:1.7;
+  color:var(--muted);
+}
+
+/* ===== MENU ===== */
+.menu{
+  display:flex;
+  justify-content:center;
+  gap:28px;
+  flex-wrap:wrap;
+}
+
+.menu-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  border-radius:14px;
+  font-weight:500;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.menu-item::before{
+  content:"";
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 10px var(--green);
+}
+
+.menu-item:hover{
+  background:rgba(31,227,162,.06);
+  color:var(--green);
+  transform:translateY(-2px);
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:700px){
+  .card{padding:40px 28px}
+  h1{font-size:32px}
+  .description{font-size:16px}
+  .bg-map{
+    opacity:.06;
+    object-position:center top;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background">
+  <!-- MAPA FUNDO -->
+  <img class="bg-map" src="mapa.png" alt="" aria-hidden="true">
+
+  <!-- overlay de harmonização -->
+  <div class="bg-overlay"></div>
+
+  <!-- radar -->
+  <div class="radar"></div>
+</div>
+
+<main class="main">
+  <div class="card">
+
+    <div class="logo">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
+        <circle cx="32" cy="32" r="22"/>
+        <path d="M32 32L48 16"/>
+        <circle cx="32" cy="32" r="4" fill="var(--green)"/>
+      </svg>
+    </div>
+
+    <h1>
+      <span>RADAR</span>
+      POLÍTICO
+    </h1>
+
+    <p class="description">
+      A plataforma completa para campanhas modernas: gestão de colaboradores,
+      controle financeiro e comunicação estratégica via WhatsApp — tudo em um só lugar.
+    </p>
+
+    <div class="menu">
+      <div class="menu-item">Visão Geral</div>
+      <div class="menu-item">Serviços</div>
+      <div class="menu-item">Módulos do Radar</div>
+    </div>
+
+  </div>
+</main>
+
+</body>
+</html>

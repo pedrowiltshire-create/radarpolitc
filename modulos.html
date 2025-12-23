@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Módulos do Radar | Radar Político</title>
+
+<style>
+:root{
+  --green:#1fe3a2;
+  --bg:#05090c;
+  --border:rgba(255,255,255,.12);
+  --text:#eaf5f2;
+  --muted:#b9d6cd;
+}
+
+*{ box-sizing:border-box; }
+
+html,body{
+  margin:0;
+  height:100%;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* ===== FUNDO (igual às outras páginas) ===== */
+.background{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+}
+
+.bg-map{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center top;
+  opacity:.12;
+  filter: blur(.2px) contrast(1.05);
+  transform: scale(1.02);
+  pointer-events:none;
+}
+
+.bg-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at top, rgba(14,43,38,.55), rgba(5,9,12,.94) 65%),
+    linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.70));
+  pointer-events:none;
+}
+
+.radar{
+  position:absolute;
+  inset:-40vmax;
+  margin:auto;
+  width:120vmax;
+  height:120vmax;
+  border-radius:50%;
+  background:
+    repeating-radial-gradient(
+      circle,
+      rgba(31,227,162,.06) 0 1px,
+      transparent 1px 80px
+    );
+  opacity:.35;
+  pointer-events:none;
+}
+
+.radar::after{
+  content:"";
+  position:absolute;
+  inset:-50%;
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(31,227,162,.18) 40deg,
+      transparent 80deg
+    );
+  animation:sweep 7s linear infinite;
+}
+
+@keyframes sweep{ to{ transform:rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce){
+  .radar::after{ animation:none; }
+}
+
+/* ===== HEADER (mesmo padrão) ===== */
+.header{
+  position:relative;
+  z-index:2;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:22px 48px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand .mark{
+  width:38px; height:38px;
+  border-radius:12px;
+  background:rgba(31,227,162,.12);
+  border:1px solid rgba(31,227,162,.35);
+  display:grid;
+  place-items:center;
+  box-shadow:0 0 24px rgba(31,227,162,.18);
+}
+
+.brand svg{ width:22px; height:22px; }
+
+.brand .name{
+  font-weight:700;
+  letter-spacing:.14em;
+  font-size:14px;
+  text-transform:uppercase;
+  line-height:1.1;
+}
+.brand .name span{
+  display:block;
+  color:var(--green);
+  letter-spacing:.22em;
+  font-weight:700;
+  font-size:12px;
+}
+
+.nav{
+  display:flex;
+  gap:32px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.nav a{
+  color:var(--text);
+  text-decoration:none;
+  font-size:14px;
+  padding:8px 10px;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.nav a:hover{
+  background:rgba(31,227,162,.06);
+  color:var(--green);
+  transform:translateY(-1px);
+}
+
+.nav a.active{
+  color:var(--green);
+  background:rgba(31,227,162,.08);
+  border:1px solid rgba(31,227,162,.18);
+}
+
+/* ===== CONTEÚDO ===== */
+.main{
+  position:relative;
+  z-index:2;
+  min-height:calc(100vh - 86px);
+  padding:34px 48px 80px;
+  display:flex;
+  align-items:center;
+}
+
+.wrap{
+  width:100%;
+  max-width:1400px;
+  margin:0 auto;
+}
+
+/* (opcional) se quiser um título, descomente o h1 no HTML
+.title{
+  margin: 0 0 34px;
+  font-size:44px;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  font-style:italic;
+  color:var(--green);
+  text-align:center;
+}
+*/
+
+.modules{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:26px;
+  align-items:stretch;
+}
+
+/* ===== CARD PREMIUM (tema Radar) ===== */
+.module{
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
+  background:linear-gradient(180deg, rgba(18,40,38,.62), rgba(8,20,18,.78));
+  box-shadow:0 40px 110px rgba(0,0,0,.65);
+  backdrop-filter: blur(14px);
+  transform: translateZ(0);
+  transition: transform .25s, box-shadow .25s, border-color .25s;
+}
+
+.module:hover{
+  transform: translateY(-6px);
+  border-color: rgba(31,227,162,.26);
+  box-shadow:0 55px 140px rgba(0,0,0,.72);
+}
+
+.thumb{
+  position:relative;
+  height:160px;
+  overflow:hidden;
+}
+
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transform: scale(1.02);
+  filter: contrast(1.03) saturate(1.05);
+}
+
+.thumb::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,.05), rgba(0,0,0,.55));
+}
+
+.badge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  color:var(--text);
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.badge::before{
+  content:"";
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 12px rgba(31,227,162,.8);
+}
+
+.body{
+  padding:18px 18px 16px;
+  text-align:center;
+}
+
+.body h3{
+  margin:2px 0 12px;
+  font-size:16px;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  font-style:italic;
+  color:var(--text);
+}
+
+.body p{
+  margin:0 0 14px;
+  color:var(--muted);
+  font-size:13.5px;
+  line-height:1.55;
+  min-height:42px;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+  padding:11px 14px;
+  border-radius:999px;
+  border:1px solid rgba(31,227,162,.30);
+  background:rgba(31,227,162,.12);
+  color:var(--text);
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-size:12px;
+  text-decoration:none;
+  transition:.2s;
+}
+
+.btn:hover{
+  background:rgba(31,227,162,.18);
+  color:var(--green);
+  transform:translateY(-1px);
+}
+
+.btn:focus-visible{
+  outline:2px solid var(--green);
+  outline-offset:4px;
+}
+
+/* ===== RESPONSIVO ===== */
+@media(max-width:1200px){
+  .modules{ grid-template-columns:repeat(2, 1fr); }
+}
+
+@media(max-width:700px){
+  .header{
+    padding:16px 18px;
+    gap:16px;
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .nav{ gap:10px; }
+  .main{ padding:18px 18px 54px; }
+  .modules{ grid-template-columns:1fr; }
+  .bg-map{ opacity:.06; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background">
+  <!-- Se você não quiser mapa, pode apagar a linha abaixo -->
+  <img class="bg-map" src="mapa.png" alt="" aria-hidden="true">
+  <div class="bg-overlay"></div>
+  <div class="radar"></div>
+</div>
+
+<header class="header">
+  <div class="brand">
+  <div class="mark">
+    <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
+      <circle cx="32" cy="32" r="22"/>
+      <path d="M32 32L48 16"/>
+      <circle cx="32" cy="32" r="4" fill="var(--green)"/>
+    </svg>
+  </div>
+  <div class="name">
+    <span>RADAR</span>
+    POLÍTICO
+  </div>
+</div>
+
+  <nav class="nav" aria-label="Menu principal">
+    <a href="visao-geral.html">Visão Geral</a>
+    <a href="servicos.html">Serviços</a>
+    <a class="active" href="modulos.html">Módulos do Radar</a>
+  </nav>
+</header>
+
+<main class="main">
+  <div class="wrap">
+
+    <!-- Se quiser título nessa página, descomente:
+    <h1 class="title">MÓDULOS DO RADAR</h1>
+    -->
+
+    <section class="modules">
+
+      <article class="module">
+        <div class="thumb">
+          <div class="badge">Módulo</div>
+          <img src="modulo1.jpg" alt="Gestão Eleitoral">
+        </div>
+        <div class="body">
+          <h3>Gestão Eleitoral</h3>
+          <p>Organize equipes, metas e atividades com visão clara do progresso da campanha.</p>
+          <a class="btn" href="#">Acessar</a>
+        </div>
+      </article>
+
+      <article class="module">
+        <div class="thumb">
+          <div class="badge">Módulo</div>
+          <img src="modulo2.jpg" alt="Cadastro de Colaboradores">
+        </div>
+        <div class="body">
+          <h3>Cadastro de Colaboradores</h3>
+          <p>Cadastre pessoas, funções, regiões e acompanhe sua atuação com segurança.</p>
+          <a class="btn" href="#">Acessar</a>
+        </div>
+      </article>
+
+      <article class="module">
+        <div class="thumb">
+          <div class="badge">Módulo</div>
+          <img src="modulo3.jpg" alt="Comunicação via WhatsApp">
+        </div>
+        <div class="body">
+          <h3>Comunicação via WhatsApp</h3>
+          <p>Envie mensagens segmentadas e automatize fluxos para mobilização e resposta.</p>
+          <a class="btn" href="#">Acessar</a>
+        </div>
+      </article>
+
+      <article class="module">
+        <div class="thumb">
+          <div class="badge">Módulo</div>
+          <img src="modulo4.jpg" alt="Prestação de Contas">
+        </div>
+        <div class="body">
+          <h3>Prestação de Contas</h3>
+          <p>Registre despesas, contratos e comprovantes com organização e transparência.</p>
+          <a class="btn" href="#">Acessar</a>
+        </div>
+      </article>
+
+    </section>
+  </div>
+</main>
+
+</body>
+</html>

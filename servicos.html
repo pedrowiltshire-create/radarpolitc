@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Serviços | Radar Político</title>
+
+<style>
+:root{
+  --green:#1fe3a2;
+  --bg:#05090c;
+  --border:rgba(255,255,255,.12);
+  --text:#eaf5f2;
+  --muted:#b9d6cd;
+}
+
+*{ box-sizing:border-box; }
+
+html,body{
+  margin:0;
+  height:100%;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* ===== FUNDO (mesmo clima do site) ===== */
+.background{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+}
+
+/* ✅ MAPA FUNDO (opacidade baixa, igual às outras páginas) */
+.bg-map{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center top;
+  opacity:.16;
+  filter: blur(.2px) contrast(1.05);
+  transform: scale(1.02);
+  pointer-events:none;
+}
+
+.bg-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at top, rgba(14,43,38,.55), rgba(5,9,12,.94) 65%),
+    linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.70));
+  pointer-events:none;
+}
+
+.radar{
+  position:absolute;
+  inset:-40vmax;
+  margin:auto;
+  width:120vmax;
+  height:120vmax;
+  border-radius:50%;
+  background:
+    repeating-radial-gradient(
+      circle,
+      rgba(31,227,162,.06) 0 1px,
+      transparent 1px 80px
+    );
+  opacity:.35;
+  pointer-events:none;
+}
+
+.radar::after{
+  content:"";
+  position:absolute;
+  inset:-50%;
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(31,227,162,.18) 40deg,
+      transparent 80deg
+    );
+  animation:sweep 7s linear infinite;
+}
+
+@keyframes sweep{ to{ transform:rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce){
+  .radar::after{ animation:none; }
+}
+
+/* ===== HEADER ===== */
+.header{
+  position:relative;
+  z-index:2;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:22px 48px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand .mark{
+  width:38px; height:38px;
+  border-radius:12px;
+  background:rgba(31,227,162,.12);
+  border:1px solid rgba(31,227,162,.35);
+  display:grid;
+  place-items:center;
+  box-shadow:0 0 24px rgba(31,227,162,.18);
+}
+
+.brand svg{ width:22px; height:22px; }
+
+.brand .name{
+  font-weight:700;
+  letter-spacing:.14em;
+  font-size:14px;
+  text-transform:uppercase;
+  line-height:1.1;
+}
+.brand .name span{
+  display:block;
+  color:var(--green);
+  letter-spacing:.22em;
+  font-weight:700;
+  font-size:12px;
+}
+
+.nav{
+  display:flex;
+  gap:32px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.nav a{
+  color:var(--text);
+  text-decoration:none;
+  font-size:14px;
+  padding:8px 10px;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.nav a:hover{
+  background:rgba(31,227,162,.06);
+  color:var(--green);
+  transform:translateY(-1px);
+}
+
+.nav a.active{
+  color:var(--green);
+  background:rgba(31,227,162,.08);
+  border:1px solid rgba(31,227,162,.18);
+}
+
+/* ===== CONTEÚDO ===== */
+.main{
+  position:relative;
+  z-index:2;
+  min-height:calc(100vh - 86px);
+  padding:38px 48px 64px;
+}
+
+.title{
+  margin:40px 0 42px;
+  font-size:56px;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  font-style:italic;
+  color:#1fe3a2;
+  text-align:center;
+}
+
+.services{
+  width:100%;
+  max-width:1320px;
+  margin:0 auto;
+
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:72px;
+  align-items:start;
+}
+
+.service{
+  text-align:center;
+  padding:8px 14px;
+}
+
+.service .circle{
+  width:300px;
+  height:300px;
+  margin:0 auto 22px;
+  border-radius:50%;
+  overflow:hidden;
+  box-shadow:0 40px 110px rgba(0,0,0,.75);
+  border:1px solid rgba(255,255,255,.08);
+  background:#0b1412;
+}
+
+.service .circle img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  filter: contrast(1.02) saturate(1.02);
+  transform:scale(1.02);
+}
+
+.service h3{
+  margin:0 0 10px;
+  color:var(--green);
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-style:italic;
+}
+
+.service p{
+  margin:0 auto;
+  max-width:360px;
+  color:var(--muted);
+  font-size:13.5px;
+  line-height:1.6;
+}
+
+/* ===== RESPONSIVO ===== */
+@media(max-width:1100px){
+  .services{
+    grid-template-columns:1fr;
+    gap:46px;
+  }
+  .title{ font-size:44px; margin-top:22px; }
+  .service .circle{ width:280px; height:280px; }
+}
+
+@media(max-width:700px){
+  .header{
+    padding:16px 18px;
+    gap:16px;
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .nav{ gap:10px; }
+  .main{ padding:24px 18px 54px; }
+  .title{ font-size:36px; }
+  .service .circle{ width:250px; height:250px; }
+
+  /* opcional: mapa ainda mais sutil no mobile */
+  .bg-map{ opacity:.06; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background">
+  <!-- ✅ MAPA FUNDO (coloque mapa.png na mesma pasta) -->
+  <img class="bg-map" src="mapa.png" alt="" aria-hidden="true">
+
+  <div class="bg-overlay"></div>
+  <div class="radar"></div>
+</div>
+
+<header class="header">
+  <div class="brand">
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
+        <circle cx="32" cy="32" r="22"/>
+        <path d="M32 32L48 16"/>
+        <circle cx="32" cy="32" r="4" fill="var(--green)"/>
+      </svg>
+    </div>
+    <div class="name">
+      <span>RADAR</span>
+      POLÍTICO
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Menu principal">
+    <a href="visao-geral.html">Visão Geral</a>
+    <a class="active" href="servicos.html">Serviços</a>
+    <a href="modulos.html">Módulos do Radar</a>
+  </nav>
+</header>
+
+<main class="main">
+
+  <h1 class="title">NOSSOS SERVIÇOS</h1>
+
+  <section class="services">
+
+    <article class="service">
+      <div class="circle">
+        <img src="servico1.jpg" alt="Painéis gerenciais">
+      </div>
+      <h3>PAINÉIS GERENCIAIS</h3>
+      <p>Acompanhe em tempo real com indicadores, métricas de mobilização e mapas dinâmicos.</p>
+    </article>
+
+    <article class="service">
+      <div class="circle">
+        <img src="servico2.jpg" alt="Prestação de contas">
+      </div>
+      <h3>PRESTAÇÃO DE CONTAS</h3>
+      <p>Registre todos os contratos e gastos para facilitar a prestação de contas.</p>
+    </article>
+
+    <article class="service">
+      <div class="circle">
+        <img src="servico3.jpg" alt="Cadastro de colaboradores">
+      </div>
+      <h3>CADASTRO DE COLABORADORES</h3>
+      <p>Registre informações importantes e saiba onde estão seus colaboradores.</p>
+    </article>
+
+  </section>
+
+</main>
+
+</body>
+</html>
