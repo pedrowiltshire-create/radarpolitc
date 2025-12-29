@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gestão Eleitoral | Radar Político</title>
+
+<style>
+:root{
+  --green:#1fe3a2;
+  --bg:#05090c;
+  --border:rgba(255,255,255,.12);
+  --text:#eaf5f2;
+  --muted:#b9d6cd;
+}
+
+*{ box-sizing:border-box; }
+
+html,body{
+  margin:0;
+  height:100%;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:var(--bg);
+  color:var(--text);
+  overflow:hidden;
+}
+
+/* ===== FUNDO PADRÃO ===== */
+.background{
+  position:fixed;
+  inset:0;
+  z-index:0;
+}
+
+.bg-map{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:.10;
+  filter: blur(.2px) contrast(1.05);
+  transform: scale(1.02);
+}
+
+.bg-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at top, rgba(14,43,38,.55), rgba(5,9,12,.94) 65%);
+}
+
+/* radar estático, só textura */
+.radar{
+  position:absolute;
+  inset:-40vmax;
+  margin:auto;
+  width:120vmax;
+  height:120vmax;
+  border-radius:50%;
+  background:
+    repeating-radial-gradient(
+      circle,
+      rgba(31,227,162,.05) 0 1px,
+      transparent 1px 80px
+    );
+  opacity:.20;
+}
+.radar::after{ display:none; }
+
+/* ===== HEADER (igual ao site) ===== */
+.header{
+  position:relative;
+  z-index:2;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:22px 48px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand .mark{
+  width:38px; height:38px;
+  border-radius:12px;
+  background:rgba(31,227,162,.12);
+  border:1px solid rgba(31,227,162,.35);
+  display:grid;
+  place-items:center;
+  box-shadow:0 0 24px rgba(31,227,162,.18);
+}
+
+.brand svg{ width:22px; height:22px; }
+
+.brand .name{
+  font-weight:700;
+  letter-spacing:.14em;
+  font-size:14px;
+  text-transform:uppercase;
+  line-height:1.1;
+}
+.brand .name span{
+  display:block;
+  color:var(--green);
+  letter-spacing:.22em;
+  font-weight:700;
+  font-size:12px;
+}
+
+.nav{
+  display:flex;
+  gap:32px;
+}
+
+.nav a{
+  color:var(--text);
+  text-decoration:none;
+  font-size:14px;
+  padding:8px 10px;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.nav a:hover{
+  background:rgba(31,227,162,.06);
+  color:var(--green);
+}
+
+.nav a.active{
+  color:var(--green);
+  background:rgba(31,227,162,.08);
+  border:1px solid rgba(31,227,162,.18);
+}
+
+/* ===== ÁREA DO PAINEL ===== */
+.main{
+  position:relative;
+  z-index:2;
+  height:calc(100vh - 86px);
+  padding:18px 48px 36px;
+}
+
+.panel-wrap{
+  width:100%;
+  height:100%;
+  border-radius:18px;
+  overflow:hidden;
+
+  background:linear-gradient(
+    180deg,
+    rgba(18,40,38,.55),
+    rgba(8,20,18,.78)
+  );
+
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 40px 110px rgba(0,0,0,.65);
+}
+
+/* placeholder visual (pode remover depois) */
+.panel-placeholder{
+  width:100%;
+  height:100%;
+  display:grid;
+  place-items:center;
+  font-size:14px;
+  letter-spacing:.12em;
+  color:rgba(234,245,242,.55);
+  text-transform:uppercase;
+  background:
+    radial-gradient(circle at center, rgba(31,227,162,.08), transparent 55%);
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:700px){
+  .header{
+    padding:16px 18px;
+    gap:16px;
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .nav{ gap:10px; }
+  .main{ padding:12px 18px 24px; }
+  .bg-map{ opacity:.05; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- FUNDO -->
+<div class="background">
+  <img class="bg-map" src="mapa.png" alt="" aria-hidden="true">
+  <div class="bg-overlay"></div>
+  <div class="radar"></div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="brand">
+    <div class="mark">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
+        <circle cx="32" cy="32" r="22"/>
+        <path d="M32 32L48 16"/>
+        <circle cx="32" cy="32" r="4" fill="var(--green)"/>
+      </svg>
+    </div>
+    <div class="name">
+      <span>RADAR</span>
+      POLÍTICO
+    </div>
+  </div>
+
+  <nav class="nav">
+    <a href="visao-geral.html">Visão Geral</a>
+    <a href="servicos.html">Serviços</a>
+    <a class="active" href="gestao-eleitoral.html">Gestão Eleitoral</a>
+    <a href="modulos.html">Módulos do Radar</a>
+  </nav>
+</header>
+
+<!-- PAINEL -->
+<main class="main">
+  <div class="panel-wrap">
+
+    <!-- 🔽 SUBSTITUA TUDO AQUI PELO SEU PAINEL 🔽 -->
+    <div class="panel-placeholder">
+      SEU PAINEL ELEITORAL AQUI
+    </div>
+
+  </div>
+</main>
+
+</body>
+</html>
