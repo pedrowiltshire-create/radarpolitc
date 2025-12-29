@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Colaboradores | Radar Político</title>
+
+<style>
+:root{
+  --green:#1fe3a2;
+  --bg:#05090c;
+  --border:rgba(255,255,255,.12);
+  --text:#eaf5f2;
+  --muted:#b9d6cd;
+
+  --panel: rgba(18,40,38,.58);
+  --panel2: rgba(8,20,18,.78);
+}
+
+*{ box-sizing:border-box; }
+
+html,body{
+  margin:0;
+  height:100%;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:var(--bg);
+  color:var(--text);
+  overflow:hidden;
+}
+
+/* ===== FUNDO ===== */
+.background{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+}
+
+.bg-map{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center top;
+  opacity:.22; /* 🔥 MAIS VISÍVEL */
+  filter: blur(.15px) contrast(1.05);
+  transform: scale(1.02);
+  pointer-events:none;
+}
+
+.bg-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at top, rgba(14,43,38,.45), rgba(5,9,12,.88) 65%),
+    linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.58));
+  pointer-events:none;
+}
+
+/* rings estáticos */
+.radar{
+  position:absolute;
+  inset:-40vmax;
+  margin:auto;
+  width:120vmax;
+  height:120vmax;
+  border-radius:50%;
+  background:
+    repeating-radial-gradient(
+      circle,
+      rgba(31,227,162,.05) 0 1px,
+      transparent 1px 80px
+    );
+  opacity:.22;
+  pointer-events:none;
+}
+.radar::after{ display:none; }
+
+/* ===== HEADER ===== */
+.header{
+  position:relative;
+  z-index:2;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:22px 48px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand .mark{
+  width:38px; height:38px;
+  border-radius:12px;
+  background:rgba(31,227,162,.12);
+  border:1px solid rgba(31,227,162,.35);
+  display:grid;
+  place-items:center;
+  box-shadow:0 0 24px rgba(31,227,162,.18);
+}
+
+.brand svg{ width:22px; height:22px; }
+
+.brand .name{
+  font-weight:700;
+  letter-spacing:.14em;
+  font-size:14px;
+  text-transform:uppercase;
+  line-height:1.1;
+}
+.brand .name span{
+  display:block;
+  color:var(--green);
+  letter-spacing:.22em;
+  font-weight:700;
+  font-size:12px;
+}
+
+.nav{
+  display:flex;
+  gap:32px;
+}
+
+.nav a{
+  color:var(--text);
+  text-decoration:none;
+  font-size:14px;
+  padding:8px 10px;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.nav a:hover{
+  background:rgba(31,227,162,.06);
+  color:var(--green);
+}
+
+.nav a.active{
+  color:var(--green);
+  background:rgba(31,227,162,.08);
+  border:1px solid rgba(31,227,162,.18);
+}
+
+/* ===== CONTEÚDO ===== */
+.main{
+  position:relative;
+  z-index:2;
+  height:calc(100vh - 86px);
+  padding:24px 48px 44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.wrap{
+  width:100%;
+  max-width:1280px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:28px;
+}
+
+/* QUADROS */
+.frame{
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
+  background:linear-gradient(180deg, var(--panel), var(--panel2));
+  box-shadow:0 40px 110px rgba(0,0,0,.65);
+  backdrop-filter: blur(14px);
+  min-height:440px;
+  display:flex;
+  flex-direction:column;
+}
+
+.frame-head{
+  background:linear-gradient(180deg, rgba(0,175,120,.95), rgba(0,140,98,.95));
+  color:#eafff7;
+  font-weight:900;
+  text-align:center;
+  padding:12px;
+  font-size:17px;
+}
+
+.frame-body{
+  flex:1;
+  padding:14px;
+  display:grid;
+  place-items:center;
+}
+
+/* placeholder */
+.placeholder{
+  width:100%;
+  height:100%;
+  border-radius:16px;
+  border:1px dashed rgba(255,255,255,.14);
+  background:
+    radial-gradient(circle at 25% 25%, rgba(31,227,162,.08), transparent 55%),
+    linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.10));
+  color:rgba(234,245,242,.55);
+  font-size:12px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  display:grid;
+  place-items:center;
+}
+
+/* ===== RESPONSIVO ===== */
+@media(max-width:1100px){
+  html,body{ overflow:auto; }
+  .main{ height:auto; min-height:calc(100vh - 86px); }
+  .grid{ grid-template-columns:1fr; }
+}
+
+@media(max-width:700px){
+  .header{
+    padding:16px 18px;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:16px;
+  }
+  .nav{ gap:10px; }
+  .main{ padding:16px 18px 38px; }
+  .bg-map{ opacity:.12; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background">
+  <!-- 🔴 CONFIRA SE O ARQUIVO EXISTE -->
+  <img class="bg-map" src="mapa.png" alt="">
+  <div class="bg-overlay"></div>
+  <div class="radar"></div>
+</div>
+
+<header class="header">
+  <div class="brand">
+    <div class="mark">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
+        <circle cx="32" cy="32" r="22"/>
+        <path d="M32 32L48 16"/>
+        <circle cx="32" cy="32" r="4" fill="var(--green)"/>
+      </svg>
+    </div>
+    <div class="name">
+      <span>RADAR</span>
+      POLÍTICO
+    </div>
+  </div>
+
+  <nav class="nav">
+    <a href="visao-geral.html">Visão Geral</a>
+    <a class="active" href="colaboradores.html">Colaboradores</a>
+    <a href="prestacao-de-contas.html">Prestação de Contas</a>
+    <a href="comunicacao.html">Comunicação</a>
+  </nav>
+</header>
+
+<main class="main">
+  <div class="wrap">
+
+    <section class="grid">
+
+      <article class="frame">
+        <div class="frame-head">Cadastro Colaborador</div>
+        <div class="frame-body">
+          <!-- COLE SEU FORMULÁRIO AQUI -->
+          <div class="placeholder">CONTEÚDO AQUI</div>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-head">Mapa com o Total de Cadastro</div>
+        <div class="frame-body">
+          <!-- COLE SEU MAPA / IFRAME AQUI -->
+          <div class="placeholder">CONTEÚDO AQUI</div>
+        </div>
+      </article>
+
+    </section>
+
+  </div>
+</main>
+
+</body>
+</html>
