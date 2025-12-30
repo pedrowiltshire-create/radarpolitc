@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Prestação de Contas | Radar Político</title>
+
+<style>
+:root{
+  --green:#1fe3a2;
+  --bg:#05090c;
+  --text:#eaf5f2;
+
+  --panel: rgba(18,40,38,.58);
+  --panel2: rgba(8,20,18,.78);
+}
+
+*{ box-sizing:border-box; }
+
+html,body{
+  margin:0;
+  height:100%;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:var(--bg);
+  color:var(--text);
+  overflow:hidden; /* ✅ página nunca rola */
+}
+
+/* ===== FUNDO ===== */
+.background{
+  position:fixed;
+  inset:0;
+  z-index:0;
+}
+
+.bg-map{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:.22;
+  filter: blur(.15px) contrast(1.05);
+  transform: scale(1.02);
+}
+
+.bg-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at top, rgba(14,43,38,.45), rgba(5,9,12,.88) 65%),
+    linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.58));
+}
+
+.radar{
+  position:absolute;
+  inset:-40vmax;
+  margin:auto;
+  width:120vmax;
+  height:120vmax;
+  border-radius:50%;
+  background:
+    repeating-radial-gradient(
+      circle,
+      rgba(31,227,162,.05) 0 1px,
+      transparent 1px 80px
+    );
+  opacity:.2;
+}
+
+/* ===== HEADER ===== */
+.header{
+  position:relative;
+  z-index:2;
+  height:86px;              /* ✅ fixa altura do header */
+  padding:0 48px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.mark{
+  width:38px;height:38px;
+  border-radius:12px;
+  background:rgba(31,227,162,.12);
+  border:1px solid rgba(31,227,162,.35);
+  display:grid;
+  place-items:center;
+  box-shadow:0 0 24px rgba(31,227,162,.18);
+}
+
+.mark svg{ width:22px;height:22px; }
+
+.name{
+  font-weight:700;
+  letter-spacing:.14em;
+  font-size:14px;
+  text-transform:uppercase;
+  line-height:1.1;
+}
+.name span{
+  display:block;
+  color:var(--green);
+  font-size:12px;
+  letter-spacing:.22em;
+}
+
+.nav{
+  display:flex;
+  gap:32px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.nav a{
+  color:var(--text);
+  text-decoration:none;
+  font-size:14px;
+  padding:8px 10px;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.nav a:hover{
+  background:rgba(31,227,162,.06);
+  color:var(--green);
+}
+
+.nav a.active{
+  color:var(--green);
+  background:rgba(31,227,162,.08);
+  border:1px solid rgba(31,227,162,.18);
+}
+
+/* ===== MAIN ocupa o restante da tela ===== */
+.main{
+  position:relative;
+  z-index:2;
+  height:calc(100vh - 86px);  /* ✅ tudo cabe na tela */
+  padding:18px 48px 22px;
+  display:flex;
+  align-items:stretch;
+  justify-content:center;
+}
+
+.layout{
+  width:100%;
+  max-width:1400px;
+  display:grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap:22px;
+  height:100%;
+  align-items:stretch;
+}
+
+/* ===== PAINÉIS ===== */
+.panel{
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.10);
+  background:linear-gradient(180deg, var(--panel), var(--panel2));
+  box-shadow:0 40px 110px rgba(0,0,0,.65);
+  backdrop-filter: blur(14px);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height:0; /* ✅ deixa grid “encolher” */
+}
+
+.panel-head{
+  background:linear-gradient(180deg, #0fa36a, #0b7f54);
+  padding:10px 14px;
+  font-weight:900;
+  font-size:15px;
+  flex:0 0 auto;
+}
+
+.panel-body{
+  flex:1 1 auto;
+  padding:10px;
+  min-height:0; /* ✅ importante p/ conteúdo não estourar */
+  display:grid;
+  place-items:center;
+}
+
+/* coluna direita: 2 KPIs + gráfico ocupando o resto */
+.right{
+  display:grid;
+  grid-template-rows: 90px 90px 1fr; /* ✅ sempre cabe */
+  gap:14px;
+  min-height:0;
+}
+
+/* placeholder */
+.placeholder{
+  width:100%;
+  height:100%;
+  border:1px dashed rgba(255,255,255,.15);
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  font-size:11px;
+  letter-spacing:.2em;
+  opacity:.65;
+  text-transform:uppercase;
+}
+
+/* ===== RESPONSIVO ===== */
+@media(max-width:1100px){
+  /* Em telas menores, aqui é melhor permitir rolagem (senão fica esmagado) */
+  html,body{ overflow:auto; }
+  .main{ height:auto; min-height:calc(100vh - 86px); }
+  .layout{ grid-template-columns:1fr; height:auto; }
+  .right{ grid-template-rows:auto auto auto; }
+}
+
+@media(max-width:700px){
+  .header{
+    height:auto;
+    padding:16px 18px;
+    gap:16px;
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .main{ padding:14px 18px 22px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background">
+  <img class="bg-map" src="mapa.png" alt="">
+  <div class="bg-overlay"></div>
+  <div class="radar"></div>
+</div>
+
+<header class="header">
+  <div class="brand">
+    <div class="mark">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
+        <circle cx="32" cy="32" r="22"/>
+        <path d="M32 32L48 16"/>
+        <circle cx="32" cy="32" r="4" fill="var(--green)"/>
+      </svg>
+    </div>
+    <div class="name">
+      <span>RADAR</span>
+      POLÍTICO
+    </div>
+  </div>
+
+  <nav class="nav">
+    <a href="visao-geral.html">Visão Geral</a>
+    <a href="colaboradores.html">Colaboradores</a>
+    <a class="active" href="prestacao-de-contas.html">Prestação de Contas</a>
+    <a href="comunicacao.html">Comunicação</a>
+  </nav>
+</header>
+
+<main class="main">
+  <div class="layout">
+
+    <!-- ESQUERDA -->
+    <article class="panel">
+      <div class="panel-head">Dados Contrato de Prestação de Serviços</div>
+      <div class="panel-body">
+        <div class="placeholder">SURVEY / FORMULÁRIO</div>
+      </div>
+    </article>
+
+    <!-- DIREITA -->
+    <section class="right">
+      <article class="panel">
+        <div class="panel-head">Total de Contratos</div>
+        <div class="panel-body">
+          <div class="placeholder">KPI</div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">Total em Valor</div>
+        <div class="panel-body">
+          <div class="placeholder">KPI</div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">Contratos / Município</div>
+        <div class="panel-body">
+          <div class="placeholder">GRÁFICO / MAPA</div>
+        </div>
+      </article>
+    </section>
+
+  </div>
+</main>
+
+</body>
+</html>
