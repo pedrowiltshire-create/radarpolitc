@@ -18,14 +18,15 @@
 
 html,body{
   margin:0;
-  height:100%;
+  min-height:100%;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background:var(--bg);
   color:var(--text);
-  overflow:hidden;
+  overflow-x:hidden;
+  overflow-y:auto;
 }
 
-/* ===== CAMADAS DE FUNDO ===== */
+/* ===== FUNDO ===== */
 .background{
   position:fixed;
   inset:0;
@@ -33,21 +34,19 @@ html,body{
   overflow:hidden;
 }
 
-/* MAPA FULLSCREEN (sem esticar) */
 .bg-map{
   position:absolute;
   inset:0;
   width:100%;
   height:100%;
-  object-fit:cover;          /* preenche a tela sem deformar */
-  object-position:center top;/* ajuste: pode trocar pra center */
-  opacity:.22;               /* bem sutil */
+  object-fit:cover;
+  object-position:center top;
+  opacity:.22;
   filter: blur(.2px) contrast(1.05);
-  transform: scale(1.02);    /* evita bordas brancas por blur/fit */
+  transform: scale(1.02);
   pointer-events:none;
 }
 
-/* overlay pra harmonizar o mapa com o fundo */
 .bg-overlay{
   position:absolute;
   inset:0;
@@ -57,7 +56,7 @@ html,body{
   pointer-events:none;
 }
 
-/* ===== RADAR FUNDO ===== */
+/* ===== RADAR ===== */
 .radar{
   position:absolute;
   inset:-40vmax;
@@ -97,19 +96,18 @@ html,body{
 .main{
   position:relative;
   z-index:2;
-  min-height:100vh;
+  min-height:100svh;
   display:grid;
   place-items:center;
-  padding:48px 20px;
+  padding: clamp(24px, 5vw, 48px) 16px;
 }
 
 .card{
   width:100%;
   max-width:880px;
-  padding:56px 64px;
+  padding: clamp(28px, 5vw, 56px) clamp(18px, 6vw, 64px);
   border-radius:24px;
   text-align:center;
-
   background:linear-gradient(180deg, rgba(18,40,38,.88), rgba(8,20,18,.94));
   border:1px solid var(--border);
   box-shadow:0 40px 120px rgba(0,0,0,.65);
@@ -118,9 +116,9 @@ html,body{
 
 /* ===== LOGO ===== */
 .logo{
-  width:72px;
-  height:72px;
-  margin:0 auto 22px;
+  width: clamp(56px, 10vw, 72px);
+  height: clamp(56px, 10vw, 72px);
+  margin:0 auto 18px;
   border-radius:18px;
   background:rgba(31,227,162,.12);
   border:1px solid rgba(31,227,162,.35);
@@ -130,29 +128,29 @@ html,body{
 }
 
 .logo svg{
-  width:40px;
-  height:40px;
+  width: clamp(32px, 6vw, 40px);
+  height: clamp(32px, 6vw, 40px);
 }
 
 /* ===== TEXTO ===== */
 h1{
   margin:0;
-  font-size:44px;
-  letter-spacing:.22em;
+  font-size: clamp(28px, 6vw, 44px);
+  letter-spacing:.18em;
 }
 
 h1 span{
   display:block;
-  font-size:18px;
-  letter-spacing:.35em;
+  font-size: clamp(14px, 2.6vw, 18px);
+  letter-spacing:.28em;
   color:var(--green);
   margin-bottom:10px;
 }
 
 .description{
-  margin:28px auto 42px;
+  margin: 20px auto 28px;
   max-width:700px;
-  font-size:18px;
+  font-size: clamp(15px, 2.4vw, 18px);
   line-height:1.7;
   color:var(--muted);
 }
@@ -161,19 +159,24 @@ h1 span{
 .menu{
   display:flex;
   justify-content:center;
-  gap:28px;
+  gap:14px;
   flex-wrap:wrap;
 }
 
 .menu-item{
   display:flex;
   align-items:center;
+  justify-content:center;
   gap:10px;
-  padding:10px 14px;
+  padding:12px 14px;
   border-radius:14px;
-  font-weight:500;
+  font-weight:600;
   cursor:pointer;
   transition:.25s;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.02);
+  text-decoration:none;
+  color:inherit;
 }
 
 .menu-item::before{
@@ -192,13 +195,23 @@ h1 span{
 }
 
 /* ===== MOBILE ===== */
-@media(max-width:700px){
-  .card{padding:40px 28px}
-  h1{font-size:32px}
-  .description{font-size:16px}
+@media (max-width:700px){
+  h1{letter-spacing:.10em}
+  h1 span{letter-spacing:.20em}
+
   .bg-map{
-    opacity:.06;
+    opacity:.07;
     object-position:center top;
+  }
+
+  .menu{
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+  }
+
+  .menu-item{
+    width:100%;
   }
 }
 </style>
@@ -207,13 +220,8 @@ h1 span{
 <body>
 
 <div class="background">
-  <!-- MAPA FUNDO -->
   <img class="bg-map" src="mapa.png" alt="" aria-hidden="true">
-
-  <!-- overlay de harmonização -->
   <div class="bg-overlay"></div>
-
-  <!-- radar -->
   <div class="radar"></div>
 </div>
 
@@ -238,11 +246,11 @@ h1 span{
       controle financeiro e comunicação estratégica via WhatsApp — tudo em um só lugar.
     </p>
 
-    <div class="menu">
-      <div class="menu-item">Visão Geral</div>
-      <div class="menu-item">Serviços</div>
-      <div class="menu-item">Módulos do Radar</div>
-    </div>
+    <nav class="menu">
+      <a class="menu-item" href="visao-geral.html">Visão Geral</a>
+      <a class="menu-item" href="servicos.html">Serviços</a>
+      <a class="menu-item" href="modulos.html">Módulos do Radar</a>
+    </nav>
 
   </div>
 </main>
