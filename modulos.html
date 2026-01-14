@@ -18,7 +18,7 @@
 
 html,body{
   margin:0;
-  height:100%;
+  min-height:100%;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background:var(--bg);
   color:var(--text);
@@ -41,7 +41,7 @@ html,body{
   object-fit:cover;
   object-position:center top;
   opacity:.12;
-  filter: blur(.2px) contrast(1.05);
+  filter: contrast(1.05);
   transform: scale(1.02);
   pointer-events:none;
 }
@@ -101,22 +101,19 @@ html,body{
   align-items:center;
   justify-content:space-between;
   padding:22px 48px;
+  gap:20px;
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:12px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
+  flex-shrink:0;
 }
 
 .brand .mark{
-  width:38px; height:38px;
+  width:38px; 
+  height:38px;
   border-radius:12px;
   background:rgba(31,227,162,.12);
   border:1px solid rgba(31,227,162,.35);
@@ -125,7 +122,10 @@ html,body{
   box-shadow:0 0 24px rgba(31,227,162,.18);
 }
 
-.brand svg{ width:22px; height:22px; }
+.brand svg{ 
+  width:22px; 
+  height:22px; 
+}
 
 .brand .name{
   font-weight:700;
@@ -134,6 +134,7 @@ html,body{
   text-transform:uppercase;
   line-height:1.1;
 }
+
 .brand .name span{
   display:block;
   color:var(--green);
@@ -144,7 +145,7 @@ html,body{
 
 .nav{
   display:flex;
-  gap:32px;
+  gap:20px;
   flex-wrap:wrap;
   justify-content:flex-end;
 }
@@ -153,13 +154,16 @@ html,body{
   color:var(--text);
   text-decoration:none;
   font-size:14px;
-  padding:8px 10px;
+  padding:8px 12px;
   border-radius:12px;
-  transition:.2s;
+  transition:all .2s ease;
+  border:1px solid transparent;
+  white-space:nowrap;
 }
 
 .nav a:hover{
   background:rgba(31,227,162,.06);
+  border-color:rgba(31,227,162,.15);
   color:var(--green);
   transform:translateY(-1px);
 }
@@ -186,27 +190,14 @@ html,body{
   margin:0 auto;
 }
 
-/* (opcional) título, descomente o h1 no HTML
-.title{
-  margin: 0 0 34px;
-  font-size:44px;
-  font-weight:900;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  font-style:italic;
-  color:var(--green);
-  text-align:center;
-}
-*/
-
 .modules{
   display:grid;
-  grid-template-columns:repeat(4, 1fr);
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
   gap:26px;
   align-items:stretch;
 }
 
-/* ===== CARD PREMIUM ===== */
+/* ===== CARD ===== */
 .module{
   border-radius:22px;
   overflow:hidden;
@@ -261,6 +252,7 @@ html,body{
   color:var(--text);
   background:rgba(0,0,0,.35);
   border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(8px);
 }
 
 .badge::before{
@@ -311,11 +303,12 @@ html,body{
   text-transform:uppercase;
   font-size:12px;
   text-decoration:none;
-  transition:.2s;
+  transition:all .2s ease;
 }
 
 .btn:hover{
   background:rgba(31,227,162,.18);
+  border-color:rgba(31,227,162,.45);
   color:var(--green);
   transform:translateY(-1px);
 }
@@ -327,20 +320,98 @@ html,body{
 
 /* ===== RESPONSIVO ===== */
 @media(max-width:1200px){
-  .modules{ grid-template-columns:repeat(2, 1fr); }
+  .modules{ 
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+@media(max-width:900px){
+  .header{
+    padding:18px 32px;
+  }
+  
+  .main{
+    padding:24px 32px 60px;
+  }
+  
+  .modules{
+    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    gap:22px;
+  }
 }
 
 @media(max-width:700px){
   .header{
-    padding:16px 18px;
-    gap:16px;
+    padding:16px 20px;
     flex-direction:column;
     align-items:flex-start;
+    gap:16px;
   }
-  .nav{ gap:10px; }
-  .main{ padding:18px 18px 54px; }
-  .modules{ grid-template-columns:1fr; }
-  .bg-map{ opacity:.06; }
+  
+  .nav{ 
+    gap:12px;
+    width:100%;
+    justify-content:flex-start;
+  }
+  
+  .nav a{
+    font-size:13px;
+    padding:8px 10px;
+  }
+  
+  .main{ 
+    padding:18px 20px 54px;
+  }
+  
+  .modules{ 
+    grid-template-columns:1fr;
+    gap:20px;
+  }
+  
+  .bg-map{ 
+    opacity:.06;
+  }
+}
+
+@media(max-width:400px){
+  .header{
+    padding:14px 16px;
+  }
+  
+  .brand .name{
+    font-size:12px;
+  }
+  
+  .brand .name span{
+    font-size:11px;
+  }
+  
+  .nav{
+    flex-direction:column;
+    gap:8px;
+  }
+  
+  .nav a{
+    width:100%;
+    text-align:center;
+  }
+  
+  .main{
+    padding:16px 16px 48px;
+  }
+  
+  .thumb{
+    height:140px;
+  }
+  
+  .body h3{
+    font-size:15px;
+  }
+  
+  .body p{
+    font-size:13px;
+    min-height:auto;
+  }
 }
 </style>
 </head>
@@ -348,88 +419,83 @@ html,body{
 <body>
 
 <div class="background">
-  <!-- Se não quiser mapa, pode apagar a linha abaixo -->
-  <img class="bg-map" src="mapa.png" alt="" aria-hidden="true">
+  <img class="bg-map" src="mapa.png" alt="Mapa do Brasil" onerror="this.style.display='none'">
   <div class="bg-overlay"></div>
   <div class="radar"></div>
 </div>
 
 <header class="header">
   <div class="brand">
-  <div class="mark">
-    <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
-      <circle cx="32" cy="32" r="22"/>
-      <path d="M32 32L48 16"/>
-      <circle cx="32" cy="32" r="4" fill="var(--green)"/>
-    </svg>
+    <div class="mark">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3" aria-hidden="true">
+        <circle cx="32" cy="32" r="22"/>
+        <path d="M32 32L48 16"/>
+        <circle cx="32" cy="32" r="4" fill="var(--green)"/>
+      </svg>
+    </div>
+    <div class="name">
+      <span>RADAR</span>
+      POLÍTICO
+    </div>
   </div>
-  <div class="name">
-    <span>RADAR</span>
-    POLÍTICO
-  </div>
-</div>
 
-  <nav class="nav" aria-label="Menu principal">
-    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
+  <nav class="nav" role="navigation" aria-label="Menu principal">
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
+    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
   </nav>
 </header>
 
 <main class="main">
   <div class="wrap">
 
-    <!-- Se quiser título nessa página, descomente:
-    <h1 class="title">MÓDULOS DO RADAR</h1>
-    -->
-
     <section class="modules">
 
       <article class="module">
         <div class="thumb">
           <div class="badge">Módulo</div>
-          <img src="modulo1.jpg" alt="Gestão Eleitoral">
+          <img src="modulo1.jpg" alt="Gestão Eleitoral" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EGestão Eleitoral%3C/text%3E%3C/svg%3E'">
         </div>
         <div class="body">
           <h3>Gestão Eleitoral</h3>
           <p>Organize equipes, metas e atividades com visão clara do progresso da campanha.</p>
-          <a class="btn" href="#">Acessar</a>
+          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Gestão Eleitoral">Acessar</a>
         </div>
       </article>
 
       <article class="module">
         <div class="thumb">
           <div class="badge">Módulo</div>
-          <img src="modulo2.jpg" alt="Cadastro de Colaboradores">
+          <img src="modulo2.jpg" alt="Cadastro de Colaboradores" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EColaboradores%3C/text%3E%3C/svg%3E'">
         </div>
         <div class="body">
           <h3>Cadastro de Colaboradores</h3>
           <p>Cadastre pessoas, funções, regiões e acompanhe sua atuação com segurança.</p>
-          <a class="btn" href="#">Acessar</a>
+          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Colaboradores">Acessar</a>
         </div>
       </article>
 
       <article class="module">
         <div class="thumb">
           <div class="badge">Módulo</div>
-          <img src="modulo3.jpg" alt="Comunicação via WhatsApp">
+          <img src="modulo3.jpg" alt="Comunicação via WhatsApp" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EComunicação%3C/text%3E%3C/svg%3E'">
         </div>
         <div class="body">
           <h3>Comunicação via WhatsApp</h3>
           <p>Envie mensagens segmentadas e automatize fluxos para mobilização e resposta.</p>
-          <a class="btn" href="#">Acessar</a>
+          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Whatsapp">Acessar</a>
         </div>
       </article>
 
       <article class="module">
         <div class="thumb">
           <div class="badge">Módulo</div>
-          <img src="modulo4.jpg" alt="Prestação de Contas">
+          <img src="modulo4.jpg" alt="Prestação de Contas" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EPrestação de Contas%3C/text%3E%3C/svg%3E'">
         </div>
         <div class="body">
           <h3>Prestação de Contas</h3>
           <p>Registre despesas, contratos e comprovantes com organização e transparência.</p>
-          <a class="btn" href="#">Acessar</a>
+          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Prestação de Contas">Acessar</a>
         </div>
       </article>
 
@@ -439,6 +505,3 @@ html,body{
 
 </body>
 </html>
-
-
-
