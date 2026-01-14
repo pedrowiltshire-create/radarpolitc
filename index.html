@@ -22,7 +22,7 @@ html,body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background:var(--bg);
   color:var(--text);
-  overflow:hidden;
+  overflow-x:hidden;
 }
 
 /* ===== CAMADAS DE FUNDO ===== */
@@ -39,11 +39,11 @@ html,body{
   inset:0;
   width:100%;
   height:100%;
-  object-fit:cover;          /* preenche a tela sem deformar */
-  object-position:center top;/* ajuste: pode trocar pra center */
-  opacity:.22;               /* bem sutil */
+  object-fit:cover;
+  object-position:center top;
+  opacity:.22;
   filter: blur(.2px) contrast(1.05);
-  transform: scale(1.02);    /* evita bordas brancas por blur/fit */
+  transform: scale(1.02);
   pointer-events:none;
 }
 
@@ -101,6 +101,7 @@ html,body{
   display:grid;
   place-items:center;
   padding:48px 20px;
+  overflow-y:auto;
 }
 
 .card{
@@ -175,7 +176,8 @@ h1 span{
   cursor:pointer;
   transition:.25s;
   text-decoration: none; 
-  color: inherit;         
+  color: inherit;
+  min-height:44px;
 }
 
 .menu-item::before{
@@ -185,6 +187,7 @@ h1 span{
   border-radius:50%;
   background:var(--green);
   box-shadow:0 0 10px var(--green);
+  flex-shrink:0;
 }
 
 .menu-item:hover{
@@ -193,14 +196,154 @@ h1 span{
   transform:translateY(-2px);
 }
 
+.menu-item:active{
+  transform:translateY(0);
+}
+
+/* ===== TABLET ===== */
+@media(max-width:900px){
+  .card{
+    padding:48px 40px;
+  }
+  h1{
+    font-size:38px;
+  }
+}
+
 /* ===== MOBILE ===== */
 @media(max-width:700px){
-  .card{padding:40px 28px}
-  h1{font-size:32px}
-  .description{font-size:16px}
+  html,body{
+    overflow-y:auto;
+  }
+  
+  .main{
+    padding:24px 16px;
+    min-height:auto;
+  }
+  
+  .card{
+    padding:32px 24px;
+    border-radius:20px;
+  }
+  
+  .logo{
+    width:64px;
+    height:64px;
+    margin-bottom:18px;
+  }
+  
+  .logo svg{
+    width:36px;
+    height:36px;
+  }
+  
+  h1{
+    font-size:32px;
+    letter-spacing:.18em;
+  }
+  
+  h1 span{
+    font-size:16px;
+    letter-spacing:.3em;
+    margin-bottom:8px;
+  }
+  
+  .description{
+    font-size:16px;
+    line-height:1.65;
+    margin:22px auto 32px;
+  }
+  
   .bg-map{
-    opacity:.06;
+    opacity:.12;
     object-position:center top;
+  }
+  
+  .menu{
+    flex-direction:column;
+    gap:12px;
+    align-items:stretch;
+  }
+  
+  .menu-item{
+    justify-content:center;
+    padding:14px 18px;
+    font-size:15px;
+    border:1px solid rgba(31,227,162,.15);
+  }
+  
+  .radar{
+    opacity:.35;
+  }
+}
+
+/* ===== CELULARES PEQUENOS ===== */
+@media(max-width:400px){
+  .card{
+    padding:28px 20px;
+  }
+  
+  h1{
+    font-size:28px;
+  }
+  
+  h1 span{
+    font-size:14px;
+  }
+  
+  .description{
+    font-size:15px;
+  }
+  
+  .menu-item{
+    padding:12px 16px;
+    font-size:14px;
+  }
+}
+
+/* ===== LANDSCAPE MOBILE ===== */
+@media(max-height:500px) and (orientation:landscape){
+  .main{
+    padding:20px 16px;
+  }
+  
+  .card{
+    padding:24px 28px;
+  }
+  
+  .logo{
+    width:48px;
+    height:48px;
+    margin-bottom:12px;
+  }
+  
+  .logo svg{
+    width:28px;
+    height:28px;
+  }
+  
+  h1{
+    font-size:24px;
+  }
+  
+  h1 span{
+    font-size:13px;
+    margin-bottom:6px;
+  }
+  
+  .description{
+    font-size:14px;
+    margin:16px auto 24px;
+  }
+  
+  .menu{
+    flex-direction:row;
+    gap:16px;
+  }
+  
+  .menu-item{
+    padding:10px 14px;
+    font-size:13px;
   }
 }
 </style>
@@ -239,20 +382,15 @@ h1 span{
       A plataforma completa para campanhas modernas: gestão de colaboradores,
       controle financeiro e comunicação estratégica via WhatsApp — tudo em um só lugar.
     </p>
-<div class="menu">
-  <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=V-Geral">Visão Geral</a>
-  <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=N-Servi%C3%A7os">Serviços</a>
-  <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=M-Radar">Módulos do Radar</a>
-</div>
+    
+    <div class="menu">
+      <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
+      <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
+      <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
+    </div>
+    
   </div>
 </main>
 
 </body>
 </html>
-
-
-
-
-
-
-
