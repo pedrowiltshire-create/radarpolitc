@@ -22,7 +22,7 @@ html,body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background:var(--bg);
   color:var(--text);
-  overflow:hidden;
+  overflow-x:hidden;
 }
 
 /* ===== CAMADAS DE FUNDO ===== */
@@ -33,17 +33,17 @@ html,body{
   overflow:hidden;
 }
 
-/* MAPA FULLSCREEN (sem esticar) */
+/* MAPA FULLSCREEN */
 .bg-map{
   position:absolute;
   inset:0;
   width:100%;
   height:100%;
-  object-fit:cover;          /* preenche a tela sem deformar */
-  object-position:center top;/* ajuste: pode trocar pra center */
-  opacity:.22;               /* bem sutil */
-  filter: blur(.2px) contrast(1.05);
-  transform: scale(1.02);    /* evita bordas brancas por blur/fit */
+  object-fit:cover;
+  object-position:center top;
+  opacity:.22;
+  filter: contrast(1.05);
+  transform: scale(1.02);
   pointer-events:none;
 }
 
@@ -139,6 +139,7 @@ h1{
   margin:0;
   font-size:44px;
   letter-spacing:.22em;
+  font-weight:700;
 }
 
 h1 span{
@@ -147,10 +148,11 @@ h1 span{
   letter-spacing:.35em;
   color:var(--green);
   margin-bottom:10px;
+  font-weight:500;
 }
 
 .description{
-  margin:28px auto 42px;
+  margin:28px auto 0;
   max-width:700px;
   font-size:18px;
   line-height:1.7;
@@ -161,21 +163,23 @@ h1 span{
 .menu{
   display:flex;
   justify-content:center;
-  gap:28px;
+  gap:20px;
   flex-wrap:wrap;
+  margin-top:42px;
 }
 
 .menu-item{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:10px 14px;
+  padding:12px 18px;
   border-radius:14px;
   font-weight:500;
   cursor:pointer;
-  transition:.25s;
+  transition:all .25s ease;
   text-decoration: none; 
-  color: inherit;         
+  color: var(--text);
+  border:1px solid transparent;
 }
 
 .menu-item::before{
@@ -185,22 +189,64 @@ h1 span{
   border-radius:50%;
   background:var(--green);
   box-shadow:0 0 10px var(--green);
+  flex-shrink:0;
 }
 
 .menu-item:hover{
   background:rgba(31,227,162,.06);
+  border-color:rgba(31,227,162,.25);
   color:var(--green);
   transform:translateY(-2px);
 }
 
+.menu-item:active{
+  transform:translateY(0);
+}
+
 /* ===== MOBILE ===== */
 @media(max-width:700px){
-  .card{padding:40px 28px}
-  h1{font-size:32px}
-  .description{font-size:16px}
+  .card{
+    padding:40px 24px;
+  }
+  
+  h1{
+    font-size:32px;
+    letter-spacing:.18em;
+  }
+  
+  h1 span{
+    font-size:16px;
+  }
+  
+  .description{
+    font-size:16px;
+    line-height:1.6;
+  }
+  
   .bg-map{
-    opacity:.06;
-    object-position:center top;
+    opacity:.12;
+    object-position:center center;
+  }
+  
+  .menu{
+    gap:12px;
+    margin-top:32px;
+  }
+  
+  .menu-item{
+    padding:10px 14px;
+    font-size:14px;
+  }
+}
+
+@media(max-width:400px){
+  .menu{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  
+  .menu-item{
+    justify-content:center;
   }
 }
 </style>
@@ -209,8 +255,8 @@ h1 span{
 <body>
 
 <div class="background">
-  <!-- MAPA FUNDO -->
-  <img class="bg-map" src="mapa.png" alt="" aria-hidden="true">
+  <!-- MAPA FUNDO - Certifique-se que mapa.png existe na mesma pasta -->
+  <img class="bg-map" src="mapa.png" alt="Mapa do Brasil" onerror="this.style.display='none'">
 
   <!-- overlay de harmonização -->
   <div class="bg-overlay"></div>
@@ -223,7 +269,7 @@ h1 span{
   <div class="card">
 
     <div class="logo">
-      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3" aria-hidden="true">
         <circle cx="32" cy="32" r="22"/>
         <path d="M32 32L48 16"/>
         <circle cx="32" cy="32" r="4" fill="var(--green)"/>
@@ -239,19 +285,15 @@ h1 span{
       A plataforma completa para campanhas modernas: gestão de colaboradores,
       controle financeiro e comunicação estratégica via WhatsApp — tudo em um só lugar.
     </p>
-<div class="menu">
-  <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=V-Geral">Visão Geral</a>
-  <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=N-Servi%C3%A7os">Serviços</a>
-  <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=M-Radar">Módulos do Radar</a>
-</div>
+
+    <nav class="menu" role="navigation" aria-label="Menu principal">
+      <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
+      <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
+      <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
+    </nav>
+
   </div>
 </main>
 
 </body>
 </html>
-
-
-
-
-
-
