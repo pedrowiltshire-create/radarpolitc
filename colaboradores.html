@@ -25,7 +25,7 @@ html,body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background:var(--bg);
   color:var(--text);
-  overflow-x:hidden;
+  overflow:hidden;
 }
 
 /* ===== FUNDO ===== */
@@ -150,7 +150,7 @@ html,body{
 .main{
   position:relative;
   z-index:2;
-  min-height:calc(100vh - 86px);
+  height:calc(100vh - 86px);
   padding:24px 48px 44px;
   display:flex;
   align-items:center;
@@ -219,16 +219,9 @@ html,body{
 
 /* ===== RESPONSIVO ===== */
 @media(max-width:1100px){
+  html,body{ overflow:auto; }
+  .main{ height:auto; min-height:calc(100vh - 86px); }
   .grid{ grid-template-columns:1fr; }
-}
-
-@media(max-width:900px){
-  .header{
-    padding:20px 32px;
-  }
-  .main{
-    padding:20px 32px 40px;
-  }
 }
 
 @media(max-width:700px){
@@ -238,31 +231,9 @@ html,body{
     align-items:flex-start;
     gap:16px;
   }
-  .nav{ 
-    gap:10px;
-    flex-wrap:wrap;
-  }
+  .nav{ gap:10px; }
   .main{ padding:16px 18px 38px; }
   .bg-map{ opacity:.06; }
-  
-  .frame{
-    min-height:360px;
-  }
-  
-  .frame-head{
-    font-size:15px;
-    padding:10px;
-  }
-}
-
-@media(max-width:400px){
-  .grid{
-    gap:20px;
-  }
-  
-  .frame{
-    min-height:320px;
-  }
 }
 </style>
 </head>
@@ -312,3 +283,7 @@ html,body{
 
 </body>
 </html>
+
+
+
+
