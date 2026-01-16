@@ -203,11 +203,13 @@ html,body{
   gap:26px;
   justify-content:center;
   align-items:flex-end;
+  flex-wrap:wrap;           /* deixa quebrar linha se precisar */
 }
 
 .phone{
-  width:220px;
-  height:460px;
+  width: clamp(170px, 34vw, 220px);  /* responsivo */
+  aspect-ratio: 220 / 460;           /* mantém proporção */
+  height: auto;                       /* controla pelo aspect-ratio */
   border-radius:34px;
   background:linear-gradient(180deg, #ffffff, #f1f1f1);
   box-shadow:0 40px 110px rgba(0,0,0,.75);
@@ -237,8 +239,7 @@ html,body{
   position:absolute;
   inset:24px 12px 18px;
   border-radius:22px;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.15));
+  background: linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.15));
   display:grid;
   place-items:center;
   font-size:13px;
@@ -247,14 +248,14 @@ html,body{
   padding:14px;
 }
 
-/* ===== RESPONSIVO ===== */
-@media(max-width:1100px){
-  .container{
-    grid-template-columns:1fr;
-    gap:56px;
-  }
+/* MOBILE: empilha e dá mais largura */
+@media (max-width: 520px){
   .phones{
-    justify-content:center;
+    flex-direction:column;
+    align-items:center;
+  }
+  .phone{
+    width: min(92vw, 260px);
   }
 }
 
@@ -328,5 +329,6 @@ html,body{
 
 </body>
 </html>
+
 
 
