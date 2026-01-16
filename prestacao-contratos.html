@@ -159,18 +159,7 @@ html,body{
   align-items:stretch;
 }
 
-/* ===== PAINÉIS ===== */
-.panel{
-  border-radius:22px;
-  border:1px solid rgba(255,255,255,.10);
-  background:linear-gradient(180deg, var(--panel), var(--panel2));
-  box-shadow:0 40px 110px rgba(0,0,0,.65);
-  backdrop-filter: blur(14px);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  min-height:0; /* deixa grid “encolher” */
-}
+
 
 .panel-head{
   background:linear-gradient(180deg, #0fa36a, #0b7f54);
@@ -188,13 +177,7 @@ html,body{
   place-items:center;
 }
 
-/* coluna direita: 2 KPIs + gráfico ocupando o resto */
-.right{
-  display:grid;
-  grid-template-rows: 90px 90px 1fr; /* sempre cabe */
-  gap:14px;
-  min-height:0;
-}
+
 
 /* placeholder */
 .placeholder{
@@ -262,47 +245,9 @@ html,body{
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=Whatsapp">Comunicação</a>
   </nav>
 </header>
-
-<main class="main">
-  <div class="layout">
-
-    <!-- ESQUERDA -->
-    <article class="panel">
-      <div class="panel-head">Dados Contrato de Prestação de Serviços</div>
-      <div class="panel-body">
-        <div class="placeholder">SURVEY / FORMULÁRIO</div>
-      </div>
-    </article>
-
-    <!-- DIREITA -->
-    <section class="right">
-      <article class="panel">
-        <div class="panel-head">Total de Contratos</div>
-        <div class="panel-body">
-          <div class="placeholder">KPI</div>
-        </div>
-      </article>
-
-      <article class="panel">
-        <div class="panel-head">Total em Valor</div>
-        <div class="panel-body">
-          <div class="placeholder">KPI</div>
-        </div>
-      </article>
-
-      <article class="panel">
-        <div class="panel-head">Contratos / Município</div>
-        <div class="panel-body">
-          <div class="placeholder">GRÁFICO / MAPA</div>
-        </div>
-      </article>
-    </section>
-
-  </div>
-</main>
-
 </body>
 </html>
+
 
 
 
