@@ -3,14 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Módulos do Radar | Radar Político</title>
+<title>Radar Político</title>
 
 <style>
 :root{
   --green:#1fe3a2;
-  --bg:#05090c;
-  --border:rgba(255,255,255,.12);
-  --text:#eaf5f2;
+  --bg:#0a1419;
+  --text:#ffffff;
   --muted:#b9d6cd;
 }
 
@@ -30,66 +29,7 @@ html,body{
   position:fixed;
   inset:0;
   z-index:0;
-  overflow:hidden;
-}
-
-.bg-map{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center top;
-  opacity:.12;
-  filter: contrast(1.05);
-  transform: scale(1.02);
-  pointer-events:none;
-}
-
-.bg-overlay{
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at top, rgba(14,43,38,.55), rgba(5,9,12,.94) 65%),
-    linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.70));
-  pointer-events:none;
-}
-
-.radar{
-  position:absolute;
-  inset:-40vmax;
-  margin:auto;
-  width:120vmax;
-  height:120vmax;
-  border-radius:50%;
-  background:
-    repeating-radial-gradient(
-      circle,
-      rgba(31,227,162,.06) 0 1px,
-      transparent 1px 80px
-    );
-  opacity:.35;
-  pointer-events:none;
-}
-
-.radar::after{
-  content:"";
-  position:absolute;
-  inset:-50%;
-  background:
-    conic-gradient(
-      from 0deg,
-      transparent 0deg,
-      rgba(31,227,162,.18) 40deg,
-      transparent 80deg
-    );
-  animation:sweep 7s linear infinite;
-}
-
-@keyframes sweep{ to{ transform:rotate(360deg); } }
-
-@media (prefers-reduced-motion: reduce){
-  .radar::after{ animation:none; }
+  background:var(--bg);
 }
 
 /* ===== HEADER ===== */
@@ -179,75 +119,76 @@ html,body{
   position:relative;
   z-index:2;
   min-height:calc(100vh - 86px);
-  padding:60px 48px 80px;
+  padding:80px 48px 80px;
   display:flex;
   align-items:center;
+  justify-content:center;
 }
 
 .wrap{
   width:100%;
-  max-width:1400px;
+  max-width:1100px;
   margin:0 auto;
 }
 
 .hero-title{
-  font-size:64px;
+  font-size:70px;
   font-weight:900;
-  letter-spacing:0.08em;
+  letter-spacing:0.02em;
   text-transform:uppercase;
   text-align:center;
-  margin:0 0 24px;
+  margin:0 0 32px;
   line-height:1.1;
 }
 
 .hero-title span{
   color:var(--green);
-  display:inline;
 }
 
 .hero-subtitle{
   text-align:center;
   font-size:18px;
-  line-height:1.6;
+  line-height:1.65;
   color:var(--muted);
-  max-width:800px;
-  margin:0 auto 60px;
+  max-width:960px;
+  margin:0 auto 80px;
+  font-weight:400;
 }
 
 .micro{
   text-align:center;
-  font-size:16px;
+  font-size:17px;
   line-height:1.6;
   color:var(--text);
-  max-width:720px;
-  margin:0 auto 40px;
+  max-width:800px;
+  margin:0 auto 50px;
   font-weight:400;
 }
 
 .list{
-  max-width:800px;
-  margin:0 auto 50px;
+  max-width:900px;
+  margin:0 auto 60px;
   display:flex;
   flex-direction:column;
-  gap:28px;
+  gap:32px;
 }
 
 .item{
   display:flex;
   align-items:flex-start;
-  gap:18px;
+  gap:20px;
   text-align:left;
 }
 
 .check{
   flex-shrink:0;
-  width:32px;
-  height:32px;
+  width:36px;
+  height:36px;
   border-radius:50%;
-  background:rgba(31,227,162,.15);
+  background:transparent;
   border:2px solid var(--green);
   position:relative;
-  margin-top:2px;
+  margin-top:0;
 }
 
 .check::after{
@@ -258,22 +199,22 @@ html,body{
   place-items:center;
   color:var(--green);
   font-weight:900;
-  font-size:16px;
+  font-size:18px;
 }
 
-.item div{
+.item-content{
   flex:1;
 }
 
-.item strong{
+.item-content strong{
   color:var(--text);
   font-weight:700;
+  font-size:16px;
   display:block;
-  margin-bottom:4px;
+  margin-bottom:6px;
 }
 
-.item p,
-.item div:not(.check){
+.item-content p{
   color:var(--muted);
   font-size:15px;
   line-height:1.6;
@@ -282,19 +223,19 @@ html,body{
 
 .cta{
   text-align:center;
-  margin-top:50px;
+  margin-top:60px;
 }
 
 .cta a{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  padding:16px 48px;
+  padding:18px 52px;
   border-radius:999px;
   background:var(--green);
-  color:var(--bg);
+  color:#000;
   font-weight:800;
-  letter-spacing:.06em;
+  letter-spacing:.08em;
   text-transform:uppercase;
   font-size:14px;
   text-decoration:none;
@@ -308,166 +249,32 @@ html,body{
   background:rgba(31,227,162,.9);
 }
 
-.modules{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
-  gap:26px;
-  align-items:stretch;
-}
-
-/* ===== CARD ===== */
-.module{
-  border-radius:22px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.10);
-  background:linear-gradient(180deg, rgba(18,40,38,.62), rgba(8,20,18,.78));
-  box-shadow:0 40px 110px rgba(0,0,0,.65);
-  backdrop-filter: blur(14px);
-  transform: translateZ(0);
-  transition: transform .25s, box-shadow .25s, border-color .25s;
-}
-
-.module:hover{
-  transform: translateY(-6px);
-  border-color: rgba(31,227,162,.26);
-  box-shadow:0 55px 140px rgba(0,0,0,.72);
-}
-
-.thumb{
-  position:relative;
-  height:160px;
-  overflow:hidden;
-}
-
-.thumb img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  transform: scale(1.02);
-  filter: contrast(1.03) saturate(1.05);
-}
-
-.thumb::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(to bottom, rgba(0,0,0,.05), rgba(0,0,0,.55));
-}
-
-.badge{
-  position:absolute;
-  top:10px;
-  left:10px;
-  z-index:2;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:12px;
-  color:var(--text);
-  background:rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(8px);
-}
-
-.badge::before{
-  content:"";
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 12px rgba(31,227,162,.8);
-}
-
-.body{
-  padding:18px 18px 16px;
-  text-align:center;
-}
-
-.body h3{
-  margin:2px 0 12px;
-  font-size:16px;
-  font-weight:900;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  font-style:italic;
-  color:var(--text);
-}
-
-.body p{
-  margin:0 0 14px;
-  color:var(--muted);
-  font-size:13.5px;
-  line-height:1.55;
-  min-height:42px;
-}
-
-.btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  width:100%;
-  padding:11px 14px;
-  border-radius:999px;
-  border:1px solid rgba(31,227,162,.30);
-  background:rgba(31,227,162,.12);
-  color:var(--text);
-  font-weight:800;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  font-size:12px;
-  text-decoration:none;
-  transition:all .2s ease;
-}
-
-.btn:hover{
-  background:rgba(31,227,162,.18);
-  border-color:rgba(31,227,162,.45);
-  color:var(--green);
-  transform:translateY(-1px);
-}
-
-.btn:focus-visible{
-  outline:2px solid var(--green);
-  outline-offset:4px;
-}
-
 /* ===== RESPONSIVO ===== */
-@media(max-width:1200px){
-  .modules{ 
-    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-  }
-}
-
 @media(max-width:900px){
   .header{
     padding:18px 32px;
   }
   
   .main{
-    padding:40px 32px 60px;
+    padding:50px 32px 60px;
   }
   
   .hero-title{
-    font-size:48px;
+    font-size:52px;
   }
   
   .hero-subtitle{
-    font-size:16px;
-    margin-bottom:50px;
+    font-size:17px;
+    margin-bottom:60px;
   }
   
   .micro{
-    font-size:15px;
+    font-size:16px;
+    margin-bottom:40px;
   }
   
-  .modules{
-    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-    gap:22px;
+  .list{
+    gap:28px;
   }
 }
 
@@ -491,51 +298,51 @@ html,body{
   }
   
   .main{ 
-    padding:30px 20px 54px;
+    padding:40px 20px 54px;
   }
   
   .hero-title{
-    font-size:36px;
+    font-size:38px;
   }
   
   .hero-subtitle{
-    font-size:15px;
-    margin-bottom:40px;
+    font-size:16px;
+    margin-bottom:50px;
   }
   
   .micro{
-    font-size:14px;
-    margin-bottom:30px;
+    font-size:15px;
+    margin-bottom:35px;
   }
   
   .list{
-    gap:24px;
+    gap:26px;
   }
   
   .check{
-    width:28px;
-    height:28px;
+    width:32px;
+    height:32px;
   }
   
-  .item strong{
-    font-size:14px;
+  .check::after{
+    font-size:16px;
   }
   
-  .item div:not(.check){
+  .item-content strong{
+    font-size:15px;
+  }
+  
+  .item-content p{
     font-size:14px;
   }
   
   .cta{
-    margin-top:40px;
+    margin-top:50px;
   }
   
-  .modules{ 
-    grid-template-columns:1fr;
-    gap:20px;
-  }
-  
-  .bg-map{ 
-    opacity:.06;
+  .cta a{
+    padding:16px 40px;
+    font-size:13px;
   }
 }
 
@@ -563,46 +370,33 @@ html,body{
   }
   
   .main{
-    padding:24px 16px 48px;
+    padding:30px 16px 48px;
   }
   
   .hero-title{
-    font-size:28px;
+    font-size:32px;
   }
   
   .hero-subtitle{
-    font-size:14px;
-  }
-  
-  .micro{
-    font-size:13px;
-  }
-  
-  .check{
-    width:26px;
-    height:26px;
-  }
-  
-  .check::after{
-    font-size:14px;
-  }
-  
-  .cta a{
-    padding:14px 36px;
-    font-size:13px;
-  }
-  
-  .thumb{
-    height:140px;
-  }
-  
-  .body h3{
     font-size:15px;
   }
   
-  .body p{
-    font-size:13px;
-    min-height:auto;
+  .micro{
+    font-size:14px;
+  }
+  
+  .check{
+    width:30px;
+    height:30px;
+  }
+  
+  .check::after{
+    font-size:15px;
+  }
+  
+  .cta a{
+    padding:15px 36px;
+    font-size:12px;
   }
 }
 </style>
@@ -610,11 +404,7 @@ html,body{
 
 <body>
 
-<div class="background">
-  <img class="bg-map" src="mapa.png" alt="Mapa do Brasil" onerror="this.style.display='none'">
-  <div class="bg-overlay"></div>
-  <div class="radar"></div>
-</div>
+<div class="background"></div>
 
 <header class="header">
   <div class="brand">
@@ -644,8 +434,7 @@ html,body{
     <h1 class="hero-title">RADAR <span>POLÍTICO</span></h1>
 
     <p class="hero-subtitle">
-      Plataforma completa para campanhas modernas: gestão de colaboradores, controle financeiro e
-      comunicação estratégica via WhatsApp — tudo em um só lugar.
+      Plataforma completa para campanhas modernas: gestão de colaboradores, controle financeiro e comunicação estratégica via WhatsApp — tudo em um só lugar.
     </p>
 
     <p class="micro">
@@ -655,28 +444,31 @@ html,body{
     <section class="list">
       <div class="item">
         <div class="check"></div>
-        <div>
-          <strong>Centralização e assinatura digital de contratos.</strong> Todos os contratos em um único lugar, com assinatura digital e trilhas de auditoria.
+        <div class="item-content">
+          <strong>Centralização e assinatura digital de contratos.</strong>
+          <p>Todos os contratos em um único lugar, com assinatura digital e trilhas de auditoria.</p>
         </div>
       </div>
 
       <div class="item">
         <div class="check"></div>
-        <div>
-          <strong>Acompanhamento financeiro em tempo real.</strong> Entradas e saídas registradas automaticamente, dashboards e relatórios prontos para envio.
+        <div class="item-content">
+          <strong>Acompanhamento financeiro em tempo real.</strong>
+          <p>Entradas e saídas registradas automaticamente, dashboards e relatórios prontos para envio.</p>
         </div>
       </div>
 
       <div class="item">
         <div class="check"></div>
-        <div>
-          <strong>Facilidade no envio de documentos rescisórios.</strong> Geração e envio organizado de rescisões e comprovantes, reduzindo retrabalho e prazos.
+        <div class="item-content">
+          <strong>Facilidade no envio de documentos rescisórios.</strong>
+          <p>Geração e envio organizado de rescisões e comprovantes, reduzindo retrabalho e prazos.</p>
         </div>
       </div>
     </section>
 
     <div class="cta">
-      <a href="#">Simule um Contrato</a>
+      <a href="#">SIMULE UM CONTRATO</a>
     </div>
 
   </div>
