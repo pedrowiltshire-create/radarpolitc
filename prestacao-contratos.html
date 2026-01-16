@@ -72,11 +72,11 @@ html,body{
 .header{
   position:relative;
   z-index:2;
-  height:86px;              /* fixa altura do header */
-  padding:0 48px;
+  width:100%;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
+  padding:22px 48px;
 }
 
 .brand{
@@ -85,8 +85,8 @@ html,body{
   gap:12px;
 }
 
-.mark{
-  width:38px;height:38px;
+.brand .mark{
+  width:38px; height:38px;
   border-radius:12px;
   background:rgba(31,227,162,.12);
   border:1px solid rgba(31,227,162,.35);
@@ -95,20 +95,21 @@ html,body{
   box-shadow:0 0 24px rgba(31,227,162,.18);
 }
 
-.mark svg{ width:22px;height:22px; }
+.brand svg{ width:22px; height:22px; }
 
-.name{
+.brand .name{
   font-weight:700;
   letter-spacing:.14em;
   font-size:14px;
   text-transform:uppercase;
   line-height:1.1;
 }
-.name span{
+.brand .name span{
   display:block;
   color:var(--green);
-  font-size:12px;
   letter-spacing:.22em;
+  font-weight:700;
+  font-size:12px;
 }
 
 .nav{
@@ -130,6 +131,7 @@ html,body{
 .nav a:hover{
   background:rgba(31,227,162,.06);
   color:var(--green);
+  transform:translateY(-1px);
 }
 
 .nav a.active{
@@ -138,79 +140,178 @@ html,body{
   border:1px solid rgba(31,227,162,.18);
 }
 
-/* ===== MAIN ocupa o restante da tela ===== */
+
 .main{
   position:relative;
   z-index:2;
-  height:calc(100vh - 86px);  /* tudo cabe na tela */
-  padding:18px 48px 22px;
+  min-height:calc(100vh - 86px);
+  padding:18px 48px 80px;
   display:flex;
-  align-items:stretch;
+  align-items:flex-start;
   justify-content:center;
 }
 
-.layout{
+.wrap{
   width:100%;
-  max-width:1400px;
-  display:grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap:22px;
-  height:100%;
-  align-items:stretch;
+  max-width:1100px;
+  margin:0 auto;
+  text-align:center;
 }
 
-
-
-.panel-head{
-  background:linear-gradient(180deg, #0fa36a, #0b7f54);
-  padding:10px 14px;
+/* topo grande */
+.hero-title{
+  margin:12px 0 10px;
+  font-size:56px;
   font-weight:900;
-  font-size:15px;
-  flex:0 0 auto;
-}
-
-.panel-body{
-  flex:1 1 auto;
-  padding:10px;
-  min-height:0; /* importante p/ conteúdo não estourar */
-  display:grid;
-  place-items:center;
-}
-
-
-
-/* placeholder */
-.placeholder{
-  width:100%;
-  height:100%;
-  border:1px dashed rgba(255,255,255,.15);
-  border-radius:14px;
-  display:grid;
-  place-items:center;
-  font-size:11px;
-  letter-spacing:.2em;
-  opacity:.65;
+  letter-spacing:.14em;
   text-transform:uppercase;
 }
 
+.hero-title span{ color:var(--green); }
+
+.hero-subtitle{
+  margin:0 auto 26px;
+  max-width:920px;
+  color:rgba(234,245,242,.72);
+  font-size:18px;
+  line-height:1.7;
+}
+
+/* separador horizontal */
+.hr{
+  height:1px;
+  background:rgba(255,255,255,.10);
+  margin:24px 0 18px;
+}
+
+/* menu central */
+.tabs{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  flex-wrap:wrap;
+  padding:6px 0 4px;
+}
+
+.tabs a{
+  color:rgba(234,245,242,.82);
+  text-decoration:none;
+  font-size:16px;
+  padding:8px 10px;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.tabs a:hover{
+  color:var(--green);
+  background:rgba(31,227,162,.06);
+}
+
+.tabs a.active{
+  color:var(--green);
+  background:rgba(31,227,162,.08);
+  border:1px solid rgba(31,227,162,.18);
+}
+
+/* linha de texto central pequena */
+.micro{
+  margin:28px auto 34px;
+  max-width:860px;
+  color:rgba(234,245,242,.68);
+  font-size:15.5px;
+}
+
+/* lista com checks verdes, alinhada à esquerda */
+.list{
+  width:100%;
+  max-width:980px;
+  margin:0 auto 44px;
+  text-align:left;
+  display:grid;
+  gap:22px;
+}
+
+.item{
+  display:grid;
+  grid-template-columns:56px 1fr;
+  gap:18px;
+  align-items:flex-start;
+}
+
+.check{
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  background:rgba(31,227,162,.16);
+  border:1px solid rgba(31,227,162,.35);
+  box-shadow:0 0 26px rgba(31,227,162,.25);
+  display:grid;
+  place-items:center;
+}
+
+.check::before{
+  content:"✔";
+  color:var(--green);
+  font-weight:900;
+  font-size:18px;
+}
+
+.item p{
+  margin:0;
+  color:rgba(234,245,242,.86);
+  line-height:1.6;
+  font-size:18px;
+}
+
+.item strong{
+  color:var(--text);
+  font-weight:900;
+}
+
+
+.cta{
+  display:flex;
+  justify-content:center;
+}
+
+.cta a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px 58px;
+  border-radius:999px;
+  font-size:20px;
+  font-weight:800;
+  color:#052116;
+  text-decoration:none;
+  background:linear-gradient(180deg, #6bff9d, var(--green));
+  box-shadow:0 0 56px rgba(31,227,162,.45);
+  border:1px solid rgba(255,255,255,.14);
+  transition:.25s;
+}
+
+.cta a:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 72px rgba(31,227,162,.60);
+}
+
 /* ===== RESPONSIVO ===== */
-@media(max-width:1100px){
-  /* Em telas menores, aqui é melhor permitir rolagem (senão fica esmagado) */
-  html,body{ overflow:auto; }
-  .main{ height:auto; min-height:calc(100vh - 86px); }
-  .layout{ grid-template-columns:1fr; height:auto; }
-  .right{ grid-template-rows:auto auto auto; }
+@media(max-width:900px){
+  .hero-title{ font-size:40px; letter-spacing:.12em; }
+  .tabs{ gap:18px; }
+  .item p{ font-size:16px; }
 }
 
 @media(max-width:700px){
   .header{
-    height:auto;
     padding:16px 18px;
     gap:16px;
     flex-direction:column;
     align-items:flex-start;
   }
-  .main{ padding:14px 18px 22px; }
+  .nav{ gap:10px; }
+  .main{ padding:18px 18px 54px; }
+  .bg-map{ opacity:.06; }
 }
 </style>
 </head>
@@ -218,7 +319,7 @@ html,body{
 <body>
 
 <div class="background">
-  <img class="bg-map" src="mapa.png" alt="">
+  <img class="bg-map" src="mapa.png" alt="" aria-hidden="true">
   <div class="bg-overlay"></div>
   <div class="radar"></div>
 </div>
@@ -247,6 +348,7 @@ html,body{
 </header>
 </body>
 </html>
+
 
 
 
