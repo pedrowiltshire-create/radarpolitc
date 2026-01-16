@@ -55,7 +55,6 @@ html,body{
   pointer-events:none;
 }
 
-/* ===== “radar” SÓ ESTÁTICO (sem rodar) ===== */
 .radar{
   position:absolute;
   inset:-40vmax;
@@ -66,15 +65,11 @@ html,body{
   background:
     repeating-radial-gradient(
       circle,
-      rgba(31,227,162,.06) 0 1px,
+      rgba(31,227,162,.05) 0 1px,
       transparent 1px 80px
     );
-  opacity:.35;
-  pointer-events:none;
+  opacity:.2;
 }
-
-/* remove a animação */
-.radar::after{ display:none; }
 
 /* ===== HEADER ===== */
 .header{
@@ -406,6 +401,7 @@ html,body{
 
 </body>
 </html>
+
 
 
 
