@@ -62,10 +62,33 @@ html,body{
   background:
     repeating-radial-gradient(
       circle,
-      rgba(31,227,162,.05) 0 1px,
+      rgba(31,227,162,.06) 0 1px,
       transparent 1px 80px
     );
-  opacity:.2;
+  opacity:.55;
+  pointer-events:none;
+}
+
+.radar::after{
+  content:"";
+  position:absolute;
+  inset:-50%;
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(31,227,162,.22) 40deg,
+      transparent 80deg
+    );
+  animation:sweep 7s linear infinite;
+}
+
+@keyframes sweep{
+  to{transform:rotate(360deg)}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .radar::after{ animation:none; }
 }
 
 /* ===== HEADER ===== */
@@ -319,7 +342,7 @@ html,body{
 <body>
 
 <div class="background">
-  <img class="bg-map" src="mapa.png" alt="" aria-hidden="true">
+  <img class="bg-map" src="mapa.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
   <div class="bg-overlay"></div>
   <div class="radar"></div>
 </div>
@@ -340,15 +363,11 @@ html,body{
   </div>
 
   <nav class="nav">
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=V-Geral">Visão Geral</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=Colaboradores">Colaboradores</a>
-    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=Prestação de Contas">Prestação de Contas</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=Whatsapp">Comunicação</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Colaboradores">Colaboradores</a>
+    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Prestação de Contas">Prestação de Contas</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Whatsapp">Comunicação</a>
   </nav>
 </header>
 </body>
 </html>
-
-
-
-
