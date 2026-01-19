@@ -12,7 +12,6 @@
   --border:rgba(255,255,255,.12);
   --text:#eaf5f2;
   --muted:#b9d6cd;
-
   --panel: rgba(18,40,38,.58);
   --panel2: rgba(8,20,18,.78);
 }
@@ -28,7 +27,7 @@ html,body{
   overflow:hidden;
 }
 
-/* ===== FUNDO ===== */
+/* ===== FUNDO COM RADAR ANIMADO ===== */
 .background{
   position:fixed;
   inset:0;
@@ -43,8 +42,8 @@ html,body{
   height:100%;
   object-fit:cover;
   object-position:center top;
-  opacity:.10;
-  filter: blur(.2px) contrast(1.05);
+  opacity:.16;
+  filter: contrast(1.05);
   transform: scale(1.02);
   pointer-events:none;
 }
@@ -53,12 +52,11 @@ html,body{
   position:absolute;
   inset:0;
   background:
-    radial-gradient(circle at top, rgba(14,43,38,.55), rgba(5,9,12,.94) 65%),
-    linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.72));
+    radial-gradient(circle at top, rgba(14,43,38,.65), rgba(5,9,12,.92) 65%),
+    linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.65));
   pointer-events:none;
 }
 
-/* rings estáticos */
 .radar{
   position:absolute;
   inset:-40vmax;
@@ -69,13 +67,34 @@ html,body{
   background:
     repeating-radial-gradient(
       circle,
-      rgba(31,227,162,.05) 0 1px,
+      rgba(31,227,162,.06) 0 1px,
       transparent 1px 80px
     );
-  opacity:.20;
+  opacity:.45;
   pointer-events:none;
 }
-.radar::after{ display:none; }
+
+.radar::after{
+  content:"";
+  position:absolute;
+  inset:-50%;
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(31,227,162,.22) 40deg,
+      transparent 80deg
+    );
+  animation:sweep 7s linear infinite;
+}
+
+@keyframes sweep{ 
+  to{transform:rotate(360deg)} 
+}
+
+@media (prefers-reduced-motion: reduce){
+  .radar::after{ animation:none; }
+}
 
 /* ===== HEADER ===== */
 .header{
@@ -86,16 +105,19 @@ html,body{
   align-items:center;
   justify-content:space-between;
   padding:22px 48px;
+  gap:20px;
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:12px;
+  flex-shrink:0;
 }
 
 .brand .mark{
-  width:38px; height:38px;
+  width:38px; 
+  height:38px;
   border-radius:12px;
   background:rgba(31,227,162,.12);
   border:1px solid rgba(31,227,162,.35);
@@ -104,7 +126,10 @@ html,body{
   box-shadow:0 0 24px rgba(31,227,162,.18);
 }
 
-.brand svg{ width:22px; height:22px; }
+.brand svg{ 
+  width:22px; 
+  height:22px; 
+}
 
 .brand .name{
   font-weight:700;
@@ -113,6 +138,7 @@ html,body{
   text-transform:uppercase;
   line-height:1.1;
 }
+
 .brand .name span{
   display:block;
   color:var(--green);
@@ -123,21 +149,27 @@ html,body{
 
 .nav{
   display:flex;
-  gap:32px;
+  gap:20px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
 }
 
 .nav a{
   color:var(--text);
   text-decoration:none;
   font-size:14px;
-  padding:8px 10px;
+  padding:8px 12px;
   border-radius:12px;
-  transition:.2s;
+  transition:all .2s ease;
+  border:1px solid transparent;
+  white-space:nowrap;
 }
 
 .nav a:hover{
   background:rgba(31,227,162,.06);
+  border-color:rgba(31,227,162,.15);
   color:var(--green);
+  transform:translateY(-1px);
 }
 
 .nav a.active{
@@ -226,14 +258,30 @@ html,body{
 
 @media(max-width:700px){
   .header{
-    padding:16px 18px;
+    padding:18px 32px;
     flex-direction:column;
     align-items:flex-start;
     gap:16px;
   }
-  .nav{ gap:10px; }
-  .main{ padding:16px 18px 38px; }
-  .bg-map{ opacity:.06; }
+  
+  .nav{
+    gap:12px;
+    width:100%;
+    justify-content:flex-start;
+  }
+  
+  .nav a{
+    font-size:13px;
+    padding:8px 10px;
+  }
+  
+  .main{
+    padding:16px 18px 38px;
+  }
+  
+  .bg-map{
+    opacity:.06;
+  }
 }
 </style>
 </head>
@@ -241,7 +289,7 @@ html,body{
 <body>
 
 <div class="background">
-  <img class="bg-map" src="mapa.png" alt="">
+  <img class="bg-map" src="mapa.png" alt="" onerror="this.style.display='none'">
   <div class="bg-overlay"></div>
   <div class="radar"></div>
 </div>
@@ -262,28 +310,20 @@ html,body{
   </div>
 
   <nav class="nav">
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=V-Geral">Visão Geral</a>
-    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=Colaboradores">Colaboradores</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=Prestação de Contas">Prestação de Contas</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=Whatsapp">Comunicação</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
+    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Colaboradores">Colaboradores</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Prestação de Contas">Prestação de Contas</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Whatsapp">Comunicação</a>
   </nav>
 </header>
 
 <main class="main">
   <div class="wrap">
-
     <section class="grid">
-        </div>
-        </div>
-
+      <!-- Adicione seus frames aqui -->
     </section>
-
   </div>
 </main>
 
 </body>
 </html>
-
-
-
-
