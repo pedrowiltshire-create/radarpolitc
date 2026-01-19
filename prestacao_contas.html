@@ -3,29 +3,29 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Módulos do Radar | Radar Político</title>
+<title>Prestação de Contas | Radar Político</title>
 
 <style>
 :root{
   --green:#1fe3a2;
   --bg:#05090c;
-  --border:rgba(255,255,255,.12);
   --text:#eaf5f2;
-  --muted:#b9d6cd;
+  --panel: rgba(18,40,38,.58);
+  --panel2: rgba(8,20,18,.78);
 }
 
 *{ box-sizing:border-box; }
 
 html,body{
   margin:0;
-  min-height:100%;
+  height:100%;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background:var(--bg);
   color:var(--text);
-  overflow-x:hidden;
+  overflow:hidden;
 }
 
-/* ===== FUNDO ===== */
+/* ===== FUNDO COM RADAR ANIMADO ===== */
 .background{
   position:fixed;
   inset:0;
@@ -40,7 +40,7 @@ html,body{
   height:100%;
   object-fit:cover;
   object-position:center top;
-  opacity:.12;
+  opacity:.16;
   filter: contrast(1.05);
   transform: scale(1.02);
   pointer-events:none;
@@ -50,8 +50,8 @@ html,body{
   position:absolute;
   inset:0;
   background:
-    radial-gradient(circle at top, rgba(14,43,38,.55), rgba(5,9,12,.94) 65%),
-    linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.70));
+    radial-gradient(circle at top, rgba(14,43,38,.65), rgba(5,9,12,.92) 65%),
+    linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.65));
   pointer-events:none;
 }
 
@@ -68,7 +68,7 @@ html,body{
       rgba(31,227,162,.06) 0 1px,
       transparent 1px 80px
     );
-  opacity:.35;
+  opacity:.45;
   pointer-events:none;
 }
 
@@ -80,13 +80,15 @@ html,body{
     conic-gradient(
       from 0deg,
       transparent 0deg,
-      rgba(31,227,162,.18) 40deg,
+      rgba(31,227,162,.22) 40deg,
       transparent 80deg
     );
   animation:sweep 7s linear infinite;
 }
 
-@keyframes sweep{ to{ transform:rotate(360deg); } }
+@keyframes sweep{ 
+  to{transform:rotate(360deg)} 
+}
 
 @media (prefers-reduced-motion: reduce){
   .radar::after{ animation:none; }
@@ -179,176 +181,180 @@ html,body{
   position:relative;
   z-index:2;
   min-height:calc(100vh - 86px);
-  padding:34px 48px 80px;
+  padding:18px 48px 80px;
   display:flex;
-  align-items:center;
+  align-items:flex-start;
+  justify-content:center;
 }
 
 .wrap{
   width:100%;
-  max-width:1400px;
+  max-width:1100px;
   margin:0 auto;
-}
-
-.modules{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
-  gap:26px;
-  align-items:stretch;
-}
-
-/* ===== CARD ===== */
-.module{
-  border-radius:22px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.10);
-  background:linear-gradient(180deg, rgba(18,40,38,.62), rgba(8,20,18,.78));
-  box-shadow:0 40px 110px rgba(0,0,0,.65);
-  backdrop-filter: blur(14px);
-  transform: translateZ(0);
-  transition: transform .25s, box-shadow .25s, border-color .25s;
-}
-
-.module:hover{
-  transform: translateY(-6px);
-  border-color: rgba(31,227,162,.26);
-  box-shadow:0 55px 140px rgba(0,0,0,.72);
-}
-
-.thumb{
-  position:relative;
-  height:160px;
-  overflow:hidden;
-}
-
-.thumb img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  transform: scale(1.02);
-  filter: contrast(1.03) saturate(1.05);
-}
-
-.thumb::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(to bottom, rgba(0,0,0,.05), rgba(0,0,0,.55));
-}
-
-.badge{
-  position:absolute;
-  top:10px;
-  left:10px;
-  z-index:2;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:12px;
-  color:var(--text);
-  background:rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(8px);
-}
-
-.badge::before{
-  content:"";
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 12px rgba(31,227,162,.8);
-}
-
-.body{
-  padding:18px 18px 16px;
   text-align:center;
 }
 
-.body h3{
-  margin:2px 0 12px;
-  font-size:16px;
+/* topo grande */
+.hero-title{
+  margin:12px 0 10px;
+  font-size:56px;
   font-weight:900;
-  letter-spacing:.04em;
+  letter-spacing:.14em;
   text-transform:uppercase;
-  font-style:italic;
+}
+
+.hero-title span{ color:var(--green); }
+
+.hero-subtitle{
+  margin:0 auto 26px;
+  max-width:920px;
+  color:rgba(234,245,242,.72);
+  font-size:18px;
+  line-height:1.7;
+}
+
+/* separador horizontal */
+.hr{
+  height:1px;
+  background:rgba(255,255,255,.10);
+  margin:24px 0 18px;
+}
+
+/* menu central */
+.tabs{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  flex-wrap:wrap;
+  padding:6px 0 4px;
+}
+
+.tabs a{
+  color:rgba(234,245,242,.82);
+  text-decoration:none;
+  font-size:16px;
+  padding:8px 10px;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.tabs a:hover{
+  color:var(--green);
+  background:rgba(31,227,162,.06);
+}
+
+.tabs a.active{
+  color:var(--green);
+  background:rgba(31,227,162,.08);
+  border:1px solid rgba(31,227,162,.18);
+}
+
+/* linha de texto central pequena */
+.micro{
+  margin:28px auto 34px;
+  max-width:860px;
+  color:rgba(234,245,242,.68);
+  font-size:15.5px;
+}
+
+/* lista com checks verdes, alinhada à esquerda */
+.list{
+  width:100%;
+  max-width:980px;
+  margin:0 auto 44px;
+  text-align:left;
+  display:grid;
+  gap:22px;
+}
+
+.item{
+  display:grid;
+  grid-template-columns:56px 1fr;
+  gap:18px;
+  align-items:flex-start;
+}
+
+.check{
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  background:rgba(31,227,162,.16);
+  border:1px solid rgba(31,227,162,.35);
+  box-shadow:0 0 26px rgba(31,227,162,.25);
+  display:grid;
+  place-items:center;
+}
+
+.check::before{
+  content:"✔";
+  color:var(--green);
+  font-weight:900;
+  font-size:18px;
+}
+
+.item p{
+  margin:0;
+  color:rgba(234,245,242,.86);
+  line-height:1.6;
+  font-size:18px;
+}
+
+.item strong{
   color:var(--text);
+  font-weight:900;
 }
 
-.body p{
-  margin:0 0 14px;
-  color:var(--muted);
-  font-size:13.5px;
-  line-height:1.55;
-  min-height:42px;
+.cta{
+  display:flex;
+  justify-content:center;
 }
 
-.btn{
+.cta a{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:10px;
-  width:100%;
-  padding:11px 14px;
+  padding:18px 58px;
   border-radius:999px;
-  border:1px solid rgba(31,227,162,.30);
-  background:rgba(31,227,162,.12);
-  color:var(--text);
+  font-size:20px;
   font-weight:800;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  font-size:12px;
+  color:#052116;
   text-decoration:none;
-  transition:all .2s ease;
+  background:linear-gradient(180deg, #6bff9d, var(--green));
+  box-shadow:0 0 56px rgba(31,227,162,.45);
+  border:1px solid rgba(255,255,255,.14);
+  transition:.25s;
 }
 
-.btn:hover{
-  background:rgba(31,227,162,.18);
-  border-color:rgba(31,227,162,.45);
-  color:var(--green);
-  transform:translateY(-1px);
-}
-
-.btn:focus-visible{
-  outline:2px solid var(--green);
-  outline-offset:4px;
+.cta a:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 72px rgba(31,227,162,.60);
 }
 
 /* ===== RESPONSIVO ===== */
-@media(max-width:1200px){
-  .modules{ 
-    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-  }
-}
-
 @media(max-width:900px){
-  .header{
-    padding:18px 32px;
+  .hero-title{ 
+    font-size:40px; 
+    letter-spacing:.12em; 
   }
   
-  .main{
-    padding:24px 32px 60px;
+  .tabs{ 
+    gap:18px; 
   }
   
-  .modules{
-    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-    gap:22px;
+  .item p{ 
+    font-size:16px; 
   }
 }
 
 @media(max-width:700px){
   .header{
-    padding:16px 20px;
+    padding:18px 32px;
     flex-direction:column;
     align-items:flex-start;
     gap:16px;
   }
   
-  .nav{ 
+  .nav{
     gap:12px;
     width:100%;
     justify-content:flex-start;
@@ -359,58 +365,12 @@ html,body{
     padding:8px 10px;
   }
   
-  .main{ 
-    padding:18px 20px 54px;
-  }
-  
-  .modules{ 
-    grid-template-columns:1fr;
-    gap:20px;
-  }
-  
-  .bg-map{ 
-    opacity:.06;
-  }
-}
-
-@media(max-width:400px){
-  .header{
-    padding:14px 16px;
-  }
-  
-  .brand .name{
-    font-size:12px;
-  }
-  
-  .brand .name span{
-    font-size:11px;
-  }
-  
-  .nav{
-    flex-direction:column;
-    gap:8px;
-  }
-  
-  .nav a{
-    width:100%;
-    text-align:center;
-  }
-  
   .main{
-    padding:16px 16px 48px;
+    padding:18px 18px 54px;
   }
   
-  .thumb{
-    height:140px;
-  }
-  
-  .body h3{
-    font-size:15px;
-  }
-  
-  .body p{
-    font-size:13px;
-    min-height:auto;
+  .bg-map{
+    opacity:.06;
   }
 }
 </style>
@@ -419,7 +379,7 @@ html,body{
 <body>
 
 <div class="background">
-  <img class="bg-map" src="mapa.png" alt="Mapa do Brasil" onerror="this.style.display='none'">
+  <img class="bg-map" src="mapa.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
   <div class="bg-overlay"></div>
   <div class="radar"></div>
 </div>
@@ -427,7 +387,7 @@ html,body{
 <header class="header">
   <div class="brand">
     <div class="mark">
-      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
         <circle cx="32" cy="32" r="22"/>
         <path d="M32 32L48 16"/>
         <circle cx="32" cy="32" r="4" fill="var(--green)"/>
@@ -439,60 +399,17 @@ html,body{
     </div>
   </div>
 
-  <nav class="nav" role="navigation" aria-label="Menu principal">
+  <nav class="nav">
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
-    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Colaboradores">Colaboradores</a>
+    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Prestação de Contas">Prestação de Contas</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Whatsapp">Comunicação</a>
   </nav>
 </header>
 
 <main class="main">
   <div class="wrap">
-
-  
-    <h1 class="hero-title">RADAR <span>POLÍTICO</span></h1>
-
-    <p class="hero-subtitle">
-      Plataforma completa para campanhas modernas: gestão de colaboradores, controle financeiro e
-      comunicação estratégica via WhatsApp — tudo em um só lugar.
-    </p>
-
-    <div class="hr"></div>
-
-    <!-- menu central 
-    <nav class="tabs" aria-label="Seções internas">
-      <a href="visao-geral.html">Visão Geral</a>
-      <a href="colaboradores.html">Colaboradores</a>
-      <a class="active" href="prestacao-de-contas.html">Prestação de Contas</a>
-      <a href="comunicacao.html">Comunicação</a>
-    </nav>-->
-
-    <p class="micro">
-      Simplifique sua contabilidade eleitoral e garanta transparência total em cada movimentação financeira da campanha.
-    </p>
-
-    <!-- lista com checks + textos -->
-    <section class="list">
-      <div class="item">
-        <div class="check"></div>
-        <p><strong>Centralização e assinatura digital de contratos.</strong> Todos os contratos em um único lugar, com assinatura digital e trilhas de auditoria.</p>
-      </div>
-
-      <div class="item">
-        <div class="check"></div>
-        <p><strong>Acompanhamento financeiro em tempo real.</strong> Entradas e saídas registradas automaticamente, dashboards e relatórios prontos para envio.</p>
-      </div>
-
-      <div class="item">
-        <div class="check"></div>
-        <p><strong>Facilidade no envio de documentos rescisórios.</strong> Geração e envio organizado de rescisões e comprovantes, reduzindo retrabalho e prazos.</p>
-      </div>
-    </section>
-
-    <div class="cta">
-      <a href="#">Simule um Contrato</a>
-    </div>
-
+    <!-- Adicione seu conteúdo aqui -->
   </div>
 </main>
 
