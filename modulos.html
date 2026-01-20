@@ -459,7 +459,7 @@ html,body{
         <div class="body">
           <h3>Gestão Eleitoral</h3>
           <p>Organize equipes, metas e atividades com visão clara do progresso da campanha.</p>
-          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Gestão Eleitoral">Acessar</a>
+          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Gestão Eleitoral" target="_parent">Acessar</a>
         </div>
       </article>
 
@@ -471,7 +471,7 @@ html,body{
         <div class="body">
           <h3>Cadastro de Colaboradores</h3>
           <p>Cadastre pessoas, funções, regiões e acompanhe sua atuação com segurança.</p>
-          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Colaboradores">Acessar</a>
+          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Colaboradores" target="_parent">Acessar</a>
         </div>
       </article>
 
@@ -483,7 +483,7 @@ html,body{
         <div class="body">
           <h3>Comunicação via WhatsApp</h3>
           <p>Envie mensagens segmentadas e automatize fluxos para mobilização e resposta.</p>
-          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Whatsapp">Acessar</a>
+          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Whatsapp" target="_parent">Acessar</a>
         </div>
       </article>
 
@@ -495,7 +495,7 @@ html,body{
         <div class="body">
           <h3>Prestação de Contas</h3>
           <p>Registre despesas, contratos e comprovantes com organização e transparência.</p>
-          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Prestação de Contas">Acessar</a>
+          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Prestação de Contas" target="_parent">Acessar</a>
         </div>
       </article>
 
@@ -517,42 +517,40 @@ html,body{
   }
 })();
 
-// Sistema de detecção de menu ativo - versão otimizada
+// Detecta qual página está ativa baseado na URL PAI (Experience Builder)
 (function() {
-  let isUpdating = false;
-  let lastUrl = location.href;
-  
   function updateActiveNav() {
-    // Previne execuções simultâneas
-    if (isUpdating) return;
-    isUpdating = true;
-    
-    setTimeout(() => {
+    try {
+      // Tenta ler a URL da página pai (Experience Builder)
+      let parentUrl = '';
       try {
-        const params = new URLSearchParams(window.location.search);
-        const currentPage = params.get('page');
-        const navLinks = document.querySelectorAll('.nav a');
-        
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          
-          try {
-            const linkUrl = new URL(link.href);
-            const linkPage = new URLSearchParams(linkUrl.search).get('page');
-            
-            if (linkPage === currentPage) {
-              link.classList.add('active');
-            }
-          } catch (e) {
-            // Ignora erros de URL
-          }
-        });
+        parentUrl = window.parent.location.href;
       } catch (e) {
-        console.warn('Erro ao atualizar menu:', e);
-      } finally {
-        isUpdating = false;
+        // Se não conseguir acessar (CORS), usa a URL atual
+        parentUrl = window.location.href;
       }
-    }, 50);
+      
+      const params = new URLSearchParams(parentUrl.split('?')[1] || '');
+      const currentPage = params.get('page');
+      const navLinks = document.querySelectorAll('.nav a');
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        
+        try {
+          const linkUrl = new URL(link.href);
+          const linkPage = new URLSearchParams(linkUrl.search).get('page');
+          
+          if (linkPage === currentPage) {
+            link.classList.add('active');
+          }
+        } catch (e) {
+          // Ignora erros
+        }
+      });
+    } catch (e) {
+      console.warn('Erro ao atualizar menu:', e);
+    }
   }
   
   // Executa ao carregar
@@ -562,26 +560,15 @@ html,body{
     updateActiveNav();
   }
   
-  // Monitora mudanças na URL com throttle
-  let urlCheckInterval = setInterval(() => {
-    const url = location.href;
-    if (url !== lastUrl) {
-      lastUrl = url;
+  // Monitora mensagens do parent (se o Experience Builder enviar)
+  window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'pageChange') {
       updateActiveNav();
     }
-  }, 300);
-  
-  // Monitora popstate (botões voltar/avançar)
-  window.addEventListener('popstate', updateActiveNav);
-  
-  // Limpa interval quando página é fechada
-  window.addEventListener('beforeunload', () => {
-    clearInterval(urlCheckInterval);
   });
+  
 })();
 </script>
 
 </body>
 </html>
-
-
