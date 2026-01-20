@@ -504,12 +504,18 @@ html,body{
 </main>
 
 <script>
-/* ===== Navegação segura – ArcGIS Experience Builder ===== */
+/* ===== Navegação robusta – ArcGIS Experience Builder ===== */
 (function () {
+
+  // 🔒 Evita inicializar duas vezes
+  if (window.__RADAR_NAV_INITIALIZED__) return;
+  window.__RADAR_NAV_INITIALIZED__ = true;
 
   const EXPERIENCE_ID = '1c71651ddc4842a585a30dbdbd451a9c';
   const BASE_URL =
     `https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=${EXPERIENCE_ID}&page=`;
+
+  let navigating = false; // bloqueia cliques múltiplos
 
   function isArcGISContext() {
     try {
@@ -521,20 +527,31 @@ html,body{
   }
 
   function navigateTo(page) {
+    if (navigating) return;
+    navigating = true;
+
     const url = BASE_URL + page;
 
-    // Dentro do ArcGIS → abre nova aba (sandbox safe)
+    // garante execução síncrona (evita bloqueio de popup)
     if (isArcGISContext()) {
-      window.open(url, '_blank', 'noopener,noreferrer');
+      const win = window.open(url, '_blank', 'noopener,noreferrer');
+      if (!win) {
+        // fallback absoluto
+        window.location.href = url;
+      }
     } else {
-      // Fora do ArcGIS → navegação normal
       window.location.href = url;
     }
+
+    // libera após pequeno delay
+    setTimeout(() => {
+      navigating = false;
+    }, 800);
   }
 
   function updateActiveNav() {
     const params = new URLSearchParams(window.location.search);
-    const currentPage = params.get('page') || 'M-Radar';
+    const currentPage = params.get('page');
 
     document.querySelectorAll('.nav a').forEach(link => {
       link.classList.toggle(
@@ -544,11 +561,13 @@ html,body{
     });
   }
 
-  document.querySelectorAll('.nav a').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      navigateTo(link.dataset.page);
-    });
+  // 🔁 Delegação de eventos (1 listener só)
+  document.addEventListener('click', function (e) {
+    const link = e.target.closest('.nav a[data-page]');
+    if (!link) return;
+
+    e.preventDefault();
+    navigateTo(link.dataset.page);
   });
 
   updateActiveNav();
@@ -559,4 +578,5 @@ html,body{
 
 </body>
 </html>
+
 
