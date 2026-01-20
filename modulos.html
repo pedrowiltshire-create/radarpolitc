@@ -3,12 +3,6 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<!-- META TAGS PARA CORRIGIR PERMISSIONS-POLICY -->
-<meta http-equiv="Permissions-Policy" content="attribution-reporting=(), private-aggregation=(), private-state-token-issuance=(), private-state-token-redemption=(), join-ad-interest-group=(), run-ad-auction=(), browsing-topics=()">
-<meta http-equiv="Cross-Origin-Embedder-Policy" content="unsafe-none">
-<meta http-equiv="Cross-Origin-Opener-Policy" content="unsafe-none">
-
 <title>Módulos do Radar | Radar Político</title>
 
 <style>
@@ -94,10 +88,6 @@ html,body{
 
 @keyframes sweep{ to{ transform:rotate(360deg); } }
 
-@media (prefers-reduced-motion: reduce){
-  .radar::after{ animation:none; }
-}
-
 /* ===== HEADER ===== */
 .header{
   position:relative;
@@ -125,13 +115,9 @@ html,body{
   border:1px solid rgba(31,227,162,.35);
   display:grid;
   place-items:center;
-  box-shadow:0 0 24px rgba(31,227,162,.18);
 }
 
-.brand svg{ 
-  width:22px; 
-  height:22px; 
-}
+.brand svg{ width:22px; height:22px; }
 
 .brand .name{
   font-weight:700;
@@ -144,16 +130,12 @@ html,body{
 .brand .name span{
   display:block;
   color:var(--green);
-  letter-spacing:.22em;
-  font-weight:700;
   font-size:12px;
 }
 
 .nav{
   display:flex;
   gap:20px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
 }
 
 .nav a{
@@ -162,262 +144,56 @@ html,body{
   font-size:14px;
   padding:8px 12px;
   border-radius:12px;
-  transition:all .2s ease;
-  border:1px solid transparent;
-  white-space:nowrap;
-}
-
-.nav a:hover{
-  background:rgba(31,227,162,.06);
-  border-color:rgba(31,227,162,.15);
-  color:var(--green);
-  transform:translateY(-1px);
 }
 
 .nav a.active{
   color:var(--green);
-  background:rgba(31,227,162,.08);
-  border:1px solid rgba(31,227,162,.18);
 }
 
 /* ===== CONTEÚDO ===== */
 .main{
   position:relative;
   z-index:2;
-  min-height:calc(100vh - 86px);
   padding:34px 48px 80px;
-  display:flex;
-  align-items:center;
 }
 
 .wrap{
-  width:100%;
   max-width:1400px;
   margin:0 auto;
 }
 
 .modules{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
   gap:26px;
-  align-items:stretch;
 }
 
 /* ===== CARD ===== */
 .module{
   border-radius:22px;
   overflow:hidden;
-  border:1px solid rgba(255,255,255,.10);
   background:linear-gradient(180deg, rgba(18,40,38,.62), rgba(8,20,18,.78));
-  box-shadow:0 40px 110px rgba(0,0,0,.65);
-  backdrop-filter: blur(14px);
-  transform: translateZ(0);
-  transition: transform .25s, box-shadow .25s, border-color .25s;
 }
 
-.module:hover{
-  transform: translateY(-6px);
-  border-color: rgba(31,227,162,.26);
-  box-shadow:0 55px 140px rgba(0,0,0,.72);
-}
-
-.thumb{
-  position:relative;
-  height:160px;
-  overflow:hidden;
-}
+.thumb{ height:160px; }
 
 .thumb img{
   width:100%;
   height:100%;
   object-fit:cover;
-  display:block;
-  transform: scale(1.02);
-  filter: contrast(1.03) saturate(1.05);
-}
-
-.thumb::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(to bottom, rgba(0,0,0,.05), rgba(0,0,0,.55));
-}
-
-.badge{
-  position:absolute;
-  top:10px;
-  left:10px;
-  z-index:2;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:12px;
-  color:var(--text);
-  background:rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(8px);
-}
-
-.badge::before{
-  content:"";
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 12px rgba(31,227,162,.8);
 }
 
 .body{
-  padding:18px 18px 16px;
+  padding:18px;
   text-align:center;
 }
 
-.body h3{
-  margin:2px 0 12px;
-  font-size:16px;
-  font-weight:900;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  font-style:italic;
-  color:var(--text);
-}
-
-.body p{
-  margin:0 0 14px;
-  color:var(--muted);
-  font-size:13.5px;
-  line-height:1.55;
-  min-height:42px;
-}
-
 .btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  width:100%;
-  padding:11px 14px;
+  display:block;
+  margin-top:10px;
+  padding:11px;
   border-radius:999px;
-  border:1px solid rgba(31,227,162,.30);
-  background:rgba(31,227,162,.12);
-  color:var(--text);
-  font-weight:800;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  font-size:12px;
   text-decoration:none;
-  transition:all .2s ease;
-}
-
-.btn:hover{
-  background:rgba(31,227,162,.18);
-  border-color:rgba(31,227,162,.45);
-  color:var(--green);
-  transform:translateY(-1px);
-}
-
-.btn:focus-visible{
-  outline:2px solid var(--green);
-  outline-offset:4px;
-}
-
-/* ===== RESPONSIVO ===== */
-@media(max-width:1200px){
-  .modules{ 
-    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-  }
-}
-
-@media(max-width:900px){
-  .header{
-    padding:18px 32px;
-  }
-
-  .main{
-    padding:24px 32px 60px;
-  }
-
-  .modules{
-    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-    gap:22px;
-  }
-}
-
-@media(max-width:700px){
-  .header{
-    padding:16px 20px;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:16px;
-  }
-
-  .nav{ 
-    gap:12px;
-    width:100%;
-    justify-content:flex-start;
-  }
-
-  .nav a{
-    font-size:13px;
-    padding:8px 10px;
-  }
-
-  .main{ 
-    padding:18px 20px 54px;
-  }
-
-  .modules{ 
-    grid-template-columns:1fr;
-    gap:20px;
-  }
-
-  .bg-map{ 
-    opacity:.06;
-  }
-}
-
-@media(max-width:400px){
-  .header{
-    padding:14px 16px;
-  }
-
-  .brand .name{
-    font-size:12px;
-  }
-
-  .brand .name span{
-    font-size:11px;
-  }
-
-  .nav{
-    flex-direction:column;
-    gap:8px;
-  }
-
-  .nav a{
-    width:100%;
-    text-align:center;
-  }
-
-  .main{
-    padding:16px 16px 48px;
-  }
-
-  .thumb{
-    height:140px;
-  }
-
-  .body h3{
-    font-size:15px;
-  }
-
-  .body p{
-    font-size:13px;
-    min-height:auto;
-  }
 }
 </style>
 </head>
@@ -425,7 +201,7 @@ html,body{
 <body>
 
 <div class="background">
-  <img class="bg-map" src="mapa.png" alt="Mapa do Brasil" onerror="this.style.display='none'">
+  <img class="bg-map" src="mapa.png" alt="">
   <div class="bg-overlay"></div>
   <div class="radar"></div>
 </div>
@@ -433,112 +209,17 @@ html,body{
 <header class="header">
   <div class="brand">
     <div class="mark">
-      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
         <circle cx="32" cy="32" r="22"/>
         <path d="M32 32L48 16"/>
         <circle cx="32" cy="32" r="4" fill="var(--green)"/>
       </svg>
     </div>
-    <div class="name">
-      <span>RADAR</span>
-      POLÍTICO
-    </div>
+    <div class="name"><span>RADAR</span> POLÍTICO</div>
   </div>
 
-  <nav class="nav" role="navigation" aria-label="Menu principal">
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
-    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
-  </nav>
-</header>
-
-<main class="main">
-  <div class="wrap">
-
-    <section class="modules">
-
-      <article class="module">
-        <div class="thumb">
-          <div class="badge">Módulo</div>
-          <img src="modulo1.jpg" alt="Gestão Eleitoral" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EGestão Eleitoral%3C/text%3E%3C/svg%3E'">
-        </div>
-        <div class="body">
-          <h3>Gestão Eleitoral</h3>
-          <p>Organize equipes, metas e atividades com visão clara do progresso da campanha.</p>
-          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Gestão Eleitoral">Acessar</a>
-        </div>
-      </article>
-
-      <article class="module">
-        <div class="thumb">
-          <div class="badge">Módulo</div>
-          <img src="modulo2.jpg" alt="Cadastro de Colaboradores" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EColaboradores%3C/text%3E%3C/svg%3E'">
-        </div>
-        <div class="body">
-          <h3>Cadastro de Colaboradores</h3>
-          <p>Cadastre pessoas, funções, regiões e acompanhe sua atuação com segurança.</p>
-          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Colaboradores">Acessar</a>
-        </div>
-      </article>
-
-      <article class="module">
-        <div class="thumb">
-          <div class="badge">Módulo</div>
-          <img src="modulo3.jpg" alt="Comunicação via WhatsApp" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EComunicação%3C/text%3E%3C/svg%3E'">
-        </div>
-        <div class="body">
-          <h3>Comunicação via WhatsApp</h3>
-          <p>Envie mensagens segmentadas e automatize fluxos para mobilização e resposta.</p>
-          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Whatsapp">Acessar</a>
-        </div>
-      </article>
-
-      <article class="module">
-        <div class="thumb">
-          <div class="badge">Módulo</div>
-          <img src="modulo4.jpg" alt="Prestação de Contas" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EPrestação de Contas%3C/text%3E%3C/svg%3E'">
-        </div>
-        <div class="body">
-          <h3>Prestação de Contas</h3>
-          <p>Registre despesas, contratos e comprovantes com organização e transparência.</p>
-          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Prestação de Contas">Acessar</a>
-        </div>
-      </article>
-
-    </section>
-  </div>
-</main>
-
-<script>
-(function() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for (let registration of registrations) {
-        if (registration.scope.includes('radarpolitico')) {
-          registration.unregister();
-        }
-      }
-    });
-  }
-
-  let canNavigate = true;
-  const navLinks = document.querySelectorAll('.btn');
-
-  navLinks.forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      if (!canNavigate) {
-        e.preventDefault();
-        return false;
-      }
-
-      canNavigate = false;
-      setTimeout(function() {
-        canNavigate = true;
-      }, 1500);
-    });
-  });
-})();
-</script>
-
-</body>
-
+  <!-- ✅ MENU CORRIGIDO -->
+  <nav class="nav">
+    <a target="_top" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
+    <a target="_top" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
+    <a target="_top" class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a_
