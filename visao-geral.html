@@ -35,6 +35,7 @@ html,body{
   position:fixed;
   inset:0;
   z-index:0;
+  overflow:hidden;
 }
 
 .bg-map{
@@ -43,6 +44,7 @@ html,body{
   width:100%;
   height:100%;
   object-fit:cover;
+  object-position:center top;
   opacity:.16;
   pointer-events:none;
 }
@@ -89,6 +91,10 @@ html,body{
 
 @keyframes sweep{ to{transform:rotate(360deg)} }
 
+@media (prefers-reduced-motion: reduce){
+  .radar::after{ animation:none; }
+}
+
 /* ===== HEADER ===== */
 .header{
   position:relative;
@@ -114,6 +120,7 @@ html,body{
   border:1px solid rgba(31,227,162,.35);
   display:grid;
   place-items:center;
+  box-shadow:0 0 24px rgba(31,227,162,.18);
 }
 
 .brand svg{ width:22px; height:22px; }
@@ -123,18 +130,21 @@ html,body{
   font-size:14px;
   letter-spacing:.14em;
   text-transform:uppercase;
+  line-height:1.1;
 }
 
 .brand .name span{
   display:block;
   color:var(--green);
   font-size:12px;
+  letter-spacing:.22em;
 }
 
 /* ===== MENU ===== */
 .nav{
   display:flex;
   gap:20px;
+  flex-wrap:wrap;
 }
 
 .nav a{
@@ -144,13 +154,15 @@ html,body{
   padding:8px 12px;
   border-radius:12px;
   border:1px solid transparent;
-  transition:.2s;
+  transition:all .2s ease;
+  white-space:nowrap;
 }
 
 .nav a:hover{
   background:rgba(31,227,162,.06);
   border-color:rgba(31,227,162,.15);
   color:var(--green);
+  transform:translateY(-1px);
 }
 
 .nav a.active{
@@ -180,12 +192,20 @@ html,body{
   overflow:hidden;
   border-radius:48px;
   background:#0b1412;
+  border:1px solid rgba(255,255,255,.08);
+  transition:transform .3s ease, border-color .3s ease;
+}
+
+.photo:hover{
+  transform:scale(1.02);
+  border-color:rgba(31,227,162,.2);
 }
 
 .photo img{
   width:100%;
   height:100%;
   object-fit:cover;
+  display:block;
 }
 
 .content h1{
@@ -194,23 +214,101 @@ html,body{
   font-weight:800;
   text-transform:uppercase;
   font-style:italic;
+  letter-spacing:.04em;
+  line-height:1.15;
+  margin:0 0 24px;
 }
 
 .content p{
   color:var(--muted);
   font-size:15.5px;
   line-height:1.75;
+  margin:0 0 16px;
+}
+
+.content p:last-child{
+  margin-bottom:0;
 }
 
 /* ===== RESPONSIVO ===== */
 @media(max-width:900px){
-  .container{ grid-template-columns:1fr; gap:42px; }
+  .header{
+    padding:18px 32px;
+  }
+  .main{
+    padding:32px;
+  }
+  .container{ 
+    grid-template-columns:1fr; 
+    gap:42px; 
+  }
+  .photo{
+    max-width:500px;
+    margin:0 auto;
+  }
 }
 
 @media(max-width:700px){
-  .header{ flex-direction:column; align-items:flex-start; }
-  .nav{ flex-wrap:wrap; }
-  .content h1{ font-size:30px; }
+  .header{ 
+    flex-direction:column; 
+    align-items:flex-start;
+    padding:16px 20px;
+    gap:16px;
+  }
+  .nav{ 
+    gap:12px;
+    width:100%;
+    justify-content:flex-start;
+  }
+  .nav a{
+    font-size:13px;
+    padding:8px 10px;
+  }
+  .main{
+    padding:24px 20px;
+  }
+  .container{
+    gap:32px;
+  }
+  .photo{
+    border-radius:32px;
+  }
+  .content h1{ 
+    font-size:30px;
+    margin-bottom:18px;
+  }
+  .content p{
+    font-size:14.5px;
+  }
+}
+
+@media(max-width:400px){
+  .header{
+    padding:14px 16px;
+  }
+  .brand .name{
+    font-size:12px;
+  }
+  .brand .name span{
+    font-size:11px;
+  }
+  .nav{
+    flex-direction:column;
+    gap:8px;
+  }
+  .nav a{
+    width:100%;
+    text-align:center;
+  }
+  .main{
+    padding:20px 16px;
+  }
+  .photo{
+    border-radius:24px;
+  }
+  .content h1{
+    font-size:26px;
+  }
 }
 </style>
 </head>
@@ -218,7 +316,7 @@ html,body{
 <body>
 
 <div class="background">
-  <img class="bg-map" src="mapa.png" alt="">
+  <img class="bg-map" src="mapa.png" alt="Mapa do Brasil" onerror="this.style.display='none'">
   <div class="bg-overlay"></div>
   <div class="radar"></div>
 </div>
@@ -226,17 +324,20 @@ html,body{
 <header class="header">
   <div class="brand">
     <div class="mark">
-      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3" aria-hidden="true">
         <circle cx="32" cy="32" r="22"/>
         <path d="M32 32L48 16"/>
         <circle cx="32" cy="32" r="4" fill="var(--green)"/>
       </svg>
     </div>
-    <div class="name"><span>RADAR</span> POLÍTICO</div>
+    <div class="name">
+      <span>RADAR</span>
+      POLÍTICO
+    </div>
   </div>
 
-  <nav class="nav">
-    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
+  <nav class="nav" role="navigation" aria-label="Menu principal">
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
   </nav>
@@ -245,7 +346,7 @@ html,body{
 <main class="main">
   <section class="container">
     <div class="photo">
-      <img src="equipe.jpg" alt="">
+      <img src="equipe.jpg" alt="Equipe Radar Político" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22600%22%3E%3Crect fill=%22%230b1412%22 width=%22600%22 height=%22600%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2224%22%3ERadar Político%3C/text%3E%3C/svg%3E'">
     </div>
 
     <div class="content">
@@ -269,6 +370,54 @@ html,body{
     });
   }
 })();
+
+// Função para atualizar o menu ativo baseado na URL
+function updateActiveNav() {
+  const params = new URLSearchParams(window.location.search);
+  const currentPage = params.get('page');
+  const navLinks = document.querySelectorAll('.nav a');
+  
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    
+    try {
+      const linkUrl = new URL(link.href);
+      const linkPage = new URLSearchParams(linkUrl.search).get('page');
+      
+      if (linkPage === currentPage) {
+        link.classList.add('active');
+      }
+    } catch (e) {
+      console.warn('Erro ao processar link:', link.href);
+    }
+  });
+}
+
+// Executa ao carregar a página
+document.addEventListener('DOMContentLoaded', updateActiveNav);
+
+// Monitora mudanças na URL (para navegação SPA do Experience Builder)
+window.addEventListener('popstate', updateActiveNav);
+
+// Monitora cliques nos links do menu
+document.querySelectorAll('.nav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    // Remove active de todos
+    document.querySelectorAll('.nav a').forEach(l => l.classList.remove('active'));
+    // Adiciona active no clicado
+    this.classList.add('active');
+  });
+});
+
+// Observa mudanças na URL (para SPAs que alteram history sem popstate)
+let lastUrl = location.href;
+new MutationObserver(() => {
+  const url = location.href;
+  if (url !== lastUrl) {
+    lastUrl = url;
+    updateActiveNav();
+  }
+}).observe(document, {subtree: true, childList: true});
 </script>
 
 </body>
