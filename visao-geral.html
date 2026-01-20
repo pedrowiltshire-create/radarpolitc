@@ -371,53 +371,68 @@ html,body{
   }
 })();
 
-// Função para atualizar o menu ativo baseado na URL
-function updateActiveNav() {
-  const params = new URLSearchParams(window.location.search);
-  const currentPage = params.get('page');
-  const navLinks = document.querySelectorAll('.nav a');
+// Sistema de detecção de menu ativo - versão otimizada
+(function() {
+  let isUpdating = false;
+  let lastUrl = location.href;
   
-  navLinks.forEach(link => {
-    link.classList.remove('active');
+  function updateActiveNav() {
+    // Previne execuções simultâneas
+    if (isUpdating) return;
+    isUpdating = true;
     
-    try {
-      const linkUrl = new URL(link.href);
-      const linkPage = new URLSearchParams(linkUrl.search).get('page');
-      
-      if (linkPage === currentPage) {
-        link.classList.add('active');
+    setTimeout(() => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const currentPage = params.get('page');
+        const navLinks = document.querySelectorAll('.nav a');
+        
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          
+          try {
+            const linkUrl = new URL(link.href);
+            const linkPage = new URLSearchParams(linkUrl.search).get('page');
+            
+            if (linkPage === currentPage) {
+              link.classList.add('active');
+            }
+          } catch (e) {
+            // Ignora erros de URL
+          }
+        });
+      } catch (e) {
+        console.warn('Erro ao atualizar menu:', e);
+      } finally {
+        isUpdating = false;
       }
-    } catch (e) {
-      console.warn('Erro ao processar link:', link.href);
-    }
-  });
-}
-
-// Executa ao carregar a página
-document.addEventListener('DOMContentLoaded', updateActiveNav);
-
-// Monitora mudanças na URL (para navegação SPA do Experience Builder)
-window.addEventListener('popstate', updateActiveNav);
-
-// Monitora cliques nos links do menu
-document.querySelectorAll('.nav a').forEach(link => {
-  link.addEventListener('click', function(e) {
-    // Remove active de todos
-    document.querySelectorAll('.nav a').forEach(l => l.classList.remove('active'));
-    // Adiciona active no clicado
-    this.classList.add('active');
-  });
-});
-
-// Observa mudanças na URL (para SPAs que alteram history sem popstate)
-let lastUrl = location.href;
-new MutationObserver(() => {
-  const url = location.href;
-  if (url !== lastUrl) {
-    lastUrl = url;
+    }, 50);
+  }
+  
+  // Executa ao carregar
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateActiveNav);
+  } else {
     updateActiveNav();
   }
-}).observe(document, {subtree: true, childList: true});
+  
+  // Monitora mudanças na URL com throttle
+  let urlCheckInterval = setInterval(() => {
+    const url = location.href;
+    if (url !== lastUrl) {
+      lastUrl = url;
+      updateActiveNav();
+    }
+  }, 300);
+  
+  // Monitora popstate (botões voltar/avançar)
+  window.addEventListener('popstate', updateActiveNav);
+  
+  // Limpa interval quando página é fechada
+  window.addEventListener('beforeunload', () => {
+    clearInterval(urlCheckInterval);
+  });
+})();
 </script>
 
 </body>
