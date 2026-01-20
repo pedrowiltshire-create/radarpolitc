@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Permissions-Policy" content="attribution-reporting=(), private-aggregation=(), private-state-token-issuance=(), private-state-token-redemption=(), join-ad-interest-group=(), run-ad-auction=(), browsing-topics=()">
+<meta http-equiv="Cross-Origin-Embedder-Policy" content="unsafe-none">
+<meta http-equiv="Cross-Origin-Opener-Policy" content="unsafe-none">
 <title>Prestação de Contas | Radar Político</title>
 
 <style>
@@ -369,5 +372,32 @@ html,body{
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Whatsapp">Comunicação</a>
   </nav>
 </header>
+<script>
+(function() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for(let registration of registrations) {
+        if(registration.scope.includes('radarpolitico')) {
+          registration.unregister();
+        }
+      }
+    });
+  }
+
+  let canNavigate = true;
+  const navLinks = document.querySelectorAll('.nav a, .menu-item, .btn');
+  
+  navLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      if (!canNavigate) {
+        e.preventDefault();
+        return false;
+      }
+      canNavigate = false;
+      setTimeout(function() { canNavigate = true; }, 1500);
+    });
+  });
+})();
+</script>
 </body>
 </html>
