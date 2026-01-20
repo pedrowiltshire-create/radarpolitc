@@ -156,6 +156,7 @@ html,body{
   border:1px solid transparent;
   transition:all .2s ease;
   white-space:nowrap;
+  cursor:pointer;
 }
 
 .nav a:hover{
@@ -337,9 +338,9 @@ html,body{
   </div>
 
   <nav class="nav" role="navigation" aria-label="Menu principal">
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral" target="_parent">Visão Geral</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os" target="_parent">Serviços</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar" target="_parent">Módulos do Radar</a>
+    <a href="#" data-page="V-Geral">Visão Geral</a>
+    <a href="#" data-page="N-Serviços">Serviços</a>
+    <a href="#" data-page="M-Radar">Módulos do Radar</a>
   </nav>
 </header>
 
@@ -371,55 +372,58 @@ html,body{
   }
 })();
 
-// Detecta qual página está ativa baseado na URL PAI (Experience Builder)
+// Sistema de navegação para iframe sandboxed
 (function() {
+  const baseUrl = 'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=';
+  
+  // Detecta qual página está ativa pela URL atual
   function updateActiveNav() {
-    try {
-      // Tenta ler a URL da página pai (Experience Builder)
-      let parentUrl = '';
+    const currentUrl = window.location.href;
+    const navLinks = document.querySelectorAll('.nav a');
+    
+    // Marca como ativa baseado na página atual
+    if (currentUrl.includes('visao-geral')) {
+      navLinks[0].classList.add('active');
+    } else if (currentUrl.includes('servicos')) {
+      navLinks[1].classList.add('active');
+    } else if (currentUrl.includes('modulos')) {
+      navLinks[2].classList.add('active');
+    } else {
+      // Padrão: primeira opção
+      navLinks[0].classList.add('active');
+    }
+  }
+  
+  // Adiciona eventos de clique nos links do menu
+  document.querySelectorAll('.nav a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const page = this.getAttribute('data-page');
+      const targetUrl = baseUrl + page;
+      
+      // Tenta enviar mensagem para o parent
       try {
-        parentUrl = window.parent.location.href;
-      } catch (e) {
-        // Se não conseguir acessar (CORS), usa a URL atual
-        parentUrl = window.location.href;
+        window.parent.postMessage({
+          type: 'navigation',
+          url: targetUrl,
+          page: page
+        }, '*');
+      } catch (err) {
+        console.warn('PostMessage failed, trying top.location');
       }
       
-      const params = new URLSearchParams(parentUrl.split('?')[1] || '');
-      const currentPage = params.get('page');
-      const navLinks = document.querySelectorAll('.nav a');
-      
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        
-        try {
-          const linkUrl = new URL(link.href);
-          const linkPage = new URLSearchParams(linkUrl.search).get('page');
-          
-          if (linkPage === currentPage) {
-            link.classList.add('active');
-          }
-        } catch (e) {
-          // Ignora erros
-        }
-      });
-    } catch (e) {
-      console.warn('Erro ao atualizar menu:', e);
-    }
-  }
+      // Fallback: tenta navegar diretamente
+      try {
+        window.top.location.href = targetUrl;
+      } catch (err) {
+        // Se tudo falhar, abre em nova aba
+        window.open(targetUrl, '_blank');
+      }
+    });
+  });
   
   // Executa ao carregar
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', updateActiveNav);
-  } else {
-    updateActiveNav();
-  }
-  
-  // Monitora mensagens do parent (se o Experience Builder enviar)
-  window.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'pageChange') {
-      updateActiveNav();
-    }
-  });
+  updateActiveNav();
   
 })();
 </script>
