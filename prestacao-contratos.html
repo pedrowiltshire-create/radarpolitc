@@ -13,7 +13,6 @@
   --green:#1fe3a2;
   --bg:#05090c;
   --text:#eaf5f2;
-
   --panel: rgba(18,40,38,.58);
   --panel2: rgba(8,20,18,.78);
 }
@@ -26,7 +25,7 @@ html,body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background:var(--bg);
   color:var(--text);
-  overflow:hidden; /* página nunca rola */
+  overflow:hidden;
 }
 
 /* ===== FUNDO ===== */
@@ -87,7 +86,7 @@ html,body{
 }
 
 @keyframes sweep{
-  to{transform:rotate(360deg)}
+  to{ transform:rotate(360deg) }
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -112,7 +111,8 @@ html,body{
 }
 
 .brand .mark{
-  width:38px; height:38px;
+  width:38px;
+  height:38px;
   border-radius:12px;
   background:rgba(31,227,162,.12);
   border:1px solid rgba(31,227,162,.35);
@@ -130,11 +130,11 @@ html,body{
   text-transform:uppercase;
   line-height:1.1;
 }
+
 .brand .name span{
   display:block;
   color:var(--green);
   letter-spacing:.22em;
-  font-weight:700;
   font-size:12px;
 }
 
@@ -142,7 +142,6 @@ html,body{
   display:flex;
   gap:32px;
   flex-wrap:wrap;
-  justify-content:flex-end;
 }
 
 .nav a{
@@ -166,7 +165,7 @@ html,body{
   border:1px solid rgba(31,227,162,.18);
 }
 
-
+/* ===== CONTEÚDO ===== */
 .main{
   position:relative;
   z-index:2;
@@ -203,20 +202,17 @@ html,body{
   line-height:1.7;
 }
 
-/* separador horizontal */
 .hr{
   height:1px;
   background:rgba(255,255,255,.10);
   margin:24px 0 18px;
 }
 
-/* menu central */
 .tabs{
   display:flex;
   justify-content:center;
   gap:40px;
   flex-wrap:wrap;
-  padding:6px 0 4px;
 }
 
 .tabs a{
@@ -239,7 +235,6 @@ html,body{
   border:1px solid rgba(31,227,162,.18);
 }
 
-/* linha de texto central pequena */
 .micro{
   margin:28px auto 34px;
   max-width:860px;
@@ -247,7 +242,6 @@ html,body{
   font-size:15.5px;
 }
 
-/* lista com checks verdes, alinhada à esquerda */
 .list{
   width:100%;
   max-width:980px;
@@ -261,7 +255,6 @@ html,body{
   display:grid;
   grid-template-columns:56px 1fr;
   gap:18px;
-  align-items:flex-start;
 }
 
 .check{
@@ -270,7 +263,6 @@ html,body{
   border-radius:999px;
   background:rgba(31,227,162,.16);
   border:1px solid rgba(31,227,162,.35);
-  box-shadow:0 0 26px rgba(31,227,162,.25);
   display:grid;
   place-items:center;
 }
@@ -284,16 +276,9 @@ html,body{
 
 .item p{
   margin:0;
-  color:rgba(234,245,242,.86);
   line-height:1.6;
   font-size:18px;
 }
-
-.item strong{
-  color:var(--text);
-  font-weight:900;
-}
-
 
 .cta{
   display:flex;
@@ -301,9 +286,6 @@ html,body{
 }
 
 .cta a{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
   padding:18px 58px;
   border-radius:999px;
   font-size:20px;
@@ -312,32 +294,6 @@ html,body{
   text-decoration:none;
   background:linear-gradient(180deg, #6bff9d, var(--green));
   box-shadow:0 0 56px rgba(31,227,162,.45);
-  border:1px solid rgba(255,255,255,.14);
-  transition:.25s;
-}
-
-.cta a:hover{
-  transform:translateY(-2px);
-  box-shadow:0 0 72px rgba(31,227,162,.60);
-}
-
-/* ===== RESPONSIVO ===== */
-@media(max-width:900px){
-  .hero-title{ font-size:40px; letter-spacing:.12em; }
-  .tabs{ gap:18px; }
-  .item p{ font-size:16px; }
-}
-
-@media(max-width:700px){
-  .header{
-    padding:16px 18px;
-    gap:16px;
-    flex-direction:column;
-    align-items:flex-start;
-  }
-  .nav{ gap:10px; }
-  .main{ padding:18px 18px 54px; }
-  .bg-map{ opacity:.06; }
 }
 </style>
 </head>
@@ -360,8 +316,7 @@ html,body{
       </svg>
     </div>
     <div class="name">
-      <span>RADAR</span>
-      POLÍTICO
+      <span>RADAR</span>POLÍTICO
     </div>
   </div>
 
@@ -372,32 +327,21 @@ html,body{
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Whatsapp">Comunicação</a>
   </nav>
 </header>
+
+<!-- SCRIPT CORRETO (SEM BLOQUEIO DE CLIQUES) -->
 <script>
-(function() {
+(function () {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for(let registration of registrations) {
-        if(registration.scope.includes('radarpolitico')) {
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      registrations.forEach(function (registration) {
+        if (registration.scope.includes('radarpolitico')) {
           registration.unregister();
         }
-      }
+      });
     });
   }
-
-  let canNavigate = true;
-  const navLinks = document.querySelectorAll('.nav a, .menu-item, .btn');
-  
-  navLinks.forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      if (!canNavigate) {
-        e.preventDefault();
-        return false;
-      }
-      canNavigate = false;
-      setTimeout(function() { canNavigate = true; }, 1500);
-    });
-  });
 })();
 </script>
+
 </body>
 </html>
