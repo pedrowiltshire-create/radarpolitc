@@ -397,55 +397,14 @@ html,body{
 // Detecta qual página está ativa baseado na URL PAI (Experience Builder)
 (function() {
   function updateActiveNav() {
-    try {
-      // Tenta ler a URL da página pai (Experience Builder)
-      let parentUrl = '';
-      try {
-        parentUrl = window.parent.location.href;
-      } catch (e) {
-        // Se não conseguir acessar (CORS), usa a URL atual
-        parentUrl = window.location.href;
-      }
-      
-      const params = new URLSearchParams(parentUrl.split('?')[1] || '');
-      const currentPage = params.get('page');
-      const navLinks = document.querySelectorAll('.nav a');
-      
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        
-        try {
-          const linkUrl = new URL(link.href);
-          const linkPage = new URLSearchParams(linkUrl.search).get('page');
-          
-          if (linkPage === currentPage) {
-            link.classList.add('active');
-          }
-        } catch (e) {
-          // Ignora erros
-        }
-      });
-    } catch (e) {
-      console.warn('Erro ao atualizar menu:', e);
-    }
-  }
-  
-  // Executa ao carregar
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', updateActiveNav);
-  } else {
-    updateActiveNav();
-  }
-  
-  // Monitora mensagens do parent (se o Experience Builder enviar)
-  window.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'pageChange') {
-      updateActiveNav();
-    }
-  });
+if (currentUrl.includes('visao-geral')) {
+  navLinks[0].classList.add('active');
+} else if (currentUrl.includes('servicos')) {  // ← Esta página
+  navLinks[1].classList.add('active');
   
 })();
 </script>
 
 </body>
 </html>
+
