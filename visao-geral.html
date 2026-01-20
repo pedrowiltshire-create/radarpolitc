@@ -359,39 +359,33 @@ html,body{
 </main>
 
 <script>
-/* ===== Navegação FINAL – ArcGIS Experience Builder ===== */
+/* ===== Navegação estável – ArcGIS Experience Builder (MESMA ABA) ===== */
 (function () {
 
-  // 🔒 garante inicialização única
+  // Evita múltiplas inicializações
   if (window.__RADAR_NAV__) return;
   window.__RADAR_NAV__ = true;
 
   const EXPERIENCE_ID = '1c71651ddc4842a585a30dbdbd451a9c';
   const BASE_URL =
-    `https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=${EXPERIENCE_ID}&page=`;
+    'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/';
 
-  let navigating = false;
+  function buildUrl(page) {
+    return `${BASE_URL}?id=${EXPERIENCE_ID}&page=${page}`;
+  }
 
   function navigateTo(page) {
-    if (!page || navigating) return;
-    navigating = true;
+    if (!page) return;
 
-    const url = BASE_URL + page;
+    const targetUrl = buildUrl(page);
 
-    // ✅ SEMPRE abre o Experience Builder
-    const win = window.open(url, '_blank', 'noopener,noreferrer');
-
-    // fallback extremo (raríssimo)
-    if (!win) {
-      location.replace(url);
-    }
-
-    setTimeout(() => navigating = false, 600);
+    // 🔥 navegação direta na MESMA ABA
+    window.location.href = targetUrl;
   }
 
   function updateActiveNav() {
-    const currentPage =
-      new URLSearchParams(location.search).get('page') || 'V-Geral';
+    const params = new URLSearchParams(window.location.search);
+    const currentPage = params.get('page') || 'V-Geral';
 
     document.querySelectorAll('.nav a[data-page]').forEach(link => {
       link.classList.toggle(
@@ -401,7 +395,7 @@ html,body{
     });
   }
 
-  // ✅ um único listener para o menu
+  // Delegação de evento (robusto)
   document.addEventListener('click', function (e) {
     const link = e.target.closest('.nav a[data-page]');
     if (!link) return;
@@ -418,8 +412,10 @@ html,body{
 
 
 
+
 </body>
 </html>
+
 
 
 
