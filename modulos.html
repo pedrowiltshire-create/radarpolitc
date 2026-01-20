@@ -442,7 +442,7 @@ html,body{
   <nav class="nav" role="navigation" aria-label="Menu principal">
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
-    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
   </nav>
 </header>
 
@@ -503,4 +503,55 @@ html,body{
   </div>
 </main>
 
+<script>
+// Função para atualizar o menu ativo baseado na URL
+function updateActiveNav() {
+  const params = new URLSearchParams(window.location.search);
+  const currentPage = params.get('page');
+  const navLinks = document.querySelectorAll('.nav a');
+  
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    
+    try {
+      const linkUrl = new URL(link.href);
+      const linkPage = new URLSearchParams(linkUrl.search).get('page');
+      
+      if (linkPage === currentPage) {
+        link.classList.add('active');
+      }
+    } catch (e) {
+      console.warn('Erro ao processar link:', link.href);
+    }
+  });
+}
+
+// Executa ao carregar a página
+document.addEventListener('DOMContentLoaded', updateActiveNav);
+
+// Monitora mudanças na URL (para navegação SPA do Experience Builder)
+window.addEventListener('popstate', updateActiveNav);
+
+// Monitora cliques nos links do menu
+document.querySelectorAll('.nav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    // Remove active de todos
+    document.querySelectorAll('.nav a').forEach(l => l.classList.remove('active'));
+    // Adiciona active no clicado
+    this.classList.add('active');
+  });
+});
+
+// Observa mudanças na URL (para SPAs que alteram history sem popstate)
+let lastUrl = location.href;
+new MutationObserver(() => {
+  const url = location.href;
+  if (url !== lastUrl) {
+    lastUrl = url;
+    updateActiveNav();
+  }
+}).observe(document, {subtree: true, childList: true});
+</script>
+
 </body>
+</html>
