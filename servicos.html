@@ -90,6 +90,10 @@ html,body{
 
 @keyframes sweep{ to{ transform:rotate(360deg); } }
 
+@media (prefers-reduced-motion: reduce){
+  .radar::after{ animation:none; }
+}
+
 /* === HEADER === */
 .header{
   position:relative;
@@ -115,6 +119,7 @@ html,body{
   border:1px solid rgba(31,227,162,.35);
   display:grid;
   place-items:center;
+  box-shadow:0 0 24px rgba(31,227,162,.18);
 }
 
 .brand svg{ width:22px; height:22px; }
@@ -130,12 +135,14 @@ html,body{
   display:block;
   color:var(--green);
   font-size:12px;
+  letter-spacing:.22em;
 }
 
 /* === MENU === */
 .nav{
   display:flex;
   gap:20px;
+  flex-wrap:wrap;
 }
 
 .nav a{
@@ -145,13 +152,15 @@ html,body{
   padding:8px 12px;
   border-radius:12px;
   border:1px solid transparent;
-  transition:.2s;
+  transition:all .2s ease;
+  white-space:nowrap;
 }
 
 .nav a:hover{
   background:rgba(31,227,162,.06);
   border-color:rgba(31,227,162,.15);
   color:var(--green);
+  transform:translateY(-1px);
 }
 
 .nav a.active{
@@ -173,7 +182,8 @@ html,body{
   font-weight:900;
   font-style:italic;
   color:var(--green);
-  margin-bottom:60px;
+  margin:0 0 60px;
+  letter-spacing:.04em;
 }
 
 .services{
@@ -195,6 +205,12 @@ html,body{
   border-radius:50%;
   overflow:hidden;
   border:1px solid rgba(255,255,255,.08);
+  transition:transform .3s ease, border-color .3s ease;
+}
+
+.service:hover .circle{
+  transform:scale(1.05);
+  border-color:rgba(31,227,162,.25);
 }
 
 .service img{
@@ -207,18 +223,98 @@ html,body{
   color:var(--green);
   font-size:20px;
   font-weight:900;
+  margin:0 0 10px;
+  letter-spacing:.06em;
 }
 
 .service p{
   color:var(--muted);
   font-size:14px;
+  margin:0;
+  line-height:1.6;
 }
 
 /* === RESPONSIVO === */
+@media(max-width:900px){
+  .header{ 
+    padding:18px 32px; 
+  }
+  .main{ 
+    padding:32px; 
+  }
+  .title{ 
+    font-size:42px; 
+  }
+  .services{
+    gap:56px;
+  }
+}
+
 @media(max-width:700px){
-  .header{ flex-direction:column; align-items:flex-start; }
-  .nav{ flex-wrap:wrap; }
-  .title{ font-size:38px; }
+  .header{ 
+    flex-direction:column; 
+    align-items:flex-start;
+    padding:16px 20px;
+    gap:16px;
+  }
+  .nav{ 
+    gap:12px;
+    width:100%;
+    justify-content:flex-start;
+  }
+  .nav a{
+    font-size:13px;
+    padding:8px 10px;
+  }
+  .main{
+    padding:24px 20px;
+  }
+  .title{ 
+    font-size:38px;
+    margin-bottom:40px;
+  }
+  .services{
+    grid-template-columns:1fr;
+    gap:48px;
+  }
+  .service .circle{
+    width:180px;
+    height:180px;
+  }
+}
+
+@media(max-width:400px){
+  .header{
+    padding:14px 16px;
+  }
+  .brand .name{
+    font-size:12px;
+  }
+  .brand .name span{
+    font-size:11px;
+  }
+  .nav{
+    flex-direction:column;
+    gap:8px;
+  }
+  .nav a{
+    width:100%;
+    text-align:center;
+  }
+  .main{
+    padding:20px 16px;
+  }
+  .title{
+    font-size:32px;
+    margin-bottom:32px;
+  }
+  .service .circle{
+    width:160px;
+    height:160px;
+  }
+  .service h3{
+    font-size:18px;
+  }
 }
 </style>
 </head>
@@ -226,7 +322,7 @@ html,body{
 <body>
 
 <div class="background">
-  <img class="bg-map" src="mapa.png" alt="Mapa do Brasil">
+  <img class="bg-map" src="mapa.png" alt="Mapa do Brasil" onerror="this.style.display='none'">
   <div class="bg-overlay"></div>
   <div class="radar"></div>
 </div>
@@ -234,20 +330,21 @@ html,body{
 <header class="header">
   <div class="brand">
     <div class="mark">
-      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3" aria-hidden="true">
         <circle cx="32" cy="32" r="22"/>
         <path d="M32 32L48 16"/>
         <circle cx="32" cy="32" r="4" fill="var(--green)"/>
       </svg>
     </div>
     <div class="name">
-      <span>RADAR</span> POLÍTICO
+      <span>RADAR</span>
+      POLÍTICO
     </div>
   </div>
 
-  <nav class="nav">
+  <nav class="nav" role="navigation" aria-label="Menu principal">
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
-    <a class="active" href="#">Serviços</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
   </nav>
 </header>
@@ -257,19 +354,25 @@ html,body{
 
   <section class="services">
     <article class="service">
-      <div class="circle"><img src="servico1.jpg" alt=""></div>
+      <div class="circle">
+        <img src="servico1.jpg" alt="Painéis Gerenciais" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22%3E%3Crect fill=%22%230e2b26%22 width=%22220%22 height=%22220%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EPainéis%3C/text%3E%3C/svg%3E'">
+      </div>
       <h3>PAINÉIS GERENCIAIS</h3>
       <p>Acompanhe indicadores e mapas em tempo real.</p>
     </article>
 
     <article class="service">
-      <div class="circle"><img src="servico2.jpg" alt=""></div>
+      <div class="circle">
+        <img src="servico2.jpg" alt="Prestação de Contas" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22%3E%3Crect fill=%22%230e2b26%22 width=%22220%22 height=%22220%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EContas%3C/text%3E%3C/svg%3E'">
+      </div>
       <h3>PRESTAÇÃO DE CONTAS</h3>
       <p>Controle total de contratos e despesas.</p>
     </article>
 
     <article class="service">
-      <div class="circle"><img src="servico3.jpg" alt=""></div>
+      <div class="circle">
+        <img src="servico3.jpg" alt="Colaboradores" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22%3E%3Crect fill=%22%230e2b26%22 width=%22220%22 height=%22220%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EEquipe%3C/text%3E%3C/svg%3E'">
+      </div>
       <h3>COLABORADORES</h3>
       <p>Gestão e localização da equipe.</p>
     </article>
@@ -289,6 +392,54 @@ html,body{
     });
   }
 })();
+
+// Função para atualizar o menu ativo baseado na URL
+function updateActiveNav() {
+  const params = new URLSearchParams(window.location.search);
+  const currentPage = params.get('page');
+  const navLinks = document.querySelectorAll('.nav a');
+  
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    
+    try {
+      const linkUrl = new URL(link.href);
+      const linkPage = new URLSearchParams(linkUrl.search).get('page');
+      
+      if (linkPage === currentPage) {
+        link.classList.add('active');
+      }
+    } catch (e) {
+      console.warn('Erro ao processar link:', link.href);
+    }
+  });
+}
+
+// Executa ao carregar a página
+document.addEventListener('DOMContentLoaded', updateActiveNav);
+
+// Monitora mudanças na URL (para navegação SPA do Experience Builder)
+window.addEventListener('popstate', updateActiveNav);
+
+// Monitora cliques nos links do menu
+document.querySelectorAll('.nav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    // Remove active de todos
+    document.querySelectorAll('.nav a').forEach(l => l.classList.remove('active'));
+    // Adiciona active no clicado
+    this.classList.add('active');
+  });
+});
+
+// Observa mudanças na URL (para SPAs que alteram history sem popstate)
+let lastUrl = location.href;
+new MutationObserver(() => {
+  const url = location.href;
+  if (url !== lastUrl) {
+    lastUrl = url;
+    updateActiveNav();
+  }
+}).observe(document, {subtree: true, childList: true});
 </script>
 
 </body>
