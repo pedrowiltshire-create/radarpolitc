@@ -343,9 +343,9 @@ html,body{
   </div>
 
 <nav class="nav" role="navigation" aria-label="Menu principal">
-  <a href="#" data-page="geral">Visão Geral</a>
-  <a href="#" data-page="servicos">Serviços</a>
-  <a href="#" data-page="radar">Módulos do Radar</a>
+  <a href="#" data-page="V-Geral">Visão Geral</a>
+  <a href="#" data-page="N-Servicos">Serviços</a>
+  <a href="#" data-page="M-Radar">Módulos do Radar</a>
 </nav>
 </header>
 
@@ -381,53 +381,61 @@ html,body{
 </main>
 
 <script>
+/* ===== Navegação segura – ArcGIS Experience Builder ===== */
 (function () {
-  const PAGES = {
-    geral: 'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral',
-    servicos: 'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Serviços',
-    radar: 'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar'
-  };
+
+  const EXPERIENCE_ID = '1c71651ddc4842a585a30dbdbd451a9c';
+  const BASE_URL =
+    `https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=${EXPERIENCE_ID}&page=`;
 
   function isArcGISContext() {
     try {
       return document.referrer.includes('experiencebuilder')
-          || document.referrer.includes('arcgis')
-          || window.name.includes('iframe');
-    } catch (e) {
+          || document.referrer.includes('arcgis');
+    } catch {
       return false;
     }
   }
 
-  function navigate(url) {
+  function navigateTo(page) {
+    const url = BASE_URL + page;
+
+    // Dentro do ArcGIS → nova aba (sandbox safe)
     if (isArcGISContext()) {
       window.open(url, '_blank', 'noopener,noreferrer');
     } else {
+      // Fora do ArcGIS → navegação normal
       window.location.href = url;
     }
   }
 
-  function markActive() {
-    const current = location.href;
+  function updateActiveNav() {
+    const params = new URLSearchParams(window.location.search);
+    const currentPage = params.get('page') || 'N-Servicos';
+
     document.querySelectorAll('.nav a').forEach(link => {
-      const page = link.dataset.page;
-      if (current.includes(page)) {
-        link.classList.add('active');
-      }
+      link.classList.toggle(
+        'active',
+        link.dataset.page === currentPage
+      );
     });
   }
 
   document.querySelectorAll('.nav a').forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
-      navigate(PAGES[link.dataset.page]);
+      navigateTo(link.dataset.page);
     });
   });
 
-  markActive();
+  updateActiveNav();
+
 })();
 </script>
 
 
+
 </body>
 </html>
+
 
