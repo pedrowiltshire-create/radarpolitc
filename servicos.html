@@ -9,6 +9,7 @@
 <title>Serviços | Radar Político</title>
 
 <style>
+/* === VARIÁVEIS === */
 :root{
   --green:#1fe3a2;
   --bg:#05090c;
@@ -28,7 +29,7 @@ html,body{
   overflow-x:hidden;
 }
 
-/* ===== FUNDO ===== */
+/* === FUNDO === */
 .background{
   position:fixed;
   inset:0;
@@ -44,8 +45,6 @@ html,body{
   object-fit:cover;
   object-position:center top;
   opacity:.16;
-  filter: contrast(1.05);
-  transform: scale(1.02);
   pointer-events:none;
 }
 
@@ -91,18 +90,13 @@ html,body{
 
 @keyframes sweep{ to{ transform:rotate(360deg); } }
 
-@media (prefers-reduced-motion: reduce){
-  .radar::after{ animation:none; }
-}
-
-/* ===== HEADER ===== */
+/* === HEADER === */
 .header{
   position:relative;
   z-index:2;
-  width:100%;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   padding:22px 48px;
   gap:20px;
 }
@@ -111,46 +105,37 @@ html,body{
   display:flex;
   align-items:center;
   gap:12px;
-  flex-shrink:0;
 }
 
 .brand .mark{
-  width:38px; 
+  width:38px;
   height:38px;
   border-radius:12px;
   background:rgba(31,227,162,.12);
   border:1px solid rgba(31,227,162,.35);
   display:grid;
   place-items:center;
-  box-shadow:0 0 24px rgba(31,227,162,.18);
 }
 
-.brand svg{ 
-  width:22px; 
-  height:22px; 
-}
+.brand svg{ width:22px; height:22px; }
 
 .brand .name{
   font-weight:700;
   letter-spacing:.14em;
   font-size:14px;
   text-transform:uppercase;
-  line-height:1.1;
 }
 
 .brand .name span{
   display:block;
   color:var(--green);
-  letter-spacing:.22em;
-  font-weight:700;
   font-size:12px;
 }
 
+/* === MENU === */
 .nav{
   display:flex;
   gap:20px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
 }
 
 .nav a{
@@ -159,16 +144,14 @@ html,body{
   font-size:14px;
   padding:8px 12px;
   border-radius:12px;
-  transition:all .2s ease;
   border:1px solid transparent;
-  white-space:nowrap;
+  transition:.2s;
 }
 
 .nav a:hover{
   background:rgba(31,227,162,.06);
   border-color:rgba(31,227,162,.15);
   color:var(--green);
-  transform:translateY(-1px);
 }
 
 .nav a.active{
@@ -177,212 +160,65 @@ html,body{
   border:1px solid rgba(31,227,162,.18);
 }
 
-/* ===== CONTEÚDO ===== */
+/* === CONTEÚDO === */
 .main{
   position:relative;
   z-index:2;
-  min-height:calc(100vh - 86px);
-  padding:38px 48px 64px;
+  padding:48px;
 }
 
 .title{
-  margin:40px 0 42px;
+  text-align:center;
   font-size:56px;
   font-weight:900;
-  letter-spacing:.04em;
-  text-transform:uppercase;
   font-style:italic;
-  color:#1fe3a2;
-  text-align:center;
+  color:var(--green);
+  margin-bottom:60px;
 }
 
 .services{
-  width:100%;
   max-width:1320px;
   margin:0 auto;
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
   gap:72px;
-  align-items:start;
 }
 
 .service{
   text-align:center;
-  padding:8px 14px;
 }
 
 .service .circle{
   width:220px;
   height:220px;
-  margin:0 auto 22px;
+  margin:0 auto 20px;
   border-radius:50%;
   overflow:hidden;
-  box-shadow:0 40px 110px rgba(0,0,0,.75);
   border:1px solid rgba(255,255,255,.08);
-  background:#0b1412;
-  transition:transform .3s ease, box-shadow .3s ease;
 }
 
-.service:hover .circle{
-  transform:translateY(-8px) scale(1.02);
-  box-shadow:0 50px 130px rgba(0,0,0,.85);
-}
-
-.service .circle img{
+.service img{
   width:100%;
   height:100%;
   object-fit:cover;
-  display:block;
-  filter: contrast(1.02) saturate(1.02);
-  transform:scale(1.02);
 }
 
 .service h3{
-  margin:0 0 10px;
   color:var(--green);
   font-size:20px;
   font-weight:900;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  font-style:italic;
 }
 
 .service p{
-  margin:0 auto;
-  max-width:360px;
   color:var(--muted);
-  font-size:13.5px;
-  line-height:1.6;
+  font-size:14px;
 }
 
-/* ===== RESPONSIVO ===== */
-@media(max-width:1100px){
-  .services{
-    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-    gap:56px;
-  }
-  
-  .title{ 
-    font-size:44px; 
-    margin-top:22px; 
-  }
-  
-  .service .circle{ 
-    width:200px; 
-    height:200px; 
-  }
-}
-
-@media(max-width:900px){
-  .header{
-    padding:18px 32px;
-  }
-  
-  .main{
-    padding:28px 32px 56px;
-  }
-  
-  .title{
-    font-size:40px;
-    margin:32px 0 36px;
-  }
-  
-  .services{
-    gap:48px;
-  }
-}
-
+/* === RESPONSIVO === */
 @media(max-width:700px){
-  .header{
-    padding:16px 20px;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:16px;
-  }
-  
-  .nav{ 
-    gap:12px;
-    width:100%;
-    justify-content:flex-start;
-  }
-  
-  .nav a{
-    font-size:13px;
-    padding:8px 10px;
-  }
-  
-  .main{ 
-    padding:24px 20px 54px;
-  }
-  
-  .title{ 
-    font-size:36px;
-    margin:24px 0 32px;
-  }
-  
-  .services{
-    grid-template-columns:1fr;
-    gap:40px;
-  }
-  
-  .service .circle{ 
-    width:180px; 
-    height:180px; 
-  }
-  
-  .service h3{
-    font-size:18px;
-  }
-  
-  .service p{
-    font-size:13px;
-  }
-  
-  .bg-map{ 
-    opacity:.06;
-  }
-}
-
-@media(max-width:400px){
-  .header{
-    padding:14px 16px;
-  }
-  
-  .brand .name{
-    font-size:12px;
-  }
-  
-  .brand .name span{
-    font-size:11px;
-  }
-  
-  .nav{
-    flex-direction:column;
-    gap:8px;
-  }
-  
-  .nav a{
-    width:100%;
-    text-align:center;
-  }
-  
-  .main{
-    padding:20px 16px 48px;
-  }
-  
-  .title{
-    font-size:30px;
-    margin:20px 0 28px;
-  }
-  
-  .service .circle{
-    width:160px;
-    height:160px;
-  }
-  
-  .services{
-    gap:36px;
-  }
+  .header{ flex-direction:column; align-items:flex-start; }
+  .nav{ flex-wrap:wrap; }
+  .title{ font-size:38px; }
 }
 </style>
 </head>
@@ -390,7 +226,7 @@ html,body{
 <body>
 
 <div class="background">
-  <img class="bg-map" src="mapa.png" alt="Mapa do Brasil" onerror="this.style.display='none'">
+  <img class="bg-map" src="mapa.png" alt="Mapa do Brasil">
   <div class="bg-overlay"></div>
   <div class="radar"></div>
 </div>
@@ -398,88 +234,62 @@ html,body{
 <header class="header">
   <div class="brand">
     <div class="mark">
-      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
         <circle cx="32" cy="32" r="22"/>
         <path d="M32 32L48 16"/>
         <circle cx="32" cy="32" r="4" fill="var(--green)"/>
       </svg>
     </div>
     <div class="name">
-      <span>RADAR</span>
-      POLÍTICO
+      <span>RADAR</span> POLÍTICO
     </div>
   </div>
 
-  <nav class="nav" role="navigation" aria-label="Menu principal">
+  <nav class="nav">
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
-    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
+    <a class="active" href="#">Serviços</a>
     <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
   </nav>
 </header>
 
 <main class="main">
-
   <h1 class="title">NOSSOS SERVIÇOS</h1>
 
   <section class="services">
-
     <article class="service">
-      <div class="circle">
-        <img src="servico1.jpg" alt="Painéis gerenciais" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2220%22%3EPainéis%3C/text%3E%3C/svg%3E'">
-      </div>
+      <div class="circle"><img src="servico1.jpg" alt=""></div>
       <h3>PAINÉIS GERENCIAIS</h3>
-      <p>Acompanhe em tempo real com indicadores, métricas de mobilização e mapas dinâmicos.</p>
+      <p>Acompanhe indicadores e mapas em tempo real.</p>
     </article>
 
     <article class="service">
-      <div class="circle">
-        <img src="servico2.jpg" alt="Prestação de contas" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2220%22%3EPrestação de Contas%3C/text%3E%3C/svg%3E'">
-      </div>
+      <div class="circle"><img src="servico2.jpg" alt=""></div>
       <h3>PRESTAÇÃO DE CONTAS</h3>
-      <p>Registre todos os contratos e gastos para facilitar a prestação de contas.</p>
+      <p>Controle total de contratos e despesas.</p>
     </article>
 
     <article class="service">
-      <div class="circle">
-        <img src="servico3.jpg" alt="Cadastro de colaboradores" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2220%22%3EColaboradores%3C/text%3E%3C/svg%3E'">
-      </div>
-      <h3>CADASTRO DE COLABORADORES</h3>
-      <p>Registre informações importantes e saiba onde estão seus colaboradores.</p>
+      <div class="circle"><img src="servico3.jpg" alt=""></div>
+      <h3>COLABORADORES</h3>
+      <p>Gestão e localização da equipe.</p>
     </article>
-
   </section>
-
 </main>
 
 <script>
-(function() {
+/* Limpeza segura de Service Workers antigos */
+(function () {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for(let registration of registrations) {
-        if(registration.scope.includes('radarpolitico')) {
-          registration.unregister();
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      regs.forEach(r => {
+        if (r.scope.includes('radarpolitico')) {
+          r.unregister();
         }
-      }
+      });
     });
   }
-
-  let canNavigate = true;
-  const navLinks = document.querySelectorAll('.nav a, .menu-item, .btn');
-  
-  navLinks.forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      if (!canNavigate) {
-        e.preventDefault();
-        return false;
-      }
-      canNavigate = false;
-      setTimeout(function() { canNavigate = true; }, 1500);
-    });
-  });
 })();
 </script>
 
 </body>
 </html>
-
-
