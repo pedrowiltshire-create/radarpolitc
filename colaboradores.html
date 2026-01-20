@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Permissions-Policy" content="attribution-reporting=(), private-aggregation=(), private-state-token-issuance=(), private-state-token-redemption=(), join-ad-interest-group=(), run-ad-auction=(), browsing-topics=()">
+<meta http-equiv="Cross-Origin-Embedder-Policy" content="unsafe-none">
+<meta http-equiv="Cross-Origin-Opener-Policy" content="unsafe-none">
 <title>Colaboradores | Radar Político</title>
 
 <style>
@@ -324,6 +327,33 @@ html,body{
     </section>
   </div>
 </main>
+<script>
+(function() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for(let registration of registrations) {
+        if(registration.scope.includes('radarpolitico')) {
+          registration.unregister();
+        }
+      }
+    });
+  }
 
+  let canNavigate = true;
+  const navLinks = document.querySelectorAll('.nav a, .menu-item, .btn');
+  
+  navLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      if (!canNavigate) {
+        e.preventDefault();
+        return false;
+      }
+      canNavigate = false;
+      setTimeout(function() { canNavigate = true; }, 1500);
+    });
+  });
+})();
+</script>
 </body>
 </html>
+
