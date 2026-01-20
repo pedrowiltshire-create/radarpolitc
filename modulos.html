@@ -14,11 +14,12 @@
 :root{
   --green:#1fe3a2;
   --bg:#05090c;
+  --border:rgba(255,255,255,.12);
   --text:#eaf5f2;
   --muted:#b9d6cd;
 }
 
-*{box-sizing:border-box}
+*{ box-sizing:border-box; }
 
 html,body{
   margin:0;
@@ -29,11 +30,12 @@ html,body{
   overflow-x:hidden;
 }
 
-/* ===== FUNDO ===== */
+/* FUNDO */
 .background{
   position:fixed;
   inset:0;
   z-index:0;
+  overflow:hidden;
 }
 
 .bg-map{
@@ -43,7 +45,6 @@ html,body{
   height:100%;
   object-fit:cover;
   opacity:.12;
-  pointer-events:none;
 }
 
 .bg-overlay{
@@ -82,15 +83,15 @@ html,body{
   animation:sweep 7s linear infinite;
 }
 
-@keyframes sweep{to{transform:rotate(360deg)}}
+@keyframes sweep{ to{ transform:rotate(360deg); } }
 
-/* ===== HEADER ===== */
+/* HEADER */
 .header{
   position:relative;
   z-index:2;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
   padding:22px 48px;
 }
 
@@ -110,12 +111,12 @@ html,body{
   place-items:center;
 }
 
-.brand svg{width:22px;height:22px}
+.brand svg{ width:22px;height:22px }
 
 .brand .name{
   font-weight:700;
-  font-size:14px;
   letter-spacing:.14em;
+  font-size:14px;
   text-transform:uppercase;
 }
 
@@ -125,7 +126,6 @@ html,body{
   font-size:12px;
 }
 
-/* ===== MENU ===== */
 .nav{
   display:flex;
   gap:20px;
@@ -137,12 +137,6 @@ html,body{
   font-size:14px;
   padding:8px 12px;
   border-radius:12px;
-  transition:.2s;
-}
-
-.nav a:hover{
-  background:rgba(31,227,162,.06);
-  color:var(--green);
 }
 
 .nav a.active{
@@ -150,7 +144,7 @@ html,body{
   background:rgba(31,227,162,.08);
 }
 
-/* ===== CONTEÚDO ===== */
+/* CONTEÚDO */
 .main{
   position:relative;
   z-index:2;
@@ -164,26 +158,22 @@ html,body{
 
 .modules{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
   gap:26px;
 }
 
-/* ===== CARD ===== */
+/* CARD */
 .module{
   border-radius:22px;
   overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
   background:linear-gradient(180deg, rgba(18,40,38,.62), rgba(8,20,18,.78));
   box-shadow:0 40px 110px rgba(0,0,0,.65);
-  transition:.25s;
-}
-
-.module:hover{
-  transform:translateY(-6px);
 }
 
 .thumb{
+  position:relative;
   height:160px;
-  overflow:hidden;
 }
 
 .thumb img{
@@ -192,38 +182,46 @@ html,body{
   object-fit:cover;
 }
 
+.badge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  background:rgba(0,0,0,.4);
+  border:1px solid rgba(255,255,255,.12);
+}
+
 .body{
   padding:18px;
   text-align:center;
 }
 
 .body h3{
-  margin-bottom:10px;
+  margin:0 0 10px;
   font-size:16px;
   font-weight:900;
   text-transform:uppercase;
 }
 
 .body p{
-  color:var(--muted);
   font-size:13.5px;
+  color:var(--muted);
 }
 
 .btn{
-  display:block;
-  margin-top:10px;
+  display:inline-flex;
+  justify-content:center;
+  width:100%;
+  margin-top:12px;
   padding:11px;
   border-radius:999px;
-  text-decoration:none;
-  border:1px solid rgba(31,227,162,.3);
+  border:1px solid rgba(31,227,162,.30);
   background:rgba(31,227,162,.12);
   color:var(--text);
   font-weight:800;
-}
-
-.btn:hover{
-  background:rgba(31,227,162,.18);
-  color:var(--green);
+  text-decoration:none;
 }
 </style>
 </head>
@@ -249,24 +247,59 @@ html,body{
   </div>
 
   <nav class="nav">
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
+    <a href="#">Visão Geral</a>
+    <a href="#">Serviços</a>
     <a class="active" href="#">Módulos do Radar</a>
   </nav>
 </header>
 
 <main class="main">
-  <div class="wrap">
-    <section class="modules">
+<div class="wrap">
+<section class="modules">
 
-      <!-- módulos mantidos exatamente como estavam -->
-
-    </section>
+<!-- MÓDULOS RESTAURADOS -->
+<article class="module">
+  <div class="thumb"><div class="badge">Módulo</div><img src="modulo1.jpg" alt=""></div>
+  <div class="body">
+    <h3>Gestão Eleitoral</h3>
+    <p>Organize equipes, metas e atividades.</p>
+    <a class="btn" href="#">Acessar</a>
   </div>
+</article>
+
+<article class="module">
+  <div class="thumb"><div class="badge">Módulo</div><img src="modulo2.jpg" alt=""></div>
+  <div class="body">
+    <h3>Colaboradores</h3>
+    <p>Cadastro e acompanhamento de equipes.</p>
+    <a class="btn" href="#">Acessar</a>
+  </div>
+</article>
+
+<article class="module">
+  <div class="thumb"><div class="badge">Módulo</div><img src="modulo3.jpg" alt=""></div>
+  <div class="body">
+    <h3>WhatsApp</h3>
+    <p>Comunicação segmentada e automatizada.</p>
+    <a class="btn" href="#">Acessar</a>
+  </div>
+</article>
+
+<article class="module">
+  <div class="thumb"><div class="badge">Módulo</div><img src="modulo4.jpg" alt=""></div>
+  <div class="body">
+    <h3>Prestação de Contas</h3>
+    <p>Controle financeiro com transparência.</p>
+    <a class="btn" href="#">Acessar</a>
+  </div>
+</article>
+
+</section>
+</div>
 </main>
 
 <script>
-/* Limpeza segura de Service Workers */
+/* Apenas limpeza segura de Service Workers */
 (function () {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistrations().then(regs => {
