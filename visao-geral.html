@@ -337,11 +337,11 @@ html,body{
     </div>
   </div>
 
-  <nav class="nav" role="navigation" aria-label="Menu principal">
-    <a href="#" data-page="V-Geral">Visão Geral</a>
-    <a href="#" data-page="N-Serviços">Serviços</a>
-    <a href="#" data-page="M-Radar">Módulos do Radar</a>
-  </nav>
+<nav class="nav" role="navigation" aria-label="Menu principal">
+  <a href="#" data-page="V-Geral">Visão Geral</a>
+  <a href="#" data-page="N-Servicos">Serviços</a>
+  <a href="#" data-page="M-Radar">Módulos do Radar</a>
+</nav>
 </header>
 
 <main class="main">
@@ -359,74 +359,64 @@ html,body{
 </main>
 
 <script>
-/* Limpeza segura de Service Workers */
+/* ===== Navegação segura para ArcGIS Experience Builder ===== */
 (function () {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(regs => {
-      regs.forEach(r => {
-        if (r.scope.includes('radarpolitico')) {
-          r.unregister();
-        }
-      });
-    });
-  }
-})();
 
-// Sistema de navegação para iframe sandboxed
-(function() {
-  const baseUrl = 'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=';
-  
-  // Detecta qual página está ativa pela URL atual
-  function updateActiveNav() {
-    const currentUrl = window.location.href;
-    const navLinks = document.querySelectorAll('.nav a');
-    
-    // Marca como ativa baseado na página atual
-    if (currentUrl.includes('visao-geral')) {
-      navLinks[0].classList.add('active');
-    } else if (currentUrl.includes('servicos')) {
-      navLinks[1].classList.add('active');
-    } else if (currentUrl.includes('modulos')) {
-      navLinks[2].classList.add('active');
-    } else {
-      // Padrão: primeira opção
-      navLinks[0].classList.add('active');
+  const EXPERIENCE_ID = '1c71651ddc4842a585a30dbdbd451a9c';
+  const BASE_URL = `https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=${EXPERIENCE_ID}&page=`;
+
+  const PAGES = {
+    'V-Geral': 'V-Geral',
+    'N-Servicos': 'N-Servicos',
+    'M-Radar': 'M-Radar'
+  };
+
+  function isInsideArcGIS() {
+    try {
+      return document.referrer.includes('experiencebuilder')
+          || document.referrer.includes('arcgis');
+    } catch {
+      return false;
     }
   }
-  
-  // Adiciona eventos de clique nos links do menu
+
+  function navigateTo(page) {
+    const url = BASE_URL + page;
+
+    // Se estiver vindo do ArcGIS → abre nova aba (sandbox safe)
+    if (isInsideArcGIS()) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      // Fora do ArcGIS → navegação normal
+      window.location.href = url;
+    }
+  }
+
+  function updateActiveNav() {
+    const params = new URLSearchParams(window.location.search);
+    const currentPage = params.get('page') || 'V-Geral';
+
+    document.querySelectorAll('.nav a').forEach(link => {
+      link.classList.toggle(
+        'active',
+        link.dataset.page === currentPage
+      );
+    });
+  }
+
   document.querySelectorAll('.nav a').forEach(link => {
-    link.addEventListener('click', function(e) {
+    link.addEventListener('click', e => {
       e.preventDefault();
-      const page = this.getAttribute('data-page');
-      const targetUrl = baseUrl + page;
-      
-      // Tenta enviar mensagem para o parent
-      try {
-        window.parent.postMessage({
-          type: 'navigation',
-          url: targetUrl,
-          page: page
-        }, '*');
-      } catch (err) {
-        console.warn('PostMessage failed, trying top.location');
-      }
-      
-      // Fallback: tenta navegar diretamente
-      try {
-        window.top.location.href = targetUrl;
-      } catch (err) {
-        // Se tudo falhar, abre em nova aba
-        window.open(targetUrl, '_blank');
-      }
+      navigateTo(link.dataset.page);
     });
   });
-  
-  // Executa ao carregar
+
   updateActiveNav();
-  
+
 })();
 </script>
 
+
 </body>
 </html>
+
