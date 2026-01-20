@@ -439,11 +439,11 @@ html,body{
     </div>
   </div>
 
-  <nav class="nav" role="navigation" aria-label="Menu principal">
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral" target="_parent">Visão Geral</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os" target="_parent">Serviços</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar" target="_parent">Módulos do Radar</a>
-  </nav>
+<nav class="nav" role="navigation" aria-label="Menu principal">
+  <a href="#" data-page="V-Geral">Visão Geral</a>
+  <a href="#" data-page="N-Servicos">Serviços</a>
+  <a href="#" data-page="M-Radar">Módulos do Radar</a>
+</nav>
 </header>
 
 <main class="main">
@@ -504,71 +504,59 @@ html,body{
 </main>
 
 <script>
-/* Limpeza segura de Service Workers */
+/* ===== Navegação segura – ArcGIS Experience Builder ===== */
 (function () {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(regs => {
-      regs.forEach(r => {
-        if (r.scope.includes('radarpolitico')) {
-          r.unregister();
-        }
-      });
+
+  const EXPERIENCE_ID = '1c71651ddc4842a585a30dbdbd451a9c';
+  const BASE_URL =
+    `https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=${EXPERIENCE_ID}&page=`;
+
+  function isArcGISContext() {
+    try {
+      return document.referrer.includes('experiencebuilder')
+          || document.referrer.includes('arcgis');
+    } catch {
+      return false;
+    }
+  }
+
+  function navigateTo(page) {
+    const url = BASE_URL + page;
+
+    // Dentro do ArcGIS → abre nova aba (sandbox safe)
+    if (isArcGISContext()) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      // Fora do ArcGIS → navegação normal
+      window.location.href = url;
+    }
+  }
+
+  function updateActiveNav() {
+    const params = new URLSearchParams(window.location.search);
+    const currentPage = params.get('page') || 'M-Radar';
+
+    document.querySelectorAll('.nav a').forEach(link => {
+      link.classList.toggle(
+        'active',
+        link.dataset.page === currentPage
+      );
     });
   }
-})();
 
-// Detecta qual página está ativa baseado na URL PAI (Experience Builder)
-(function() {
-  function updateActiveNav() {
-    try {
-      // Tenta ler a URL da página pai (Experience Builder)
-      let parentUrl = '';
-      try {
-        parentUrl = window.parent.location.href;
-      } catch (e) {
-        // Se não conseguir acessar (CORS), usa a URL atual
-        parentUrl = window.location.href;
-      }
-      
-      const params = new URLSearchParams(parentUrl.split('?')[1] || '');
-      const currentPage = params.get('page');
-      const navLinks = document.querySelectorAll('.nav a');
-      
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        
-        try {
-          const linkUrl = new URL(link.href);
-          const linkPage = new URLSearchParams(linkUrl.search).get('page');
-          
-          if (linkPage === currentPage) {
-            link.classList.add('active');
-          }
-        } catch (e) {
-          // Ignora erros
-        }
-      });
-    } catch (e) {
-      console.warn('Erro ao atualizar menu:', e);
-    }
-  }
-  
-  // Executa ao carregar
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', updateActiveNav);
-  } else {
-    updateActiveNav();
-  }
-  
-  // Monitora mensagens do parent (se o Experience Builder enviar)
-  window.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'pageChange') {
-      updateActiveNav();
-    }
+  document.querySelectorAll('.nav a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      navigateTo(link.dataset.page);
+    });
   });
-  
+
+  updateActiveNav();
+
 })();
 </script>
 
+
 </body>
 </html>
+
