@@ -504,56 +504,41 @@ html,body{
 </main>
 
 <script>
-/* ===== Navegação robusta – ArcGIS Experience Builder ===== */
+/* ===== Navegação FINAL – ArcGIS Experience Builder ===== */
 (function () {
 
-  // 🔒 Evita inicializar duas vezes
-  if (window.__RADAR_NAV_INITIALIZED__) return;
-  window.__RADAR_NAV_INITIALIZED__ = true;
+  // 🔒 garante inicialização única
+  if (window.__RADAR_NAV__) return;
+  window.__RADAR_NAV__ = true;
 
   const EXPERIENCE_ID = '1c71651ddc4842a585a30dbdbd451a9c';
   const BASE_URL =
     `https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=${EXPERIENCE_ID}&page=`;
 
-  let navigating = false; // bloqueia cliques múltiplos
-
-  function isArcGISContext() {
-    try {
-      return document.referrer.includes('experiencebuilder')
-          || document.referrer.includes('arcgis');
-    } catch {
-      return false;
-    }
-  }
+  let navigating = false;
 
   function navigateTo(page) {
-    if (navigating) return;
+    if (!page || navigating) return;
     navigating = true;
 
     const url = BASE_URL + page;
 
-    // garante execução síncrona (evita bloqueio de popup)
-    if (isArcGISContext()) {
-      const win = window.open(url, '_blank', 'noopener,noreferrer');
-      if (!win) {
-        // fallback absoluto
-        window.location.href = url;
-      }
-    } else {
-      window.location.href = url;
+    // ✅ SEMPRE abre o Experience Builder
+    const win = window.open(url, '_blank', 'noopener,noreferrer');
+
+    // fallback extremo (raríssimo)
+    if (!win) {
+      location.replace(url);
     }
 
-    // libera após pequeno delay
-    setTimeout(() => {
-      navigating = false;
-    }, 800);
+    setTimeout(() => navigating = false, 600);
   }
 
   function updateActiveNav() {
-    const params = new URLSearchParams(window.location.search);
-    const currentPage = params.get('page');
+    const currentPage =
+      new URLSearchParams(location.search).get('page') || 'V-Geral';
 
-    document.querySelectorAll('.nav a').forEach(link => {
+    document.querySelectorAll('.nav a[data-page]').forEach(link => {
       link.classList.toggle(
         'active',
         link.dataset.page === currentPage
@@ -561,7 +546,7 @@ html,body{
     });
   }
 
-  // 🔁 Delegação de eventos (1 listener só)
+  // ✅ um único listener para o menu
   document.addEventListener('click', function (e) {
     const link = e.target.closest('.nav a[data-page]');
     if (!link) return;
@@ -576,7 +561,9 @@ html,body{
 </script>
 
 
+
 </body>
 </html>
+
 
 
