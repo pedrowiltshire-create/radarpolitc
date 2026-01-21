@@ -530,7 +530,7 @@ html,body{
 
   function updateActiveNav() {
     const params = new URLSearchParams(window.location.search);
-    const currentPage = params.get('page') || 'V-Geral';
+    const currentPage = params.get('page') || 'M-Radar';
 
     document.querySelectorAll('.nav a[data-page]').forEach(link => {
       link.classList.toggle('active', link.dataset.page === currentPage);
@@ -553,3 +553,4 @@ html,body{
 
 </body>
 </html>
+
