@@ -156,7 +156,6 @@ html,body{
   border:1px solid transparent;
   transition:all .2s ease;
   white-space:nowrap;
-  cursor:pointer;
 }
 
 .nav a:hover{
@@ -337,11 +336,11 @@ html,body{
     </div>
   </div>
 
-    <nav class="menu" role="navigation" aria-label="Menu principal">
-      <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
-      <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servicos">Serviços</a>
-      <a class="menu-item" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
-    </nav>
+  <nav class="nav" role="navigation" aria-label="Menu principal">
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
+  </nav>
 </header>
 
 <main class="main">
@@ -359,6 +358,19 @@ html,body{
 </main>
 
 <script>
+/* Limpeza segura de Service Workers */
+(function () {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      regs.forEach(r => {
+        if (r.scope.includes('radarpolitico')) {
+          r.unregister();
+        }
+      });
+    });
+  }
+})();
+
 // Função para atualizar o menu ativo baseado na URL
 function updateActiveNav() {
   const params = new URLSearchParams(window.location.search);
@@ -408,11 +420,5 @@ new MutationObserver(() => {
 }).observe(document, {subtree: true, childList: true});
 </script>
 
-
-
-
-
 </body>
 </html>
-
-
