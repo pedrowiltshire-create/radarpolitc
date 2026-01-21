@@ -440,9 +440,9 @@ html,body{
   </div>
 
 <nav class="nav" role="navigation" aria-label="Menu principal">
-  <a href="#" data-page="V-Geral">Visão Geral</a>
-  <a href="#" data-page="N-Servicos">Serviços</a>
-  <a href="#" data-page="M-Radar">Módulos do Radar</a>
+  <a href="javascript:void(0)" data-page="V-Geral">Visão Geral</a>
+  <a href="javascript:void(0)" data-page="N-Servicos">Serviços</a>
+  <a href="javascript:void(0)" data-page="M-Radar">Módulos do Radar</a>
 </nav>
 </header>
 
@@ -516,54 +516,84 @@ html,body{
 
   function navigateTo(page) {
     if (!page) return;
+    
     const targetUrl = buildUrl(page);
     
-    // Tenta navegar na janela pai (top level)
-    try {
-      if (window.top && window.top !== window.self) {
-        window.top.location.href = targetUrl;
+    // Força navegação imediata sem delay
+    setTimeout(function() {
+      if (window.top && window.top.location) {
+        try {
+          window.top.location.href = targetUrl;
+        } catch(e) {
+          window.location.href = targetUrl;
+        }
       } else {
         window.location.href = targetUrl;
       }
-    } catch (e) {
-      // Fallback se não conseguir acessar window.top
-      window.location.href = targetUrl;
-    }
+    }, 0);
   }
 
   function updateActiveNav() {
+    let currentPage = 'V-Geral';
+    
     try {
       const params = new URLSearchParams(window.top.location.search);
-      const currentPage = params.get('page') || 'V-Geral';
-      
-      document.querySelectorAll('.nav a[data-page]').forEach(link => {
-        link.classList.toggle('active', link.dataset.page === currentPage);
-      });
+      currentPage = params.get('page') || 'V-Geral';
     } catch (e) {
-      // Se não conseguir acessar window.top, usa window.location
-      const params = new URLSearchParams(window.location.search);
-      const currentPage = params.get('page') || 'V-Geral';
-      
-      document.querySelectorAll('.nav a[data-page]').forEach(link => {
-        link.classList.toggle('active', link.dataset.page === currentPage);
-      });
+      try {
+        const params = new URLSearchParams(window.location.search);
+        currentPage = params.get('page') || 'V-Geral';
+      } catch (e2) {
+        // ignora erros
+      }
     }
+    
+    document.querySelectorAll('.nav a[data-page]').forEach(link => {
+      if (link.dataset.page === currentPage) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
   }
 
-  // Adiciona event listeners em cada link
-  document.querySelectorAll('.nav a[data-page]').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      navigateTo(this.dataset.page);
+  // Usa addEventListener SEMPRE que a página carrega
+  function setupLinks() {
+    const links = document.querySelectorAll('.nav a[data-page]');
+    
+    links.forEach(link => {
+      // Remove listeners anteriores clonando o elemento
+      const newLink = link.cloneNode(true);
+      link.parentNode.replaceChild(newLink, link);
+      
+      // Adiciona o listener no elemento novo
+      newLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        
+        const page = this.getAttribute('data-page');
+        navigateTo(page);
+        
+        return false;
+      }, true);
     });
-  });
+  }
 
-  // Atualiza o menu ativo
+  // Executa setup
+  setupLinks();
   updateActiveNav();
 
-  // Re-executa quando a página volta do cache
-  window.addEventListener('pageshow', updateActiveNav);
+  // Re-executa em eventos de navegação
+  window.addEventListener('pageshow', function() {
+    setupLinks();
+    updateActiveNav();
+  });
+
+  window.addEventListener('load', function() {
+    setupLinks();
+    updateActiveNav();
+  });
 
 })();
 </script>
