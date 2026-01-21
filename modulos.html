@@ -31,6 +31,43 @@
   </ul>
 </main>
 
-<script src="menu.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const EXPERIENCE_ID = '1c71651ddc4842a585a30dbdbd451a9c';
+  const BASE_URL =
+    'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/';
+
+  function buildUrl(page) {
+    return `${BASE_URL}?id=${EXPERIENCE_ID}&page=${page}`;
+  }
+
+  function navigateTo(page) {
+    if (!page) return;
+    window.location.href = buildUrl(page);
+  }
+
+  function updateActiveNav() {
+    const params = new URLSearchParams(window.location.search);
+    const currentPage = params.get('page') || 'V-Geral';
+
+    document.querySelectorAll('.nav a[data-page]').forEach(link => {
+      link.classList.toggle('active', link.dataset.page === currentPage);
+    });
+  }
+
+  document.querySelectorAll('.nav a[data-page]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      navigateTo(link.dataset.page);
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', updateActiveNav);
+  window.addEventListener('pageshow', updateActiveNav);
+})();
+</script>
 </body>
 </html>
+
