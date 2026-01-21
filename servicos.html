@@ -342,12 +342,16 @@ html,body{
     </div>
   </div>
 
-<nav class="nav" role="navigation" aria-label="Menu principal">
-  <a href="javascript:void(0)" data-page="V-Geral">Visão Geral</a>
-  <a href="javascript:void(0)" data-page="N-Servicos">Serviços</a>
-  <a href="javascript:void(0)" data-page="M-Radar">Módulos do Radar</a>
+
+<nav style="display:flex; gap:10px;">
+  <button onclick="irParaPagina('V-Geral')">Visão Geral</button>
+  <button onclick="irParaPagina('N-Servicos')">Serviços</button>
+  <button onclick="irParaPagina('M-Radar')">Módulos do Radar</button>
 </nav>
+  
 </header>
+
+  
 
 
 <main class="main">
@@ -477,3 +481,4 @@ html,body{
 
 </body>
 </html>
+
