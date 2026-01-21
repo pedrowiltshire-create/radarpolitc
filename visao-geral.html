@@ -338,9 +338,9 @@ html,body{
   </div>
 
 <nav class="nav" role="navigation" aria-label="Menu principal">
-  <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral" data-page="V-Geral">Visão Geral</a>
-  <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servicos" data-page="N-Servicos">Serviços</a>
-  <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar" data-page="M-Radar">Módulos do Radar</a>
+  <a href="#" data-page="V-Geral">Visão Geral</a>
+  <a href="#" data-page="N-Servicos">Serviços</a>
+  <a href="#" data-page="M-Radar">Módulos do Radar</a>
 </nav>
 </header>
 
@@ -362,28 +362,63 @@ html,body{
 (function() {
   'use strict';
   
-  // Limpa qualquer listener anterior
-  delete window.__RADAR_NAV__;
-  
   const EXPERIENCE_ID = '1c71651ddc4842a585a30dbdbd451a9c';
   const BASE_URL = 'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/';
 
-  function updateActiveNav() {
-    const params = new URLSearchParams(window.location.search);
-    const currentPage = params.get('page') || 'V-Geral';
-    
-    document.querySelectorAll('.nav a[data-page]').forEach(link => {
-      link.classList.toggle('active', link.dataset.page === currentPage);
-    });
+  function buildUrl(page) {
+    return `${BASE_URL}?id=${EXPERIENCE_ID}&page=${encodeURIComponent(page)}`;
   }
 
-  // Atualiza links no carregamento
-  updateActiveNav();
-  
-  // Re-executa quando a página é exibida (volta do cache)
-  window.addEventListener('pageshow', function(event) {
-    updateActiveNav();
+  function navigateTo(page) {
+    if (!page) return;
+    const targetUrl = buildUrl(page);
+    
+    // Tenta navegar na janela pai (top level)
+    try {
+      if (window.top && window.top !== window.self) {
+        window.top.location.href = targetUrl;
+      } else {
+        window.location.href = targetUrl;
+      }
+    } catch (e) {
+      // Fallback se não conseguir acessar window.top
+      window.location.href = targetUrl;
+    }
+  }
+
+  function updateActiveNav() {
+    try {
+      const params = new URLSearchParams(window.top.location.search);
+      const currentPage = params.get('page') || 'V-Geral';
+      
+      document.querySelectorAll('.nav a[data-page]').forEach(link => {
+        link.classList.toggle('active', link.dataset.page === currentPage);
+      });
+    } catch (e) {
+      // Se não conseguir acessar window.top, usa window.location
+      const params = new URLSearchParams(window.location.search);
+      const currentPage = params.get('page') || 'V-Geral';
+      
+      document.querySelectorAll('.nav a[data-page]').forEach(link => {
+        link.classList.toggle('active', link.dataset.page === currentPage);
+      });
+    }
+  }
+
+  // Adiciona event listeners em cada link
+  document.querySelectorAll('.nav a[data-page]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigateTo(this.dataset.page);
+    });
   });
+
+  // Atualiza o menu ativo
+  updateActiveNav();
+
+  // Re-executa quando a página volta do cache
+  window.addEventListener('pageshow', updateActiveNav);
 
 })();
 </script>
