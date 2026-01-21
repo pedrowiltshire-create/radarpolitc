@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Permissions-Policy" content="attribution-reporting=(), private-aggregation=(), private-state-token-issuance=(), private-state-token-redemption=(), join-ad-interest-group=(), run-ad-auction=(), browsing-topics=()">
+<meta http-equiv="Cross-Origin-Embedder-Policy" content="unsafe-none">
+<meta http-equiv="Cross-Origin-Opener-Policy" content="unsafe-none">
 <title>Visão Geral | Radar Político</title>
 
 <style>
@@ -409,10 +412,10 @@ html,body{
   </div>
 
   <nav class="nav" role="navigation" aria-label="Menu principal">
-    <a class="active" href="?page=V-Geral">Visão Geral</a>
-    <a href="?page=N-Servi%C3%A7os">Serviços</a>
-    <a href="?page=M-Radar">Módulos do Radar</a>
-</nav>
+    <a href="#" data-page="V-Geral">Visão Geral</a>
+    <a href="#" data-page="N-Servicos">Serviços</a>
+    <a href="#" data-page="M-Radar">Módulos do Radar</a>
+  </nav>
 </header>
 
 <main class="main">
@@ -446,6 +449,50 @@ html,body{
 
   </section>
 </main>
+
+<script>
+/* ===== Navegação estável – ArcGIS Experience Builder (MESMA ABA) ===== */
+(function () {
+
+  // Evita múltiplas inicializações
+  if (window.__RADAR_NAV__) return;
+  window.__RADAR_NAV__ = true;
+
+  const EXPERIENCE_ID = '1c71651ddc4842a585a30dbdbd451a9c';
+  const BASE_URL = 'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/';
+
+  function buildUrl(page) {
+    return `${BASE_URL}?id=${EXPERIENCE_ID}&page=${page}`;
+  }
+
+  function navigateTo(page) {
+    if (!page) return;
+    const targetUrl = buildUrl(page);
+    window.location.href = targetUrl;
+  }
+
+  function updateActiveNav() {
+    const params = new URLSearchParams(window.location.search);
+    const currentPage = params.get('page') || 'V-Geral';
+
+    document.querySelectorAll('.nav a[data-page]').forEach(link => {
+      link.classList.toggle('active', link.dataset.page === currentPage);
+    });
+  }
+
+  // Delegação de evento (método recomendado)
+  document.addEventListener('click', function (e) {
+    const link = e.target.closest('.nav a[data-page]');
+    if (!link) return;
+
+    e.preventDefault();
+    navigateTo(link.dataset.page);
+  });
+
+  updateActiveNav();
+
+})();
+</script>
 
 </body>
 </html>
