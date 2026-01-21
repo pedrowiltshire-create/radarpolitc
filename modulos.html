@@ -99,9 +99,7 @@ html,body{
   width:100%;
   display:flex;
   align-items:center;
-  justify-content:space-between;
   padding:22px 48px;
-  gap:20px;
 }
 
 .brand{
@@ -141,37 +139,6 @@ html,body{
   letter-spacing:.22em;
   font-weight:700;
   font-size:12px;
-}
-
-.nav{
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-}
-
-.nav a{
-  color:var(--text);
-  text-decoration:none;
-  font-size:14px;
-  padding:8px 12px;
-  border-radius:12px;
-  transition:all .2s ease;
-  border:1px solid transparent;
-  white-space:nowrap;
-}
-
-.nav a:hover{
-  background:rgba(31,227,162,.06);
-  border-color:rgba(31,227,162,.15);
-  color:var(--green);
-  transform:translateY(-1px);
-}
-
-.nav a.active{
-  color:var(--green);
-  background:rgba(31,227,162,.08);
-  border:1px solid rgba(31,227,162,.18);
 }
 
 /* ===== CONTEÚDO ===== */
@@ -343,20 +310,6 @@ html,body{
 @media(max-width:700px){
   .header{
     padding:16px 20px;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:16px;
-  }
-
-  .nav{ 
-    gap:12px;
-    width:100%;
-    justify-content:flex-start;
-  }
-
-  .nav a{
-    font-size:13px;
-    padding:8px 10px;
   }
 
   .main{ 
@@ -384,16 +337,6 @@ html,body{
 
   .brand .name span{
     font-size:11px;
-  }
-
-  .nav{
-    flex-direction:column;
-    gap:8px;
-  }
-
-  .nav a{
-    width:100%;
-    text-align:center;
   }
 
   .main{
@@ -438,12 +381,6 @@ html,body{
       POLÍTICO
     </div>
   </div>
-
-  <nav class="nav" role="navigation" aria-label="Menu principal">
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
-  </nav>
 </header>
 
 <main class="main">
@@ -454,7 +391,8 @@ html,body{
       <article class="module">
         <div class="thumb">
           <div class="badge">Módulo</div>
-          <img src="modulo1.jpg" alt="Gestão Eleitoral" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EGestão Eleitoral%3C/text%3E%3C/svg%3E'">
+          <img src="modulo1.jpg" alt="Gestão Eleitoral"
+            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EGestão Eleitoral%3C/text%3E%3C/svg%3E'">
         </div>
         <div class="body">
           <h3>Gestão Eleitoral</h3>
@@ -466,7 +404,8 @@ html,body{
       <article class="module">
         <div class="thumb">
           <div class="badge">Módulo</div>
-          <img src="modulo2.jpg" alt="Cadastro de Colaboradores" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EColaboradores%3C/text%3E%3C/svg%3E'">
+          <img src="modulo2.jpg" alt="Cadastro de Colaboradores"
+            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EColaboradores%3C/text%3E%3C/svg%3E'">
         </div>
         <div class="body">
           <h3>Cadastro de Colaboradores</h3>
@@ -478,7 +417,8 @@ html,body{
       <article class="module">
         <div class="thumb">
           <div class="badge">Módulo</div>
-          <img src="modulo3.jpg" alt="Comunicação via WhatsApp" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EComunicação%3C/text%3E%3C/svg%3E'">
+          <img src="modulo3.jpg" alt="Comunicação via WhatsApp"
+            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EComunicação%3C/text%3E%3C/svg%3E'">
         </div>
         <div class="body">
           <h3>Comunicação via WhatsApp</h3>
@@ -490,7 +430,8 @@ html,body{
       <article class="module">
         <div class="thumb">
           <div class="badge">Módulo</div>
-          <img src="modulo4.jpg" alt="Prestação de Contas" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EPrestação de Contas%3C/text%3E%3C/svg%3E'">
+          <img src="modulo4.jpg" alt="Prestação de Contas"
+            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%230e2b26%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2218%22%3EPrestação de Contas%3C/text%3E%3C/svg%3E'">
         </div>
         <div class="body">
           <h3>Prestação de Contas</h3>
@@ -502,56 +443,6 @@ html,body{
     </section>
   </div>
 </main>
-
-<script>
-// Função para atualizar o menu ativo baseado na URL
-function updateActiveNav() {
-  const params = new URLSearchParams(window.location.search);
-  const currentPage = params.get('page');
-  const navLinks = document.querySelectorAll('.nav a');
-  
-  navLinks.forEach(link => {
-    link.classList.remove('active');
-    
-    try {
-      const linkUrl = new URL(link.href);
-      const linkPage = new URLSearchParams(linkUrl.search).get('page');
-      
-      if (linkPage === currentPage) {
-        link.classList.add('active');
-      }
-    } catch (e) {
-      console.warn('Erro ao processar link:', link.href);
-    }
-  });
-}
-
-// Executa ao carregar a página
-document.addEventListener('DOMContentLoaded', updateActiveNav);
-
-// Monitora mudanças na URL (para navegação SPA do Experience Builder)
-window.addEventListener('popstate', updateActiveNav);
-
-// Monitora cliques nos links do menu
-document.querySelectorAll('.nav a').forEach(link => {
-  link.addEventListener('click', function(e) {
-    // Remove active de todos
-    document.querySelectorAll('.nav a').forEach(l => l.classList.remove('active'));
-    // Adiciona active no clicado
-    this.classList.add('active');
-  });
-});
-
-// Observa mudanças na URL (para SPAs que alteram history sem popstate)
-let lastUrl = location.href;
-new MutationObserver(() => {
-  const url = location.href;
-  if (url !== lastUrl) {
-    lastUrl = url;
-    updateActiveNav();
-  }
-}).observe(document, {subtree: true, childList: true});
-</script>
 
 </body>
 </html>
