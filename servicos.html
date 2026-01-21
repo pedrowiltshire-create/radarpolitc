@@ -342,16 +342,12 @@ html,body{
     </div>
   </div>
 
-
-<nav style="display:flex; gap:10px;">
-  <button onclick="irParaPagina('V-Geral')">Visão Geral</button>
-  <button onclick="irParaPagina('N-Servicos')">Serviços</button>
-  <button onclick="irParaPagina('M-Radar')">Módulos do Radar</button>
+<nav class="nav" role="navigation" aria-label="Menu principal">
+  <a href="#" data-page="V-Geral">Visão Geral</a>
+  <a href="#" data-page="N-Servicos">Serviços</a>
+  <a href="#" data-page="M-Radar">Módulos do Radar</a>
 </nav>
-  
 </header>
-
-  
 
 
 <main class="main">
@@ -385,19 +381,67 @@ html,body{
 </main>
 
 <script>
-  function irParaPagina(pageId) {
-    window.parent.postMessage(
-      {
-        type: "exb:app:navigate",
-        data: { pageId }
-      },
-      "*"
-    );
+/* ===== Navegação estável – ArcGIS Experience Builder (MESMA ABA) ===== */
+(function () {
+
+  // Evita múltiplas inicializações
+  if (window.__RADAR_NAV__) return;
+  window.__RADAR_NAV__ = true;
+
+  const EXPERIENCE_ID = '1c71651ddc4842a585a30dbdbd451a9c';
+  const BASE_URL =
+    'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/';
+  const BASE_URL = 'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/';
+
+  function buildUrl(page) {
+    return `${BASE_URL}?id=${EXPERIENCE_ID}&page=${page}`;
   }
+
+  function navigateTo(page) {
+    if (!page) return;
+
+    const targetUrl = buildUrl(page);
+
+    // 🔥 navegação direta na MESMA ABA
+    window.location.href = targetUrl;
+  }
+
+  function updateActiveNav() {
+    const params = new URLSearchParams(window.location.search);
+    const currentPage = params.get('page') || 'V-Geral';
+
+    document.querySelectorAll('.nav a[data-page]').forEach(link => {
+      link.classList.toggle(
+        'active',
+        link.dataset.page === currentPage
+      );
+      link.classList.toggle('active', link.dataset.page === currentPage);
+    });
+  }
+
+  // Delegação de evento (robusto)
+  document.addEventListener('click', function (e) {
+    const link = e.target.closest('.nav a[data-page]');
+    if (!link) return;
+
+    e.preventDefault();
+    navigateTo(link.dataset.page);
+  // Event listener usando onclick diretamente nos links
+  document.querySelectorAll('.nav a[data-page]').forEach(link => {
+    link.onclick = function(e) {
+      e.preventDefault();
+      navigateTo(this.dataset.page);
+    };
+  });
+
+  updateActiveNav();
+
+})();
 </script>
+
+
+
 
 
 </body>
 </html>
-
-
