@@ -1,3 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Radar Político</title>
+
+<style>
+:root{
+  --bg:#07110f;
+  --panel:#0b1412;
+  --text:#e6f2ef;
+  --muted:#9fb7b0;
+  --green:#1fe3a2;
+}
+
 html,body{
   margin:0;
   height:100%;
@@ -5,20 +21,43 @@ html,body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background:var(--bg);
   color:var(--text);
-@@ -41,7 +41,7 @@
+}
+
+.background{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  z-index:0;
+}
+
+.bg-map{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
   object-fit:cover;
   object-position:center top;
   opacity:.16;
-  filter: blur(.2px) contrast(1.05);
   filter: contrast(1.05);
   transform: scale(1.02);
   pointer-events:none;
 }
-@@ -101,16 +101,19 @@
+
+.bg-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(31,227,162,.10), transparent 60%),
+    radial-gradient(900px 500px at 90% 10%, rgba(31,227,162,.08), transparent 60%),
+    linear-gradient(to bottom, rgba(7,17,15,.85), rgba(7,17,15,.95));
+}
+
+.header{
+  position:relative;
+  z-index:2;
+  display:flex;
   align-items:center;
-  justify-content:space-between;
   padding:22px 48px;
-  gap:20px;
 }
 
 .brand{
@@ -29,25 +68,25 @@ html,body{
 }
 
 .brand .mark{
-  width:38px; height:38px;
-  width:38px; 
+  width:38px;
   height:38px;
   border-radius:12px;
   background:rgba(31,227,162,.12);
   border:1px solid rgba(31,227,162,.35);
-@@ -119,7 +122,10 @@
+  display:grid;
+  place-items:center;
   box-shadow:0 0 24px rgba(31,227,162,.18);
 }
 
-.brand svg{ width:22px; height:22px; }
-.brand svg{ 
-  width:22px; 
-  height:22px; 
+.brand svg{
+  width:22px;
+  height:22px;
 }
 
 .brand .name{
   font-weight:700;
-@@ -128,6 +134,7 @@
+  letter-spacing:.18em;
+  font-size:13px;
   text-transform:uppercase;
   line-height:1.1;
 }
@@ -55,93 +94,80 @@ html,body{
 .brand .name span{
   display:block;
   color:var(--green);
-@@ -138,7 +145,7 @@
-
-.nav{
-  display:flex;
-  gap:32px;
-  gap:20px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-}
-@@ -147,13 +154,16 @@
-  color:var(--text);
-  text-decoration:none;
-  font-size:14px;
-  padding:8px 10px;
-  padding:8px 12px;
-  border-radius:12px;
-  transition:.2s;
-  transition:all .2s ease;
-  border:1px solid transparent;
-  white-space:nowrap;
 }
 
-.nav a:hover{
-  background:rgba(31,227,162,.06);
-  border-color:rgba(31,227,162,.15);
-  color:var(--green);
-  transform:translateY(-1px);
-}
-@@ -164,7 +174,7 @@
-  border:1px solid rgba(31,227,162,.18);
-}
-
-/* ===== CONTEÚDO: layout ===== */
-/* ===== CONTEÚDO ===== */
 .main{
   position:relative;
   z-index:2;
-@@ -184,7 +194,6 @@
+  padding:28px 48px 64px;
+}
+
+.container{
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:64px;
   align-items:center;
 }
 
-/* “moldura” com cantos arredondados estilo orgânico */
 .photo-wrap{
   position:relative;
   width:100%;
-@@ -198,8 +207,13 @@
   border-radius:48px;
+  overflow:hidden;
   box-shadow:0 40px 110px rgba(0,0,0,.70);
   background:#0b1412;
-  /* forma levemente diferente */
   clip-path: polygon(12% 2%, 76% 2%, 98% 26%, 98% 74%, 74% 98%, 14% 98%, 2% 74%, 2% 26%);
   transition:transform .3s ease, box-shadow .3s ease;
 }
 
-.photo:hover{
+.photo-wrap:hover{
   transform:translateY(-6px);
   box-shadow:0 50px 130px rgba(0,0,0,.8);
 }
 
 .photo img{
-@@ -237,38 +251,152 @@
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.content{
   max-width:560px;
 }
 
-.content strong{ color:var(--text); }
-.content strong{ 
-  color:var(--text); 
+.content h1{
+  font-size:42px;
+  line-height:1.15;
+  margin:0 0 18px;
 }
 
-/* ===== MOBILE ===== */
+.content p{
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.6;
+}
+
+.content strong{
+  color:var(--text);
+}
+
 /* ===== RESPONSIVO ===== */
 @media(max-width:980px){
-  .container{ grid-template-columns:1fr; gap:42px; }
-  .photo-wrap{ max-width:520px; margin:0 auto; }
-  .content h1{ font-size:34px; text-align:left; }
-  .container{ 
-    grid-template-columns:1fr; 
-    gap:42px; 
+  .container{
+    grid-template-columns:1fr;
+    gap:42px;
   }
-  
-  .photo-wrap{ 
-    max-width:520px; 
-    margin:0 auto; 
+
+  .photo-wrap{
+    max-width:520px;
+    margin:0 auto;
   }
-  
-  .content h1{ 
-    font-size:34px; 
+
+  .content h1{
+    font-size:34px;
   }
 }
 
@@ -149,69 +175,46 @@ html,body{
   .header{
     padding:18px 32px;
   }
-  
+
   .main{
     padding:20px 32px 52px;
   }
-  
+
   .container{
     gap:36px;
   }
-  
+
   .content p{
     font-size:15px;
   }
 }
 
 @media(max-width:700px){
-  .header{ padding:16px 18px; gap:16px; flex-direction:column; align-items:flex-start; }
-  .nav{ gap:10px; }
-  .main{ padding:8px 18px 42px; }
-  .bg-map{ opacity:.06; }
-  .content h1{ font-size:30px; }
-  .header{ 
-    padding:16px 20px; 
-    flex-direction:column; 
-    align-items:flex-start;
-    gap:16px;
+  .header{
+    padding:16px 20px;
   }
-  
-  .nav{ 
-    gap:12px;
-    width:100%;
-    justify-content:flex-start;
-  }
-  
-  .nav a{
-    font-size:13px;
-    padding:8px 10px;
-  }
-  
-  .main{ 
+
+  .main{
     padding:16px 20px 42px;
   }
-  
+
   .container{
     gap:32px;
   }
-  
+
   .photo-wrap{
     max-width:420px;
   }
-  
-  .photo{
-    border-radius:40px;
-  }
-  
-  .content h1{ 
+
+  .content h1{
     font-size:30px;
   }
-  
+
   .content p{
     font-size:14px;
   }
-  
-  .bg-map{ 
+
+  .bg-map{
     opacity:.06;
   }
 }
@@ -220,42 +223,28 @@ html,body{
   .header{
     padding:14px 16px;
   }
-  
+
   .brand .name{
     font-size:12px;
   }
-  
+
   .brand .name span{
     font-size:11px;
   }
-  
-  .nav{
-    flex-direction:column;
-    gap:8px;
-  }
-  
-  .nav a{
-    width:100%;
-    text-align:center;
-  }
-  
+
   .main{
     padding:14px 16px 38px;
   }
-  
+
   .photo-wrap{
     max-width:100%;
-  }
-  
-  .photo{
     border-radius:32px;
   }
-  
+
   .content h1{
     font-size:26px;
-    line-height:1.15;
   }
-  
+
   .content p{
     font-size:13.5px;
   }
@@ -266,73 +255,62 @@ html,body{
 <body>
 
 <div class="background">
-  <!-- Se não tiver mapa.png, pode apagar essa linha -->
   <img class="bg-map" src="mapa.png" alt="" aria-hidden="true">
   <img class="bg-map" src="mapa.png" alt="Mapa do Brasil" onerror="this.style.display='none'">
   <div class="bg-overlay"></div>
-  <div class="radar"></div>
 </div>
 
 <header class="header">
   <div class="brand">
     <div class="mark" aria-hidden="true">
-      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
-    <div class="mark">
       <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3" aria-hidden="true">
         <circle cx="32" cy="32" r="22"/>
         <path d="M32 32L48 16"/>
         <circle cx="32" cy="32" r="4" fill="var(--green)"/>
-@@ -280,10 +408,10 @@
+      </svg>
+    </div>
+    <div class="name">
+      Radar<br><span>Político</span>
     </div>
   </div>
-
-  <nav class="nav" aria-label="Menu principal">
-    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=V-Geral">Visão Geral</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=N-Servi%C3%A7os">Serviços</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=M-Radar">Módulos do Radar</a>
 </header>
 
-@@ -292,8 +420,7 @@
+<main class="main">
+  <div class="container">
+
+    <div class="content">
+      <h1>Análise política baseada em dados</h1>
+      <p>
+        O <strong>Radar Político</strong> oferece inteligência territorial,
+        análise estratégica e visualização de dados para campanhas,
+        mandatos e decisões públicas.
+      </p>
+    </div>
 
     <div class="photo-wrap">
       <div class="photo">
-        <!-- Coloque a imagem aqui. -->
-        <img src="equipe.jpg" alt="Equipe de campanha analisando dados">
-        <img src="equipe.jpg" alt="Equipe de campanha analisando dados" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22600%22%3E%3Crect fill=%22%230e2b26%22 width=%22600%22 height=%22600%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2228%22%3ERadar Político%3C/text%3E%3C/svg%3E'">
+        <img src="equipe.jpg"
+             alt="Equipe de campanha analisando dados"
+             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22600%22%3E%3Crect fill=%22%230e2b26%22 width=%22600%22 height=%22600%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2228%22%3ERadar Político%3C/text%3E%3C/svg%3E'">
       </div>
     </div>
 
-@@ -322,8 +449,3 @@ <h1>
+  </div>
+</main>
 
-</body>
-  <script>
+<script>
 (function() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for(let registration of registrations) {
-        if(registration.scope.includes('radarpolitico')) {
+      for (let registration of registrations) {
+        if (registration.scope.includes('radarpolitico')) {
           registration.unregister();
         }
       }
     });
   }
-
-  let canNavigate = true;
-  const navLinks = document.querySelectorAll('.nav a, .menu-item, .btn');
-  
-  navLinks.forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      if (!canNavigate) {
-        e.preventDefault();
-        return false;
-      }
-      canNavigate = false;
-      setTimeout(function() { canNavigate = true; }, 1500);
-    });
-  });
 })();
 </script>
+
 </body>
 </html>
-
-
