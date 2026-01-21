@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Permissions-Policy" content="attribution-reporting=(), private-aggregation=(), private-state-token-issuance=(), private-state-token-redemption=(), join-ad-interest-group=(), run-ad-auction=(), browsing-topics=()">
+<meta http-equiv="Cross-Origin-Embedder-Policy" content="unsafe-none">
+<meta http-equiv="Cross-Origin-Opener-Policy" content="unsafe-none">
 <title>Módulos do Radar | Radar Político</title>
 
 <style>
@@ -304,6 +307,7 @@ html,body{
   font-size:12px;
   text-decoration:none;
   transition:all .2s ease;
+  cursor:pointer;
 }
 
 .btn:hover{
@@ -440,9 +444,9 @@ html,body{
   </div>
 
   <nav class="nav" role="navigation" aria-label="Menu principal">
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
-    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
+    <a href="#" data-page="V-Geral">Visão Geral</a>
+    <a href="#" data-page="N-Servicos">Serviços</a>
+    <a href="#" data-page="M-Radar">Módulos do Radar</a>
   </nav>
 </header>
 
@@ -459,7 +463,7 @@ html,body{
         <div class="body">
           <h3>Gestão Eleitoral</h3>
           <p>Organize equipes, metas e atividades com visão clara do progresso da campanha.</p>
-          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Gestão Eleitoral">Acessar</a>
+          <a class="btn" href="#" data-page="Gestao-Eleitoral">Acessar</a>
         </div>
       </article>
 
@@ -471,7 +475,7 @@ html,body{
         <div class="body">
           <h3>Cadastro de Colaboradores</h3>
           <p>Cadastre pessoas, funções, regiões e acompanhe sua atuação com segurança.</p>
-          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Colaboradores">Acessar</a>
+          <a class="btn" href="#" data-page="Colaboradores">Acessar</a>
         </div>
       </article>
 
@@ -483,7 +487,7 @@ html,body{
         <div class="body">
           <h3>Comunicação via WhatsApp</h3>
           <p>Envie mensagens segmentadas e automatize fluxos para mobilização e resposta.</p>
-          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Whatsapp">Acessar</a>
+          <a class="btn" href="#" data-page="Whatsapp">Acessar</a>
         </div>
       </article>
 
@@ -495,13 +499,57 @@ html,body{
         <div class="body">
           <h3>Prestação de Contas</h3>
           <p>Registre despesas, contratos e comprovantes com organização e transparência.</p>
-          <a class="btn" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=Prestação de Contas">Acessar</a>
+          <a class="btn" href="#" data-page="Prestacao-Contas">Acessar</a>
         </div>
       </article>
 
     </section>
   </div>
 </main>
+
+<script>
+/* ===== Navegação estável – ArcGIS Experience Builder (MESMA ABA) ===== */
+(function () {
+
+  // Evita múltiplas inicializações
+  if (window.__RADAR_NAV__) return;
+  window.__RADAR_NAV__ = true;
+
+  const EXPERIENCE_ID = '1c71651ddc4842a585a30dbdbd451a9c';
+  const BASE_URL = 'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/';
+
+  function buildUrl(page) {
+    return `${BASE_URL}?id=${EXPERIENCE_ID}&page=${page}`;
+  }
+
+  function navigateTo(page) {
+    if (!page) return;
+    const targetUrl = buildUrl(page);
+    window.location.href = targetUrl;
+  }
+
+  function updateActiveNav() {
+    const params = new URLSearchParams(window.location.search);
+    const currentPage = params.get('page') || 'V-Geral';
+
+    document.querySelectorAll('.nav a[data-page]').forEach(link => {
+      link.classList.toggle('active', link.dataset.page === currentPage);
+    });
+  }
+
+  // Delegação de evento para navegação (menu e botões)
+  document.addEventListener('click', function (e) {
+    const link = e.target.closest('a[data-page]');
+    if (!link) return;
+
+    e.preventDefault();
+    navigateTo(link.dataset.page);
+  });
+
+  updateActiveNav();
+
+})();
+</script>
 
 </body>
 </html>
