@@ -404,7 +404,7 @@ html,body{
     // Se não passar página, tenta pegar da URL
     if (!activePage) {
       const params = new URLSearchParams(window.location.search);
-      activePage = params.get('page') || 'V-Geral';
+      activePage = params.get('page') || 'N-Servicos';
     }
 
     document.querySelectorAll('.nav a[data-page]').forEach(link => {
@@ -434,3 +434,4 @@ html,body{
 
 </body>
 </html>
+
