@@ -338,9 +338,9 @@ html,body{
   </div>
 
 <nav class="nav" role="navigation" aria-label="Menu principal">
-  <a href="#" data-page="V-Geral">Visão Geral</a>
-  <a href="#" data-page="N-Servicos">Serviços</a>
-  <a href="#" data-page="M-Radar">Módulos do Radar</a>
+  <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral" data-page="V-Geral">Visão Geral</a>
+  <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servicos" data-page="N-Servicos">Serviços</a>
+  <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar" data-page="M-Radar">Módulos do Radar</a>
 </nav>
 </header>
 
@@ -359,38 +359,32 @@ html,body{
 </main>
 
 <script>
-(function () {
+(function() {
+  'use strict';
+  
+  // Limpa qualquer listener anterior
+  delete window.__RADAR_NAV__;
+  
   const EXPERIENCE_ID = '1c71651ddc4842a585a30dbdbd451a9c';
   const BASE_URL = 'https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/';
-
-  function buildUrl(page) {
-    return `${BASE_URL}?id=${EXPERIENCE_ID}&page=${page}`;
-  }
-
-  function navigateTo(page) {
-    if (!page) return;
-    const targetUrl = buildUrl(page);
-    window.location.href = targetUrl;
-  }
 
   function updateActiveNav() {
     const params = new URLSearchParams(window.location.search);
     const currentPage = params.get('page') || 'V-Geral';
-
+    
     document.querySelectorAll('.nav a[data-page]').forEach(link => {
       link.classList.toggle('active', link.dataset.page === currentPage);
     });
   }
 
-  // Event listener usando onclick diretamente nos links
-  document.querySelectorAll('.nav a[data-page]').forEach(link => {
-    link.onclick = function(e) {
-      e.preventDefault();
-      navigateTo(this.dataset.page);
-    };
+  // Atualiza links no carregamento
+  updateActiveNav();
+  
+  // Re-executa quando a página é exibida (volta do cache)
+  window.addEventListener('pageshow', function(event) {
+    updateActiveNav();
   });
 
-  updateActiveNav();
 })();
 </script>
 
