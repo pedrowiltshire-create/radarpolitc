@@ -400,12 +400,15 @@ html,body{
     window.location.href = targetUrl;
   }
 
-  function updateActiveNav() {
-    const params = new URLSearchParams(window.location.search);
-    const currentPage = params.get('page') || 'V-Geral';
+  function updateActiveNav(activePage) {
+    // Se não passar página, tenta pegar da URL
+    if (!activePage) {
+      const params = new URLSearchParams(window.location.search);
+      activePage = params.get('page') || 'V-Geral';
+    }
 
     document.querySelectorAll('.nav a[data-page]').forEach(link => {
-      link.classList.toggle('active', link.dataset.page === currentPage);
+      link.classList.toggle('active', link.dataset.page === activePage);
     });
   }
 
@@ -415,9 +418,15 @@ html,body{
     if (!link) return;
 
     e.preventDefault();
+    
+    // Atualiza visualmente ANTES de navegar
+    updateActiveNav(link.dataset.page);
+    
+    // Depois navega
     navigateTo(link.dataset.page);
   });
 
+  // Atualiza na inicialização
   updateActiveNav();
 
 })();
