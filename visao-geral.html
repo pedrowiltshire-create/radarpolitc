@@ -1,107 +1,22 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<meta http-equiv="Permissions-Policy" content="attribution-reporting=(), private-aggregation=(), private-state-token-issuance=(), private-state-token-redemption=(), join-ad-interest-group=(), run-ad-auction=(), browsing-topics=()">
-<meta http-equiv="Cross-Origin-Embedder-Policy" content="unsafe-none">
-<meta http-equiv="Cross-Origin-Opener-Policy" content="unsafe-none">
-
-<title>Visão Geral | Radar Político</title>
-
-<style>
-:root{
-  --green:#1fe3a2;
-  --bg:#05090c;
-  --border:rgba(255,255,255,.12);
-  --text:#eaf5f2;
-  --muted:#b9d6cd;
-}
-
-*{box-sizing:border-box}
-
 html,body{
   margin:0;
+  height:100%;
   min-height:100%;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background:var(--bg);
   color:var(--text);
-  overflow-x:hidden;
-}
-
-/* ===== FUNDO ===== */
-.background{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  overflow:hidden;
-}
-
-.bg-map{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
+@@ -41,7 +41,7 @@
   object-fit:cover;
   object-position:center top;
   opacity:.16;
+  filter: blur(.2px) contrast(1.05);
+  filter: contrast(1.05);
+  transform: scale(1.02);
   pointer-events:none;
 }
-
-.bg-overlay{
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at top, rgba(14,43,38,.65), rgba(5,9,12,.92) 65%),
-    linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.65));
-  pointer-events:none;
-}
-
-.radar{
-  position:absolute;
-  inset:-40vmax;
-  margin:auto;
-  width:120vmax;
-  height:120vmax;
-  border-radius:50%;
-  background:
-    repeating-radial-gradient(
-      circle,
-      rgba(31,227,162,.06) 0 1px,
-      transparent 1px 80px
-    );
-  opacity:.45;
-  pointer-events:none;
-}
-
-.radar::after{
-  content:"";
-  position:absolute;
-  inset:-50%;
-  background:
-    conic-gradient(
-      from 0deg,
-      transparent 0deg,
-      rgba(31,227,162,.22) 40deg,
-      transparent 80deg
-    );
-  animation:sweep 7s linear infinite;
-}
-
-@keyframes sweep{ to{transform:rotate(360deg)} }
-
-@media (prefers-reduced-motion: reduce){
-  .radar::after{ animation:none; }
-}
-
-/* ===== HEADER ===== */
-.header{
-  position:relative;
-  z-index:2;
-  display:flex;
-  justify-content:space-between;
+@@ -101,16 +101,19 @@
   align-items:center;
+  justify-content:space-between;
   padding:22px 48px;
   gap:20px;
 }
@@ -110,25 +25,29 @@ html,body{
   display:flex;
   align-items:center;
   gap:12px;
+  flex-shrink:0;
 }
 
 .brand .mark{
-  width:38px;
+  width:38px; height:38px;
+  width:38px; 
   height:38px;
   border-radius:12px;
   background:rgba(31,227,162,.12);
   border:1px solid rgba(31,227,162,.35);
-  display:grid;
-  place-items:center;
+@@ -119,7 +122,10 @@
   box-shadow:0 0 24px rgba(31,227,162,.18);
 }
 
 .brand svg{ width:22px; height:22px; }
+.brand svg{ 
+  width:22px; 
+  height:22px; 
+}
 
 .brand .name{
   font-weight:700;
-  font-size:14px;
-  letter-spacing:.14em;
+@@ -128,6 +134,7 @@
   text-transform:uppercase;
   line-height:1.1;
 }
@@ -136,25 +55,25 @@ html,body{
 .brand .name span{
   display:block;
   color:var(--green);
-  font-size:12px;
-  letter-spacing:.22em;
-}
+@@ -138,7 +145,7 @@
 
-/* ===== MENU ===== */
 .nav{
   display:flex;
+  gap:32px;
   gap:20px;
   flex-wrap:wrap;
+  justify-content:flex-end;
 }
-
-.nav a{
+@@ -147,13 +154,16 @@
   color:var(--text);
   text-decoration:none;
   font-size:14px;
+  padding:8px 10px;
   padding:8px 12px;
   border-radius:12px;
-  border:1px solid transparent;
+  transition:.2s;
   transition:all .2s ease;
+  border:1px solid transparent;
   white-space:nowrap;
 }
 
@@ -164,121 +83,136 @@ html,body{
   color:var(--green);
   transform:translateY(-1px);
 }
-
-.nav a.active{
-  color:var(--green);
-  background:rgba(31,227,162,.08);
+@@ -164,7 +174,7 @@
   border:1px solid rgba(31,227,162,.18);
 }
 
+/* ===== CONTEÚDO: layout ===== */
 /* ===== CONTEÚDO ===== */
 .main{
   position:relative;
   z-index:2;
-  padding:40px 48px 54px;
-}
-
-.container{
-  max-width:1200px;
-  margin:0 auto;
-  display:grid;
-  grid-template-columns:1.05fr 1fr;
-  gap:80px;
+@@ -184,7 +194,6 @@
   align-items:center;
 }
 
-.photo{
-  aspect-ratio:1/1;
-  overflow:hidden;
+/* “moldura” com cantos arredondados estilo orgânico */
+.photo-wrap{
+  position:relative;
+  width:100%;
+@@ -198,8 +207,13 @@
   border-radius:48px;
+  box-shadow:0 40px 110px rgba(0,0,0,.70);
   background:#0b1412;
-  border:1px solid rgba(255,255,255,.08);
-  transition:transform .3s ease, border-color .3s ease;
+  /* forma levemente diferente */
+  clip-path: polygon(12% 2%, 76% 2%, 98% 26%, 98% 74%, 74% 98%, 14% 98%, 2% 74%, 2% 26%);
+  transition:transform .3s ease, box-shadow .3s ease;
 }
 
 .photo:hover{
-  transform:scale(1.02);
-  border-color:rgba(31,227,162,.2);
+  transform:translateY(-6px);
+  box-shadow:0 50px 130px rgba(0,0,0,.8);
 }
 
 .photo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
+@@ -237,38 +251,152 @@
+  max-width:560px;
 }
 
-.content h1{
-  color:var(--green);
-  font-size:44px;
-  font-weight:800;
-  text-transform:uppercase;
-  font-style:italic;
-  letter-spacing:.04em;
-  line-height:1.15;
-  margin:0 0 24px;
+.content strong{ color:var(--text); }
+.content strong{ 
+  color:var(--text); 
 }
 
-.content p{
-  color:var(--muted);
-  font-size:15.5px;
-  line-height:1.75;
-  margin:0 0 16px;
-}
-
-.content p:last-child{
-  margin-bottom:0;
-}
-
+/* ===== MOBILE ===== */
 /* ===== RESPONSIVO ===== */
-@media(max-width:900px){
-  .header{
-    padding:18px 32px;
-  }
-  .main{
-    padding:32px;
-  }
+@media(max-width:980px){
+  .container{ grid-template-columns:1fr; gap:42px; }
+  .photo-wrap{ max-width:520px; margin:0 auto; }
+  .content h1{ font-size:34px; text-align:left; }
   .container{ 
     grid-template-columns:1fr; 
     gap:42px; 
   }
-  .photo{
-    max-width:500px;
-    margin:0 auto;
+  
+  .photo-wrap{ 
+    max-width:520px; 
+    margin:0 auto; 
+  }
+  
+  .content h1{ 
+    font-size:34px; 
+  }
+}
+
+@media(max-width:900px){
+  .header{
+    padding:18px 32px;
+  }
+  
+  .main{
+    padding:20px 32px 52px;
+  }
+  
+  .container{
+    gap:36px;
+  }
+  
+  .content p{
+    font-size:15px;
   }
 }
 
 @media(max-width:700px){
+  .header{ padding:16px 18px; gap:16px; flex-direction:column; align-items:flex-start; }
+  .nav{ gap:10px; }
+  .main{ padding:8px 18px 42px; }
+  .bg-map{ opacity:.06; }
+  .content h1{ font-size:30px; }
   .header{ 
+    padding:16px 20px; 
     flex-direction:column; 
     align-items:flex-start;
-    padding:16px 20px;
     gap:16px;
   }
+  
   .nav{ 
     gap:12px;
     width:100%;
     justify-content:flex-start;
   }
+  
   .nav a{
     font-size:13px;
     padding:8px 10px;
   }
-  .main{
-    padding:24px 20px;
+  
+  .main{ 
+    padding:16px 20px 42px;
   }
+  
   .container{
     gap:32px;
   }
-  .photo{
-    border-radius:32px;
+  
+  .photo-wrap{
+    max-width:420px;
   }
+  
+  .photo{
+    border-radius:40px;
+  }
+  
   .content h1{ 
     font-size:30px;
-    margin-bottom:18px;
   }
+  
   .content p{
-    font-size:14.5px;
+    font-size:14px;
+  }
+  
+  .bg-map{ 
+    opacity:.06;
   }
 }
 
@@ -286,28 +220,44 @@ html,body{
   .header{
     padding:14px 16px;
   }
+  
   .brand .name{
     font-size:12px;
   }
+  
   .brand .name span{
     font-size:11px;
   }
+  
   .nav{
     flex-direction:column;
     gap:8px;
   }
+  
   .nav a{
     width:100%;
     text-align:center;
   }
+  
   .main{
-    padding:20px 16px;
+    padding:14px 16px 38px;
   }
+  
+  .photo-wrap{
+    max-width:100%;
+  }
+  
   .photo{
-    border-radius:24px;
+    border-radius:32px;
   }
+  
   .content h1{
     font-size:26px;
+    line-height:1.15;
+  }
+  
+  .content p{
+    font-size:13.5px;
   }
 }
 </style>
@@ -316,6 +266,8 @@ html,body{
 <body>
 
 <div class="background">
+  <!-- Se não tiver mapa.png, pode apagar essa linha -->
+  <img class="bg-map" src="mapa.png" alt="" aria-hidden="true">
   <img class="bg-map" src="mapa.png" alt="Mapa do Brasil" onerror="this.style.display='none'">
   <div class="bg-overlay"></div>
   <div class="radar"></div>
@@ -323,102 +275,34 @@ html,body{
 
 <header class="header">
   <div class="brand">
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
     <div class="mark">
       <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3" aria-hidden="true">
         <circle cx="32" cy="32" r="22"/>
         <path d="M32 32L48 16"/>
         <circle cx="32" cy="32" r="4" fill="var(--green)"/>
-      </svg>
-    </div>
-    <div class="name">
-      <span>RADAR</span>
-      POLÍTICO
+@@ -280,10 +408,10 @@
     </div>
   </div>
 
-  <nav class="nav" role="navigation" aria-label="Menu principal">
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=V-Geral">Visão Geral</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=N-Servi%C3%A7os">Serviços</a>
-    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&page=M-Radar">Módulos do Radar</a>
-  </nav>
+  <nav class="nav" aria-label="Menu principal">
+    <a class="active" href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=V-Geral">Visão Geral</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=N-Servi%C3%A7os">Serviços</a>
+    <a href="https://gis.radarpolitico.org/portal/apps/experiencebuilder/experience/?id=1c71651ddc4842a585a30dbdbd451a9c&amp;page=M-Radar">Módulos do Radar</a>
 </header>
 
-<main class="main">
-  <section class="container">
-    <div class="photo">
-      <img src="equipe.jpg" alt="Equipe Radar Político" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22600%22%3E%3Crect fill=%22%230b1412%22 width=%22600%22 height=%22600%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2224%22%3ERadar Político%3C/text%3E%3C/svg%3E'">
+@@ -292,8 +420,7 @@
+
+    <div class="photo-wrap">
+      <div class="photo">
+        <!-- Coloque a imagem aqui. -->
+        <img src="equipe.jpg" alt="Equipe de campanha analisando dados">
+        <img src="equipe.jpg" alt="Equipe de campanha analisando dados" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22600%22%3E%3Crect fill=%22%230e2b26%22 width=%22600%22 height=%22600%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%231fe3a2%22 font-family=%22system-ui%22 font-size=%2228%22%3ERadar Político%3C/text%3E%3C/svg%3E'">
+      </div>
     </div>
 
-    <div class="content">
-      <h1>PLATAFORMA COMPLETA<br>PARA GESTÃO DE CAMPANHAS</h1>
-      <p><strong>Radar Político</strong> é uma solução digital para campanhas modernas.</p>
-      <p>Gestão, comunicação, controle financeiro e análise estratégica em um só lugar.</p>
-    </div>
-  </section>
-</main>
-
-<script>
-/* Limpeza segura de Service Workers */
-(function () {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(regs => {
-      regs.forEach(r => {
-        if (r.scope.includes('radarpolitico')) {
-          r.unregister();
-        }
-      });
-    });
-  }
-})();
-
-// Função para atualizar o menu ativo baseado na URL
-function updateActiveNav() {
-  const params = new URLSearchParams(window.location.search);
-  const currentPage = params.get('page');
-  const navLinks = document.querySelectorAll('.nav a');
-  
-  navLinks.forEach(link => {
-    link.classList.remove('active');
-    
-    try {
-      const linkUrl = new URL(link.href);
-      const linkPage = new URLSearchParams(linkUrl.search).get('page');
-      
-      if (linkPage === currentPage) {
-        link.classList.add('active');
-      }
-    } catch (e) {
-      console.warn('Erro ao processar link:', link.href);
-    }
-  });
-}
-
-// Executa ao carregar a página
-document.addEventListener('DOMContentLoaded', updateActiveNav);
-
-// Monitora mudanças na URL (para navegação SPA do Experience Builder)
-window.addEventListener('popstate', updateActiveNav);
-
-// Monitora cliques nos links do menu
-document.querySelectorAll('.nav a').forEach(link => {
-  link.addEventListener('click', function(e) {
-    // Remove active de todos
-    document.querySelectorAll('.nav a').forEach(l => l.classList.remove('active'));
-    // Adiciona active no clicado
-    this.classList.add('active');
-  });
-});
-
-// Observa mudanças na URL (para SPAs que alteram history sem popstate)
-let lastUrl = location.href;
-new MutationObserver(() => {
-  const url = location.href;
-  if (url !== lastUrl) {
-    lastUrl = url;
-    updateActiveNav();
-  }
-}).observe(document, {subtree: true, childList: true});
-</script>
+@@ -322,8 +449,3 @@ <h1>
 
 </body>
 </html>
