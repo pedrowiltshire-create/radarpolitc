@@ -232,11 +232,6 @@ html,body{
     <div class="name"><span>RADAR</span> POLÍTICO</div>
   </div>
 
-  <nav class="nav">
-    <a href="visao-geral.html">Visão Geral</a>
-    <a href="servicos.html">Serviços</a>
-    <a class="active" href="comunicacao.html">Comunicação</a>
-  </nav>
 </header>
 
 <main class="main">
@@ -263,20 +258,6 @@ html,body{
 </main>
 
 <!-- SCRIPT CORRIGIDO -->
-<script>
-/* Limpeza segura de Service Workers (sem bloquear navegação) */
-(function () {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function (registrations) {
-      registrations.forEach(function (registration) {
-        if (registration.scope.includes('radarpolitico')) {
-          registration.unregister();
-        }
-      });
-    });
-  }
-})();
-</script>
-
 </body>
 </html>
+
