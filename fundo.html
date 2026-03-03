@@ -7,7 +7,6 @@
 <meta http-equiv="Cross-Origin-Embedder-Policy" content="unsafe-none">
 <meta http-equiv="Cross-Origin-Opener-Policy" content="unsafe-none">
 <title>Radar Político</title>
-
 <style>
 :root{
   --green:#1fe3a2;
@@ -15,9 +14,7 @@
   --text:#eaf5f2;
   --muted:#b9d6cd;
 }
-
 *{ box-sizing:border-box; }
-
 html,body{
   margin:0;
   height:100%;
@@ -26,7 +23,17 @@ html,body{
   color:var(--text);
   overflow-x:hidden;
 }
-
+/* ===== BARRA DO TOPO ===== */
+.top-bar{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:10;
+  height:3px;
+  background: linear-gradient(to right, transparent 0%, var(--green) 30%, var(--green) 70%, transparent 100%);
+  opacity:.85;
+}
 /* ===== FUNDO ===== */
 .background{
   position:fixed;
@@ -34,7 +41,6 @@ html,body{
   z-index:0;
   overflow:hidden;
 }
-
 .bg-map{
   position:absolute;
   inset:0;
@@ -44,7 +50,6 @@ html,body{
   opacity:.22;
   pointer-events:none;
 }
-
 .bg-overlay{
   position:absolute;
   inset:0;
@@ -53,7 +58,6 @@ html,body{
     linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.65));
   pointer-events:none;
 }
-
 .radar{
   position:absolute;
   inset:-40vmax;
@@ -69,7 +73,6 @@ html,body{
   opacity:.55;
   pointer-events:none;
 }
-
 .radar::after{
   content:"";
   position:absolute;
@@ -82,9 +85,7 @@ html,body{
     );
   animation:sweep 7s linear infinite;
 }
-
 @keyframes sweep{to{transform:rotate(360deg)}}
-
 /* ===== HEADER ===== */
 .header{
   position:relative;
@@ -94,13 +95,11 @@ html,body{
   align-items:center;
   padding:22px 48px;
 }
-
 .brand{
   display:flex;
   align-items:center;
   gap:12px;
 }
-
 .brand .mark{
   width:38px;
   height:38px;
@@ -110,27 +109,24 @@ html,body{
   display:grid;
   place-items:center;
 }
-
 .brand svg{width:22px;height:22px}
-
 .brand .name{
   font-weight:700;
   font-size:14px;
   letter-spacing:.14em;
   text-transform:uppercase;
 }
-
 .brand .name span{
   display:block;
   color:var(--green);
   font-size:12px;
 }
-
-
 </style>
 </head>
-
 <body>
+
+<!-- BARRA DO TOPO -->
+<div class="top-bar"></div>
 
 <!-- FUNDO -->
 <div class="background">
@@ -139,22 +135,9 @@ html,body{
   <div class="radar"></div>
 </div>
 
-<!-- HEADER -->
+<!-- HEADER (logo removido) -->
 <header class="header">
-  <div class="brand">
-    <div class="mark">
-      <svg viewBox="0 0 64 64" fill="none" stroke="var(--green)" stroke-width="3">
-        <circle cx="32" cy="32" r="22"/>
-        <path d="M32 32L48 16"/>
-        <circle cx="32" cy="32" r="4" fill="var(--green)"/>
-      </svg>
-    </div>
-    <div class="name"><span>RADAR</span> POLÍTICO</div>
-  </div>
-
-
-
-
+</header>
 
 </body>
 </html>
